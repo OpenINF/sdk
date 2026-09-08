@@ -1,0 +1,12 @@
+node_modules/
+coverage/
+.DS_Store
+.pnpm-store/
+
+/packages/*/dist/
+/packages/*/coverage/
+/packages/*/node_modules/
+/packages/*/test-dist/
+/packages/*/.tsbuildinfo/
+
+/docs/

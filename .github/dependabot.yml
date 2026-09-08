@@ -1,0 +1,35 @@
+version: 2
+
+updates:
+  # Actions are pinned to commit SHAs, which means nothing updates them
+  # automatically. Dependabot rewrites the SHA and the trailing `# v4` comment
+  # together, so pinning does not turn into staleness.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: 'ci'
+
+  # One pnpm workspace: pointing at the root covers every package.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: 'deps'
+    groups:
+      # These move together and are only ever used by tooling, so a single PR
+      # is easier to review than five.
+      dev-tooling:
+        dependency-type: development
+    ignore:
+      # The root pins typescript to 6.x on purpose: TypeDoc's peer range stops
+      # at 6.0.x, and TypeScript 7 dropped the JS compiler API that TypeDoc and
+      # type-coverage are built on. The packages themselves already build with
+      # 7.x -- this pin only governs the root's documentation tooling.
+      #
+      # Revisit when TypeDoc ships a release accepting 7.x, then drop this.
+      - dependency-name: typescript
+        update-types:
+          - version-update:semver-major

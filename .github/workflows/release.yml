@@ -1,0 +1,56 @@
+name: Release
+
+# Manual only. Pushing to main -- including merging the "Version packages" PR
+# -- does nothing here; releasing is always something a maintainer asks for.
+on:
+  workflow_dispatch:
+
+# Deny by default at the workflow level; the release job below re-grants only
+# the three scopes it actually needs.
+permissions: {}
+
+# Never let two releases run at once: both would try to push the version
+# branch and publish the same versions.
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # push the version-bump branch and its tags
+      pull-requests: write # open/update the "Version Packages" PR
+      id-token: write # mint the OIDC token for npm trusted publishing
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Changesets needs history to tell which changesets are new.
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        with:
+          version: 11.7.0
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # prepublishOnly builds each package, but building here too means a
+      # broken build fails the job before anything is published.
+      - run: pnpm run build
+
+      # What a run does depends on whether changesets are pending:
+      #   - pending  -> opens/updates the "Version packages" PR. Nothing ships.
+      #   - none     -> publishes whatever versions are not yet on the registry.
+      # So a release is two deliberate runs: one to raise the PR, and one after
+      # merging it to publish.
+      - uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1.9.0
+        with:
+          version: pnpm run version-packages
+          publish: pnpm run release
+          commit: 'Version packages'
+          title: 'Version packages'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

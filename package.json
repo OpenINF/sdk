@@ -1,0 +1,35 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "build": "pnpm -r run build",
+    "docs:build": "typedoc",
+    "docs:serve": "http-server -c-1 -o docs/",
+    "format": "prettier --write .",
+    "lint": "pnpm -r run lint",
+    "lint:format": "prettier --check .",
+    "lint:knip": "knip --no-progress",
+    "lint:packages": "node tools/check-package-quality.js",
+    "lint:spelling": "cspell --no-progress",
+    "release": "pnpm -r publish --no-git-checks --provenance",
+    "sync-metadata": "node tools/sync-package-metadata.js",
+    "test": "pnpm -r run test",
+    "test:coverage": "pnpm -r run test:coverage",
+    "version-packages": "changeset version && pnpm install --lockfile-only"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@changesets/cli": "^2.31.1",
+    "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
+    "@types/node": "^26.1.2",
+    "cspell": "^10.0.1",
+    "http-server": "^14.1.1",
+    "knip": "^6.31.0",
+    "oxlint": "^1.77.0",
+    "oxlint-tsgolint": "^7.0.2001",
+    "prettier": "^3.9.6",
+    "publint": "^0.3.23",
+    "typedoc": "^0.28.20",
+    "typescript": "^6.0.3"
+  }
+}

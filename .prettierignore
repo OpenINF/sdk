@@ -1,0 +1,14 @@
+# Dependencies and build output.
+node_modules/
+dist/
+test-dist/
+coverage/
+
+# Generated: TypeDoc output and the pnpm lockfile.
+docs/
+pnpm-lock.yaml
+
+# Written by `changeset version` on every release. Formatting these would put
+# CI one release behind the tree, failing the check until someone reformatted
+# a file nobody edits by hand.
+CHANGELOG.md

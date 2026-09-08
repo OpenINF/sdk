@@ -1,0 +1,25 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPointStrategy": "packages",
+  "entryPoints": [
+    "packages/assert",
+    "packages/gh-file-importer",
+    "packages/util",
+    "packages/util-array",
+    "packages/util-core",
+    "packages/util-errors",
+    "packages/util-md-table",
+    "packages/util-object",
+    "packages/util-text",
+    "packages/util-types"
+  ],
+  "packageOptions": {
+    "entryPoints": ["src/index.ts"],
+    "tsconfig": "tsconfig.build.json",
+    "preservedTypeAnnotationTags": ["@throws"]
+  },
+  "out": "docs",
+  "name": "OpenINF",
+  "readme": "README.md",
+  "githubPages": false
+}

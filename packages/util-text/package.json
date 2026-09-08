@@ -1,0 +1,76 @@
+{
+  "name": "@openinf/util-text",
+  "version": "1.1.2",
+  "description": "Essential cross-platform terminal-friendly text utilities",
+  "main": "./dist/cjs/index.js",
+  "types": "./dist/cjs/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.mts",
+        "default": "./dist/esm/index.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "start": "node --experimental-test-module-mocks --test --watch 'test-dist/test/**/*.js'",
+    "build": "npm run build:cjs && npm run build:esm",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:esm": "tsc -p tsconfig.esm.json && node ../../tools/finalize-esm-output.js dist/esm",
+    "clean": "rm -rf ./dist ./.tsbuildinfo",
+    "clean:test": "rm -rf ./test-dist",
+    "lint:ts": "npx oxlint --type-aware --report-unused-disable-directives --tsconfig tsconfig.build.json src",
+    "lint": "npm run lint:ts",
+    "format:ts": "npx prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "pretest": "npm run lint:ts && npm run clean:test && tsc -p tsconfig.test.json",
+    "test": "node --experimental-test-module-mocks --test 'test-dist/test/**/*.js'",
+    "pretest:coverage": "npm run pretest",
+    "test:coverage": "node --experimental-test-module-mocks --experimental-test-coverage --test-coverage-include='test-dist/src/**' --test 'test-dist/test/**/*.js'",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/openinf/openinf.git",
+    "directory": "packages/util-text"
+  },
+  "bugs": {
+    "url": "https://github.com/openinf/openinf/issues"
+  },
+  "keywords": [
+    "text",
+    "string",
+    "terminal",
+    "ansi",
+    "markdown",
+    "unicode",
+    "utilities",
+    "typescript"
+  ],
+  "files": [
+    "dist",
+    "src",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "author": "The OpenINF Authors",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@openinf/util-core": "workspace:*",
+    "@openinf/util-object": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.2",
+    "typescript": "^7.0.2"
+  }
+}

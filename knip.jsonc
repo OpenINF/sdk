@@ -1,0 +1,16 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+
+  // Every package is a barrel: src/index.ts is the only thing consumers can
+  // reach, since no package declares subpath exports.
+  "workspaces": {
+    "packages/*": {
+      "entry": ["src/index.ts"],
+      "project": ["src/**/*.ts"],
+    },
+  },
+
+  // publint and attw are invoked as `pnpm exec` subprocesses from inside
+  // tools/check-package-quality.js, so knip's static analysis cannot see them.
+  "ignoreDependencies": ["publint", "@arethetypeswrong/cli"],
+}

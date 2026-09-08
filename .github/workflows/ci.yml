@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Least privilege: this job only reads the tree. Without an explicit block the
+# job inherits whatever the repository default is, which may include write
+# scopes it never needs.
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        with:
+          version: 11.7.0
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
+      - run: pnpm run lint
+      - run: pnpm run test
+
+      # Formatting, repo-wide rather than only the TypeScript sources.
+      - run: pnpm run lint:format
+
+      # Unused files, exports, and dependencies.
+      - run: pnpm run lint:knip
+
+      # Spelling, across prose and the strings that ship: READMEs, changesets,
+      # package descriptions, and error messages. American English is enforced
+      # by the en-US dictionary rather than left to review.
+      - run: pnpm run lint:spelling
+
+      # publint + arethetypeswrong, run against real `pnpm pack` tarballs.
+      # Catches a package.json change that breaks resolution for CommonJS or
+      # ESM consumers -- something the build and tests cannot see, because
+      # they never go through the published `exports` map.
+      - run: pnpm run lint:packages

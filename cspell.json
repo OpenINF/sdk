@@ -1,0 +1,82 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "version": "0.2",
+
+  // en-US, not the plain "en" dictionary, which accepts British spellings too
+  // and would let the two drift together. Matches .vscode/settings.json.
+  "language": "en-US",
+
+  "files": [
+    "**/*.md",
+    // .changeset is a dot-directory, so "**/*.md" does not descend into it.
+    // These files become published CHANGELOG entries, so they are checked.
+    ".changeset/*.md",
+    "packages/*/src/**/*.ts",
+    "packages/*/test/**/*.ts",
+    "packages/*/package.json",
+    "package.json",
+    "tools/*.js"
+  ],
+
+  "ignorePaths": [
+    "node_modules/",
+    "**/dist/",
+    "**/test-dist/",
+    "docs/",
+    "pnpm-lock.yaml"
+  ],
+
+  // Everything below is correct; none of it is a misspelling waiting to be
+  // fixed. Keep it sorted, and prefer adding a word here over disabling a
+  // check inline.
+  "words": [
+    // Exports and types this project defines
+    "Arrayish",
+    "blueify",
+    "ellipsified",
+    "ellipsify",
+    "Mapish",
+
+    // Terminal, shell, and locale detection
+    "ANSICON",
+    "Bitvise",
+    "bvterm",
+    "charsets",
+    "CTYPE",
+    "eterm",
+    "konsole",
+    "Mintty",
+    "MSYS",
+    "MSYSTEM",
+    "rxvt",
+
+    // Tools, packages, and organizations
+    "ianvs",
+    "memoizee",
+    "npmjs",
+    "openinf",
+    "oxlint",
+    "tsgolint",
+
+    // Authors credited in ported code
+    "Qingrong",
+    "Rebecca",
+    "sindresorhus",
+
+    // Test fixtures
+    "barbaz",
+    "barfoo",
+    "ghfi",
+    "octocat",
+
+    // Jargon that is spelled correctly but absent from the dictionary
+    "bigints",
+    "downleveling",
+    "elems",
+    "extensionless",
+    "footgun",
+    "relayering",
+    "retarget",
+    "unloadable"
+  ]
+}

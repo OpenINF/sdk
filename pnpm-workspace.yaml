@@ -1,0 +1,4 @@
+packages:
+  - 'packages/*'
+allowBuilds:
+  es5-ext: true
