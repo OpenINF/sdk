@@ -14,8 +14,8 @@ const fs = require('fs');
 const path = require('path');
 
 const PACKAGES_DIR = path.join(__dirname, '..', 'packages');
-const REPO_URL = 'https://github.com/openinf/openinf.git';
-const ISSUES_URL = 'https://github.com/openinf/openinf/issues';
+const REPO_URL = 'https://github.com/OpenINF/sdk.git';
+const ISSUES_URL = 'https://github.com/OpenINF/sdk/issues';
 const AUTHOR = 'The OpenINF Authors';
 const LICENSE = 'MIT';
 // The floor every package can actually run on. The source uses `node:`-

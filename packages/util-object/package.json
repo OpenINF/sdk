@@ -36,11 +36,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/openinf/openinf.git",
+    "url": "https://github.com/OpenINF/sdk.git",
     "directory": "packages/util-object"
   },
   "bugs": {
-    "url": "https://github.com/openinf/openinf/issues"
+    "url": "https://github.com/OpenINF/sdk/issues"
   },
   "keywords": [
     "JavaScript",
