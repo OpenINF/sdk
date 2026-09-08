@@ -1,0 +1,82 @@
+{
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  autoApprove: true,
+  automerge: true,
+  extends: [
+    'config:best-practices',
+    ':gitSignOff',
+    ':preserveSemverRanges',
+    'mergeConfidence:all-badges',
+    ':semanticCommitTypeAll(chore)',
+    'schedule:earlyMondays',
+  ],
+  // `config:best-practices` pulls in `abandonments:recommended`, which calls a
+  // package abandoned after a year without a release. Held at two years to
+  // match the rest of the organization's repositories, where the shorter
+  // figure flagged small, finished packages rather than neglected ones.
+  // Per-package community overrides still apply.
+  abandonmentThreshold: '2 years',
+  groupName: 'all',
+  ignorePresets: [':prHourlyLimit2'],
+  vulnerabilityAlerts: {
+    labels: ['security'],
+    automerge: true,
+    assignees: ['@DerekNonGeneric'],
+  },
+  lockFileMaintenance: {
+    enabled: true,
+    labels: ['dependencies', 'build'],
+  },
+  platformCommit: 'enabled',
+  rangeStrategy: 'pin',
+  semanticCommits: 'enabled',
+  commitMessageAction: 'bump',
+  commitMessageTopic: '{{depName}}',
+
+  packageRules: [
+    {
+      matchDepTypes: ['dependencies'],
+      commitMessagePrefix: 'chore(deps):',
+      labels: ['dependencies'],
+    },
+    {
+      matchDepTypes: ['devDependencies'],
+      commitMessagePrefix: 'build(deps-dev):',
+      labels: ['dependencies', 'deps-dev', 'build'],
+    },
+    // Carried over from the Dependabot config this replaces. The root pins
+    // typescript to 6.x on purpose: TypeDoc's peer range stops at 6.0.x, and
+    // TypeScript 7 dropped the JS compiler API that TypeDoc is built on. The
+    // packages under packages/ already build with 7.x, so this is scoped to
+    // the root manifest, which is the only place the documentation toolchain
+    // is installed.
+    //
+    // Revisit when TypeDoc ships a release accepting 7.x, then drop this.
+    {
+      description: 'Root typescript stays on 6.x until TypeDoc accepts 7.x',
+      matchFileNames: ['package.json'],
+      matchPackageNames: ['typescript'],
+      matchUpdateTypes: ['major'],
+      enabled: false,
+    },
+    // `config:best-practices` already waits, through
+    // `security:minimumReleaseAgeNpm`, but only three days and only for npm --
+    // leaving the digest-pinned actions and the dev container image with no
+    // wait at all. A preset's rules are merged ahead of these, and the last
+    // matching rule wins, so raising the figure has to happen here.
+    {
+      description: 'Let a new release be looked at before taking it',
+      matchPackageNames: ['*'],
+      minimumReleaseAge: '7 days',
+    },
+    {
+      // Restores what the preset set and the rule above would undo: renovate
+      // cannot apply the wait to the transitive versions a lockfile refresh
+      // picks up. pnpm enforces it there instead, during the install renovate
+      // runs to produce the branch.
+      description: 'Lock file maintenance resolves through the package manager',
+      matchUpdateTypes: ['lockFileMaintenance'],
+      minimumReleaseAge: null,
+    },
+  ],
+}
