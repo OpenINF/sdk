@@ -33,6 +33,23 @@
   commitMessageAction: 'bump',
   commitMessageTopic: '{{depName}}',
 
+  // Nothing else watches this. Everything installed through npm is covered by
+  // the managers above, and the dev container's image and feature by its own,
+  // but a version pinned to a commit in a shell script is invisible without
+  // being told.
+  customManagers: [
+    {
+      customType: 'regex',
+      description: 'fish tooling pinned in the dev container post-create script',
+      managerFilePatterns: ['/^\\.devcontainer/post-create\\.sh$/'],
+      // Both halves: moving one and leaving the other would leave the file
+      // naming a release it does not install.
+      matchStrings: [
+        '# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\sreadonly \\w+=(?<currentDigest>[0-9a-f]{40}) # (?<currentValue>\\S+)',
+      ],
+    },
+  ],
+
   packageRules: [
     {
       matchDepTypes: ['dependencies'],
