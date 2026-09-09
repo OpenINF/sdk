@@ -4,8 +4,9 @@ name: Scorecard
 # protection, pinned dependencies, token permissions, SAST coverage, and so
 # on) and publishes the result to the Security tab.
 #
-# Requires a public repository. While this repo is private the workflow will
-# not produce useful results -- that is expected, not a misconfiguration.
+# Requires a public repository: the checks read history through an API the
+# default token cannot reach on a private one, and publishing the result is
+# public by definition. The job waits for that rather than failing until then.
 on:
   branch_protection_rule:
   push:
@@ -18,6 +19,7 @@ permissions: {}
 jobs:
   analysis:
     name: Scorecard analysis
+    if: ${{ !github.event.repository.private }}
     runs-on: ubuntu-latest
     permissions:
       contents: read

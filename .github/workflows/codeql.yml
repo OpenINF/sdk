@@ -15,6 +15,10 @@ permissions: {}
 jobs:
   analyze:
     name: Analyze
+    # Code scanning on a private repository needs GitHub Advanced Security,
+    # and without it the upload is refused and the job fails. Waits for this
+    # repository to be public, where code scanning is available to everyone.
+    if: ${{ !github.event.repository.private }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
