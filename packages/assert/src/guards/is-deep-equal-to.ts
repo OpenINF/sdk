@@ -47,7 +47,8 @@ function deepEqual(a: unknown, b: unknown): boolean {
  * own-property.
  * @param expected The value to compare against.
  * @returns The guard.
- * @example ```ts
+ * @example
+ * ```ts
  * const isDeepEqualToFoo = isDeepEqualTo({ a: [1, 2] });
  *
  * isDeepEqualToFoo({ a: [1, 2] }); // ↪ true

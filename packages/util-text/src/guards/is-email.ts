@@ -14,7 +14,8 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
  * @category Text Processing
  * @param value The value to identify.
  * @returns `true` if `value` is an email address; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isEmail('foo@example.com'); // ↪ true
  *
  * isEmail('foo@'); // ↪ false

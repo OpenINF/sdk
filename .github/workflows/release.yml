@@ -46,7 +46,8 @@ jobs:
       #   - none     -> publishes whatever versions are not yet on the registry.
       # So a release is two deliberate runs: one to raise the PR, and one after
       # merging it to publish.
-      - uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1.9.0
+      - id: changesets
+        uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1.9.0
         with:
           version: pnpm run version-packages
           publish: pnpm run release
@@ -54,3 +55,25 @@ jobs:
           title: 'Version packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # The portal renders this release's API reference from a versioned
+      # Markdown artifact, which it keeps one directory of per release. Only a
+      # run that published has versions for one to describe; the run that opens
+      # the version PR has nothing to document yet, so these are skipped there.
+      #
+      # Building it here rather than earlier ties it to the versions that
+      # actually shipped, and to the commit they were published from.
+      - if: steps.changesets.outputs.published == 'true'
+        run: pnpm run docs:build
+
+      - if: steps.changesets.outputs.published == 'true'
+        run: pnpm run docs:artifact
+
+      # Handing this to the portal is a deliberate step, the way publishing is:
+      # see "Publishing the API reference" in RELEASING.md.
+      - if: steps.changesets.outputs.published == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sdk-api-docs
+          path: docs/artifact/
+          if-no-files-found: error

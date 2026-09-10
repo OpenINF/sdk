@@ -15,7 +15,8 @@ import { isObjectOfType } from '../types';
  * @category Numbers and Dates
  * @param value The value to identify.
  * @returns `true` if `value` is a `Date`; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * import util from '@openinf/util';
  *
  * util.isDate(new Date()); // ↪ true

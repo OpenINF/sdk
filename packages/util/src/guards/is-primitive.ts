@@ -19,7 +19,8 @@ export type Primitive =
  * @category Other
  * @param value The value to identify.
  * @returns `true` if `value` is a primitive; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * import util from '@openinf/util';
  *
  * util.isPrimitive(0); // ↪ true

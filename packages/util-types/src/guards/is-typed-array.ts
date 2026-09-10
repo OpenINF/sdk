@@ -27,7 +27,8 @@ import type { TypedArray } from '../types';
  * @category Index Collections
  * @param value The value to identify.
  * @returns `true` if `value` is a typed array; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isTypedArray(new Uint8Array()); // ↪ true
  *
  * isTypedArray([]); // ↪ false

@@ -9,7 +9,8 @@ import type { Comparable, Guard } from '@openinf/util-core';
  * has a `compareTo` method.
  * @param value The value to identify.
  * @returns `true` if `value` is Comparable; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isComparable({ compareTo: () => 0 }); // ↪ true
  *
  * isComparable({}); // ↪ false

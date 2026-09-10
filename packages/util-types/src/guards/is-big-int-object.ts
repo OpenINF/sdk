@@ -14,7 +14,8 @@ import { _tagTester } from '../_internal/_tag-tester';
  * @category Numbers and Dates
  * @param value The value to identify.
  * @returns `true` if `value` is a `BigInt` object; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isBigIntObject(); // ↪ false
  *
  * isBigIntObject(); // ↪ true

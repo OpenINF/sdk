@@ -14,7 +14,8 @@ import { _tagTester } from '../_internal/_tag-tester';
  * @category Structured Data
  * @param value The value to identify.
  * @returns `true` if `value` is a `DataView`; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isDataView(new DataView(new ArrayBuffer(16))); // ↪ true
  *
  * isDataView([]); // ↪ false

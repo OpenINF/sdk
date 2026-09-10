@@ -23,7 +23,8 @@
  * @category Index Collections
  * @param value The value to identify.
  * @returns `true` if `value` is an `ArrayBufferView`; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isArrayBufferView(new DataView(new ArrayBuffer(16))); // ↪ true
  *
  * isArrayBufferView(new BigUint64Array()); // ↪ false

@@ -21,7 +21,8 @@ export type InterfaceValidators<T> = {
  * @param interfaceName The interface name to report in the error message.
  * @param validators The property validators (or function that returns them).
  * @returns The guard.
- * @example ```ts
+ * @example
+ * ```ts
  * import { hasInterface, isNumber, isString } from '@openinf/util';
  *
  * interface Point {

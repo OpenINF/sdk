@@ -17,7 +17,8 @@ import { _tagTester } from '../_internal/_tag-tester';
  * @category Control Abstraction Objects
  * @param value The value to identify.
  * @returns `true` if `value` is an `AsyncFunction`; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isAsyncGeneratorFunction(function foo() {}); // ↪ false
  *
  * isAsyncGeneratorFunction(function* foo() {}); // ↪ false

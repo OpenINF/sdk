@@ -10,7 +10,8 @@ import type { Guard } from '@openinf/util-core';
  * @category Value Properties
  * @param value The value to identify.
  * @returns `true` if `value` is not `undefined` or `null`; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * import util from '@openinf/util';
  *
  * util.isDefined(void 0); // ↪ false

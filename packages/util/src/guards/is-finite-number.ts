@@ -17,7 +17,8 @@ export type FiniteNumber = Tagged<number, '__FiniteNumber__'>;
  * @category Numbers and Dates
  * @param value The value to identify.
  * @returns `true` if `value` is a finite number; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * import util from '@openinf/util';
  *
  * util.isFiniteNumber(0); // ↪ true

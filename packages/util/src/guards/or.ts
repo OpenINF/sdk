@@ -32,7 +32,8 @@ export function or<T1, T2, T3, T4>(
  * of them.
  * @param guards The guards to combine.
  * @returns A guard that tests if a value satisfies any of `guards`.
- * @example ```ts
+ * @example
+ * ```ts
  * import { or, isNull, isUndefined } from '@openinf/util';
  *
  * const isNullish = or(isNull, isUndefined);

@@ -14,7 +14,8 @@ import { _tagTester } from '../_internal/_tag-tester';
  * @category Control Abstraction Objects
  * @param value The value to identify.
  * @returns `true` if `value` is a `Generator`; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * function* infinite() {
  *     let index = 0;
  *

@@ -14,7 +14,8 @@ import { _tagTester } from '../_internal/_tag-tester';
  * @category Numbers and Dates
  * @param value The value to identify.
  * @returns `true` if `value` is a `Number` object; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isNumberObject(3); // ↪ false
  *
  * isNumberObject(Number('123')); // ↪ true

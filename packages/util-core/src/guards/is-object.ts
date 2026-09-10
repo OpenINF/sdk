@@ -10,7 +10,8 @@ import type { Guard } from '../types';
  * @category Fundamental Objects
  * @param value The value to identify.
  * @returns `true` if `value` is an object; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * import util from '@openinf/util';
  *
  * util.isObject({}); // ↪ true

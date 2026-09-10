@@ -142,11 +142,27 @@ Node.js `>=20.19.0`. TypeScript consumers want `moduleResolution` set to
 
 API documentation is generated with [TypeDoc](https://typedoc.org):
 
-```shell
+```console
 pnpm install
 pnpm docs:build
-pnpm docs:serve
+pnpm docs:check
 ```
+
+`docs:build` compiles the workspace before TypeDoc runs, which lets it resolve
+the packages' internal dependencies exactly as a consumer does. The generated
+Markdown and navigation data land in `docs/api/`; `pnpm docs:serve` opens that
+output for local inspection.
+
+The output is Markdown rather than TypeDoc's own HTML because it is read by
+something else: the OpenINF portal renders it as the SDK's API reference, in the
+portal's own layout. That makes these pages a product artifact with a consumer,
+and `docs:check` holds them to what that consumer accepts: every page mappable
+to a public URL, and every internal link resolving to a page that is actually
+published.
+
+`pnpm docs:artifact` packages the corpus for the portal, with a manifest naming
+the release and the commit it came from. A release does this itself; see
+[RELEASING.md](RELEASING.md).
 
 ## Contributing
 

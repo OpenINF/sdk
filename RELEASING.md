@@ -85,6 +85,52 @@ dependencies use the `workspace:*` protocol, and only pnpm rewrites that into a
 real version range when packing. Publishing with npm would ship a literal
 `"workspace:*"` dependency that no consumer can install.
 
+## Publishing the API reference
+
+The [OpenINF portal](https://open.inf.is) publishes this SDK's API reference at
+`/docs/sdk/<version>/api/`, rendered in its own documentation layout from the
+Markdown TypeDoc generates here. It keeps one directory per release rather than
+rebuilding old references from new source, so a link into `3.0.0` still
+describes `3.0.0` after `3.1.0` ships.
+
+The publishing run builds that artifact itself, once the packages are on the
+registry, and attaches it to the run as **sdk-api-docs**. It contains one
+directory named for the release:
+
+```text
+3.0.0/
+  manifest.json
+  docs/
+    README.md
+    navigation.json
+    @openinf/<package>/...
+```
+
+`manifest.json` names the release, the commit it was generated from, and where
+the Markdown and navigation data sit inside the directory. The portal reads it
+to decide what it is being given; it will not import a directory whose manifest
+disagrees with its name, nor one whose paths reach outside it.
+
+Handing it over is a separate, deliberate step, the way publishing is:
+
+1. Download **sdk-api-docs** from the Release run that published.
+2. Unzip it into `vendor/sdk-api/` in the portal repository, so the release's
+   directory sits beside the ones already there. Nothing is replaced -- a
+   release adds a version rather than superseding one.
+3. Open a pull request there. The portal's build imports what it finds and fails
+   on an artifact it cannot, so the check on that pull request is what confirms
+   the reference will render.
+
+Nothing in the artifact is edited by hand at any point. It is generated output,
+and the portal validates it as such: it rejects a page it cannot map to a URL,
+and a link to a page it is not importing. `pnpm run docs:check` applies those
+same rules here, on every pull request, so an artifact that would be refused is
+caught long before a release builds it.
+
+A release that publishes no packages -- the run that opens the "Version
+packages" PR -- builds no artifact, because there is no release for one to
+describe.
+
 ## First-time setup: trusted publishing
 
 Publishing uses npm

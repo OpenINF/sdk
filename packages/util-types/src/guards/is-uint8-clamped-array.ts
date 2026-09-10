@@ -14,7 +14,8 @@ import { _tagTester } from '../_internal/_tag-tester';
  * @category Index Collections
  * @param value The value to identify.
  * @returns `true` if `value` is a `Uint8ClampedArray`; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isUint8ClampedArray(new Uint8ClampedArray()); // ↪ true
  *
  * isUint8ClampedArray([]]); // ↪ false

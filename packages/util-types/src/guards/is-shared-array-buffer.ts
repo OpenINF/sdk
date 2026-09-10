@@ -14,7 +14,8 @@ import { _tagTester } from '../_internal/_tag-tester';
  * @category Structured Data
  * @param value The value to identify.
  * @returns `true` if `value` is a `SharedArrayBuffer`; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isSharedArrayBuffer(new SharedArrayBuffer(16)); // ↪ true
  *
  * isSharedArrayBuffer(new ArrayBuffer(16)); // ↪ false

@@ -13,7 +13,8 @@ import type { Guard } from '@openinf/util-core';
  * @category Fundamental Objects
  * @param value The value to identify.
  * @returns `true` if `value` is an `Error`; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * import util from '@openinf/util';
  *
  * util.isError(new Error('foo')); // ↪ true

@@ -23,7 +23,8 @@ import { isSymbolObject } from './is-symbol-object';
  * @category Other
  * @param value The value to identify.
  * @returns `true` if `value` is a boxed primitive; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isBoxedPrimitive(false); // ↪ false
  *
  * isBoxedPrimitive(new Boolean(true)); // ↪ true

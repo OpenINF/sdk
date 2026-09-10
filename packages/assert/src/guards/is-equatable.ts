@@ -9,7 +9,8 @@ import type { Equatable, Guard } from '@openinf/util-core';
  * has an `equals` method.
  * @param value The value to identify.
  * @returns `true` if `value` is Equatable; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isEquatable({ equals: () => true }); // ↪ true
  *
  * isEquatable({}); // ↪ false
