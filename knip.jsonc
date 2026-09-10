@@ -1,9 +1,19 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
 
-  // Every package is a barrel: src/index.ts is the only thing consumers can
-  // reach, since no package declares subpath exports.
   "workspaces": {
+    // The commit queue's modules are kept byte-identical with the copies in
+    // OpenINF/.github and the portal, so that updating one is a copy rather
+    // than a merge. Treating them as entry points is what says so: the
+    // callers some of their exports have are in those repositories, not this
+    // one, and trimming to what this repository happens to use is the thing
+    // that would make the next sync a conflict.
+    ".": {
+      "entry": ["build/shared/*.mts", "build/tasks/**/*.mts", "tools/*.js"],
+    },
+
+    // Every package is a barrel: src/index.ts is the only thing consumers can
+    // reach, since no package declares subpath exports.
     "packages/*": {
       "entry": ["src/index.ts"],
       "project": ["src/**/*.ts"],

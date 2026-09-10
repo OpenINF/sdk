@@ -92,6 +92,7 @@ pnpm run lint          # oxlint, type-aware
 pnpm run test
 pnpm run lint:format   # prettier, repo-wide
 pnpm run lint:knip     # unused files, exports, and dependencies
+pnpm run lint:commits  # commit message format and sign-off
 pnpm run lint:spelling # cspell, en-US
 pnpm run lint:packages # publint + arethetypeswrong, against real tarballs
 ```
@@ -99,11 +100,12 @@ pnpm run lint:packages # publint + arethetypeswrong, against real tarballs
 `pnpm run format` fixes anything `lint:format` reports. It covers the whole
 repository, not just TypeScript -- Markdown, JSON, and YAML included.
 
-CI runs exactly these. The last three are the ones people forget: `lint:knip`
-catches an export you added but never wired into the barrel, `lint:packages`
-catches a `package.json` change that breaks resolution for CommonJS or ESM
-consumers, and `lint:spelling` covers prose along with the strings that ship --
-error messages and package descriptions reach users as surely as the code does.
+CI runs exactly these. The last four are the ones people forget: `lint:knip`
+catches an export you added but never wired into the barrel, `lint:commits`
+catches a message the commit queue would refuse to land, `lint:packages` catches
+a `package.json` change that breaks resolution for CommonJS or ESM consumers,
+and `lint:spelling` covers prose along with the strings that ship -- error
+messages and package descriptions reach users as surely as the code does.
 
 **This project uses American English.** The dictionary is `en-US` rather than
 plain `en` precisely because `en` accepts both spellings and lets them drift. If
@@ -132,6 +134,76 @@ maintainer. See [RELEASING.md](RELEASING.md).
 
 Changes that touch no published code -- CI config, docs, this file -- do not
 need one.
+
+## Commit messages
+
+A pull request lands as one squashed commit whose subject is the pull request
+**title**, so the title is what has to hold to the commit format:
+
+```text
+🏗️🔧：keep the checks off the generated pages
+```
+
+A category emoji, optionally an action emoji, then `：` -- the fullwidth colon,
+U+FF1A, not the ASCII one -- then what the change does, in 50 characters or
+fewer, with no full stop and no `#123` on the end. The vocabulary is listed in
+[the pull request template](.github/PULL_REQUEST_TEMPLATE.md). Copy an emoji
+from there rather than typing it: several have a lookalike spelling that is a
+different string, and the checks read the string.
+
+Body lines wrap at 72 columns. Trailers go in the last paragraph and nowhere
+else, since that is the only place git reads them, in this order:
+
+```text
+Co-authored-by  Signed-off-by  Assisted-by  PR-URL  Fixes  Refs  Reviewed-by
+```
+
+Case is part of the spelling, and a space where a hyphen belongs -- `PR URL:` --
+disqualifies every trailer beside it, so the whole block goes silently unread.
+`Assisted-by` names a tool rather than a person, written `agent:model-version`,
+as in `Assisted-by: Claude-Code:claude-opus-5`.
+
+Every commit carries a `Signed-off-by:` naming its own author. That is the
+Developer Certificate of Origin, reproduced in full in the pull request
+template, and only the author can certify it -- an assistant discloses itself
+with `Assisted-by:` and signs nothing. `git commit -s` writes the line for you.
+
+`pnpm run lint:commits` holds every commit on your branch to all of this, and
+cross-checks its own reading of the trailers against `git interpret-trailers`,
+so the rules cannot quietly drift from the tool they describe. Commits written
+by Renovate and Dependabot are left alone: neither writes this format, neither
+is ours to change, and holding them to it would leave every dependency update
+failing its checks and never landing.
+
+The pull request itself is read too, on every push. Its title answers to the
+format above, because the title is the subject that lands. Its description only
+has to exist -- the template is one long HTML comment, so a pull request opened
+without a word written renders as nothing at all to a reader.
+
+## Landing a pull request
+
+Applying the **🚀 Status: Commit Queue** label lands it, once its checks have
+passed. The queue builds the message from the branch's commits rather than from
+the pull request body: every message is kept whole, each subject becoming a
+heading, and the trailers are gathered into the one paragraph git reads, with
+the pull request's own URL added. It then holds what it built to the rules above
+and refuses to merge anything that does not pass them.
+
+It also refuses a branch that conflicts, one targeting something other than
+`main`, one with a check still running or failing, and a label applied by
+someone who cannot push here -- applying a label needs only triage access, which
+does not carry the right to push. The label comes back off whatever happens, so
+re-applying it is always a deliberate second try, and a refusal says why in a
+comment.
+
+To read the message it would land, without landing anything:
+
+```shell
+pnpm land <number> --dry-run
+```
+
+That needs the [GitHub CLI](https://cli.github.com) authenticated, since it asks
+the API for the branch's commits rather than fetching them.
 
 ## Reporting bugs and vulnerabilities
 
