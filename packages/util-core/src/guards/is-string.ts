@@ -10,7 +10,8 @@ import type { Guard } from '../types';
  * @category Text Processing
  * @param value The value to identify.
  * @returns `true` if `value` is a string; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * import util from '@openinf/util';
  *
  * util.isString(''); // ↪ true

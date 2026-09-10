@@ -9,7 +9,8 @@ import type { Guard } from '../types';
  * @category Fundamental Objects
  * @param value The value to be identified.
  * @returns `true` if `value` is a symbol; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * import util from '@openinf/util';
  *
  * util.isSymbol('@#$%&!'); // ↪ false

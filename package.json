@@ -3,8 +3,11 @@
   "private": true,
   "scripts": {
     "build": "pnpm -r run build",
-    "docs:build": "typedoc",
-    "docs:serve": "http-server -c-1 -o docs/",
+    "docs:artifact": "node tools/build-api-artifact.js",
+    "docs:build": "pnpm run build && pnpm run docs:generate",
+    "docs:check": "node tools/check-api-docs.js",
+    "docs:generate": "typedoc",
+    "docs:serve": "http-server -c-1 -o docs/api/",
     "format": "prettier --write .",
     "lint": "pnpm -r run lint",
     "lint:format": "prettier --check .",
@@ -30,6 +33,7 @@
     "prettier": "^3.9.6",
     "publint": "^0.3.23",
     "typedoc": "^0.28.20",
+    "typedoc-plugin-markdown": "^4.13.0",
     "typescript": "^6.0.3"
   }
 }

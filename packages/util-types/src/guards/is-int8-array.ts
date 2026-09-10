@@ -14,7 +14,8 @@ import { _tagTester } from '../_internal/_tag-tester';
  * @category Index Collections
  * @param value The value to identify.
  * @returns `true` if `value` is an `Int8Array`; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isInt8Array(new Int8Array()); // ↪ true
  *
  * isInt8Array([]]); // ↪ false

@@ -12,7 +12,8 @@ import type { Guard } from '@openinf/util-core';
  * @category Typed Arrays
  * @param value The value to identify.
  * @returns `true` if `value` is a Buffer; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * import util from '@openinf/util';
  *
  * util.isBuffer({ length: 0 }); // ↪ false

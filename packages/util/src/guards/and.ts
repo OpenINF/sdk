@@ -32,7 +32,8 @@ export function and<T1, T2, T3, T4>(
  * them.
  * @param guards The guards to combine.
  * @returns A guard that tests if a value satisfies all of `guards`.
- * @example ```ts
+ * @example
+ * ```ts
  * import { and, isNumber, isPositive } from '@openinf/util';
  *
  * const isPositiveNumber = and(isNumber, isPositive);

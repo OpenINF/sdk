@@ -16,7 +16,8 @@ export type NegativeInteger = Tagged<number, '__NegativeInteger__'>;
  * @category Numbers and Dates
  * @param value The value to identify.
  * @returns `true` if `value` is a negative integer; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * import util from '@openinf/util';
  *
  * util.isNegativeInteger(-1); // ↪ true

@@ -10,7 +10,8 @@ import type { AnyFunction, Guard } from '../types';
  * @category Fundamental Objects
  * @param value The value to identify.
  * @returns `true` if `value` is a function; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * import util from '@openinf/util';
  *
  * util.isFunction(class foo {}); // ↪ true

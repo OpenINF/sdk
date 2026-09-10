@@ -9,7 +9,8 @@ import type { Guard } from '../types';
  * @category Value Properties
  * @param value The value to identify.
  * @returns `true` if `value` is `null`; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * import util from '@openinf/util';
  *
  * util.isNull(NaN); // ↪ false

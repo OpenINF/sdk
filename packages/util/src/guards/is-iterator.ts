@@ -10,7 +10,8 @@ import type { Guard } from '@openinf/util-core';
  * @category Other
  * @param value The value to identify.
  * @returns `true` if `value` is an iterator; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * import util from '@openinf/util';
  *
  * util.isIterator([][Symbol.iterator]()); // ↪ true

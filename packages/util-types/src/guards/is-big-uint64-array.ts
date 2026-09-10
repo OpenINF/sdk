@@ -14,7 +14,8 @@ import { _tagTester } from '../_internal/_tag-tester';
  * @category Index Collections
  * @param value The value to identify.
  * @returns `true` if `value` is a `BigUint64Array`; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isBigUint64Array(new BigUint64Array()); // ↪ true
  *
  * isBigUint64Array([]]); // ↪ false

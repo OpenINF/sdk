@@ -14,7 +14,8 @@ import { _tagTester } from '../_internal/_tag-tester';
  * @category Text Processing
  * @param value The value to identify.
  * @returns `true` if `value` is a `String` object; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isStringObject(new String('Foo')); // ↪ true
  *
  * isStringObject('Foo'); // ↪ false

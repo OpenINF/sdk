@@ -9,7 +9,8 @@ import type { AnyConstructor, Guard } from '@openinf/util-core';
  * @category Fundamental Objects
  * @param value The value to identify.
  * @returns `true` if `value` is a constructor; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * class Foo {}
  *
  * isConstructor(Foo); // ↪ true

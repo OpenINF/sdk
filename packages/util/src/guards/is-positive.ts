@@ -16,7 +16,8 @@ export type Positive = Tagged<number, '__Positive__'>;
  * @category Numbers and Dates
  * @param value The value to identify.
  * @returns `true` if `value` is positive; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * import util from '@openinf/util';
  *
  * util.isPositive(1); // ↪ true

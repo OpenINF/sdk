@@ -11,7 +11,8 @@ import { isEquatable } from './is-equatable';
  * otherwise, values are compared with `===`.
  * @param expected The value to compare against.
  * @returns The guard.
- * @example ```ts
+ * @example
+ * ```ts
  * const isEqualToOne = isEqualTo(1);
  *
  * isEqualToOne(1); // ↪ true

@@ -16,7 +16,8 @@ import type { Guard } from '../types';
  * @param value The value to identify.
  * @returns `true` if `value` is a number; else, `false`.
  * @see isNumberObject, isNumeric, isInteger, toInteger, toNumber
- * @example ```ts
+ * @example
+ * ```ts
  * import util from '@openinf/util';
  *
  * util.isNumber('0'); // ↪ false

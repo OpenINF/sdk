@@ -14,7 +14,8 @@ import { _tagTester } from '../_internal/_tag-tester';
  * @category Fundamental Objects
  * @param value The value to be identified.
  * @returns `true` if `value` is a `Symbol` object; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isSymbolObject(Symbol.iterator); // ↪ false
  *
  * isSymbolObject(Symbol('foo')); // ↪ false

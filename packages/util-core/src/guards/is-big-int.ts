@@ -10,7 +10,8 @@ import type { Guard } from '../types';
  * @category Numbers and Dates
  * @param value The value to identify.
  * @returns `true` if `value` is a bigint; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * import util from '@openinf/util';
  *
  * util.isBigInt(3); // ↪ false

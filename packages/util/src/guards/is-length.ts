@@ -12,7 +12,8 @@ import { isInteger } from './is-integer';
  * @category Index Collections
  * @param value The value to identify.
  * @returns `true` if `value` is a valid length; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isLength(3); // ↪ true
  *
  * isLength(Number.MIN_VALUE); // ↪ false

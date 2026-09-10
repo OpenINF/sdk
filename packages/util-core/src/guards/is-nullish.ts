@@ -16,7 +16,8 @@ export type Nullish = null | undefined;
  * @category Value Properties
  * @param value The value to identify.
  * @returns `true` if `value` is nullish; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * import util from '@openinf/util';
  *
  * util.isNullish(null); // ↪ true

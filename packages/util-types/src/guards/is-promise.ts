@@ -15,7 +15,8 @@ import type { Guard } from '../types';
  * @category Control Abstraction Objects
  * @param value The value to identify.
  * @returns `true` if `value` is a `Promise`; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isPromise({ then: function() {} }); // ↪ false
  *
  * isPromise(Promise.resolve(100)); // ↪ true
