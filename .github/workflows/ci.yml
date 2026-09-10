@@ -16,6 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # `lint:commits` compares against the base branch, which a
+          # single-commit checkout does not contain.
+          fetch-depth: 0
 
       - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
         with:
@@ -36,6 +40,11 @@ jobs:
 
       # Unused files, exports, and dependencies.
       - run: pnpm run lint:knip
+
+      # Commit messages on this branch, held to the format the commit queue
+      # builds a landed message in. Checking here is what keeps a message from
+      # being discovered as unlandable at the moment someone asks it to land.
+      - run: pnpm run lint:commits
 
       # Spelling, across prose and the strings that ship: READMEs, changesets,
       # package descriptions, and error messages. American English is enforced
