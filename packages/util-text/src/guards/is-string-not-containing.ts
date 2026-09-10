@@ -9,7 +9,8 @@ import type { Guard } from '@openinf/util-core';
  * Creates a guard that tests if a string value does not contain `substring`.
  * @param substring The substring to search for.
  * @returns The guard.
- * @example ```ts
+ * @example
+ * ```ts
  * const isStringNotContainingFoo = isStringNotContaining('foo');
  *
  * isStringNotContainingFoo('barbaz'); // ↪ true

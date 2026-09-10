@@ -7,7 +7,8 @@ import type { Guard } from '@openinf/util-core';
  * Creates a guard that tests if a string value matches `pattern`.
  * @param pattern The pattern to test against.
  * @returns The guard.
- * @example ```ts
+ * @example
+ * ```ts
  * const isMatchFoo = isMatch(/^foo/);
  *
  * isMatchFoo('foobar'); // ↪ true

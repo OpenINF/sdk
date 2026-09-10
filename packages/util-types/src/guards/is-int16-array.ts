@@ -14,7 +14,8 @@ import { _tagTester } from '../_internal/_tag-tester';
  * @category Index Collections
  * @param value The value to identify.
  * @returns `true` if `value` is an `Int16Array`; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isInt16Array(new Int16Array()); // ↪ true
  *
  * isInt16Array([]]); // ↪ false

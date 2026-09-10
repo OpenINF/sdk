@@ -22,7 +22,8 @@ export type Falsy =
  * @category Evaluation
  * @param value The value to identify.
  * @returns `true` if `value` is falsy; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * import util from '@openinf/util';
  *
  * util.isFalsy(false); // ↪ true

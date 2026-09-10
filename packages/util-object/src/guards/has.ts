@@ -9,7 +9,8 @@
  * @param key A property name.
  * @returns `true` if `key` exists in `obj`; else, `false`.
  * @see hasIn, hasPath, hasPathIn
- * @example ```ts
+ * @example
+ * ```ts
  * const obj = { 'a': { 'b': 2 } }
  * const other = create({ 'a': create({ 'b': 2 }) })
  *

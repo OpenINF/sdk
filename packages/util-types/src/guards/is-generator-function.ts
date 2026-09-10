@@ -17,7 +17,8 @@ import { _tagTester } from '../_internal/_tag-tester';
  * @category Control Abstraction Objects
  * @param value The value to identify.
  * @returns `true` if `value` is a `GeneratorFunction`; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isGeneratorFunction(function* foo() {}); // ↪ true
  *
  * isGeneratorFunction(function foo() {}); // ↪ false

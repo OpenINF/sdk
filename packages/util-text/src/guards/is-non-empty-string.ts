@@ -11,7 +11,8 @@ import type { Guard } from '@openinf/util-core';
  * @category Text Processing
  * @param value The value to identify.
  * @returns `true` if `value` is a non-empty string; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isNonEmptyString('foo'); // ↪ true
  *
  * isNonEmptyString(''); // ↪ false

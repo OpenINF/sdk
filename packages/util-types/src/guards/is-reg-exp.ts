@@ -12,7 +12,8 @@ import { _tagTester } from '../_internal/_tag-tester';
  * @category Text Processing
  * @param value The value to identify.
  * @returns `true` if `value` is a `RegExp`; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isRegExp(/abc/); // ↪ true
  *
  * isRegExp('/abc/'); // ↪ false

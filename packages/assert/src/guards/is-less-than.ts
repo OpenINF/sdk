@@ -11,7 +11,8 @@ import { isComparable } from './is-comparable';
  * otherwise, values are compared with `<`.
  * @param expected The value to compare against.
  * @returns The guard.
- * @example ```ts
+ * @example
+ * ```ts
  * const isLessThanOne = isLessThan(1);
  *
  * isLessThanOne(0); // ↪ true

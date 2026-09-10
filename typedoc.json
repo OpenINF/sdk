@@ -1,5 +1,6 @@
 {
   "$schema": "https://typedoc.org/schema.json",
+  "plugin": ["typedoc-plugin-markdown"],
   "entryPointStrategy": "packages",
   "entryPoints": [
     "packages/assert",
@@ -18,8 +19,22 @@
     "tsconfig": "tsconfig.build.json",
     "preservedTypeAnnotationTags": ["@throws"]
   },
-  "out": "docs",
+  "out": "docs/api",
   "name": "OpenINF",
-  "readme": "README.md",
-  "githubPages": false
+  "readme": "documentation/api-overview.md",
+  "disableSources": true,
+  "sanitizeComments": true,
+  "navigationJson": "docs/api/navigation.json",
+  "cleanOutputDir": true,
+  "githubPages": false,
+
+  // The overview links to the generated package index, which TypeDoc reads as
+  // a relative file to copy and cannot find, since nothing has generated it
+  // yet at that point. It is the only inbound link that page has, and the
+  // link is correct in the output, so the check is off rather than the link.
+  // `pnpm run docs:check` validates every generated link instead, against the
+  // corpus TypeDoc actually wrote.
+  "validation": {
+    "invalidPath": false
+  }
 }

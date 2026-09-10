@@ -10,7 +10,8 @@ import { isObjectLike } from '@openinf/util-object';
  * properties can be indexed by string.
  * @param value The value to identify.
  * @returns `true` if `value` is map-like; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isMapLike({ a: 1 }); // ↪ true
  *
  * isMapLike([1, 2, 3]); // ↪ false

@@ -14,7 +14,8 @@ import { _tagTester } from '../_internal/_tag-tester';
  * @category Index Collections
  * @param value The value to identify.
  * @returns `true` if `value` is a `Uint8Array`; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isUint8Array(new Uint8Array()); // ↪ true
  *
  * isUint8Array([]]); // ↪ false

@@ -16,7 +16,8 @@ const objectFunctionString = Function.prototype.toString.call(Object);
  * @category Fundamental Objects
  * @param value The value to identify.
  * @returns `true` if `value` is a plain object; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * function Foo() {
  *   this.a = 1
  * }

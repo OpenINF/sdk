@@ -17,7 +17,8 @@ export type ObjectLike = Tagged<Record<string, unknown>, '__ObjectLike__'>;
  * @category Fundamental Object
  * @param value The value to identify.
  * @returns `true` if `value` is an object; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isObjectLike({}); // ↪ true
  *
  * isObjectLike([1, 2, 3]); // ↪ true

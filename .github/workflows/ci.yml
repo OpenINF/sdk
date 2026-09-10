@@ -35,6 +35,20 @@ jobs:
       - run: pnpm run lint
       - run: pnpm run test
 
+      # API reference Markdown is imported by the portal, so it is a product
+      # artifact rather than a best-effort local preview. Checking it here
+      # fails the pull request that introduces a page the portal could not
+      # import, rather than the release that would have shipped it.
+      - run: pnpm run docs:build
+      - run: pnpm run docs:check
+
+      # Packaging runs too, because a release is otherwise the only thing that
+      # runs it, and by then the versions it describes are already published.
+      # The version is a placeholder: only a release has one to declare.
+      - run: |
+          pnpm run docs:artifact -- \
+            --version 0.0.0-ci --out "$RUNNER_TEMP/sdk-api"
+
       # Formatting, repo-wide rather than only the TypeScript sources.
       - run: pnpm run lint:format
 

@@ -14,7 +14,8 @@ export type Int32 = Tagged<number, '__Int32__'>;
  * @category Numbers & Dates
  * @param value The value to be identified.
  * @returns `true` if `value` is an int32; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * import util from '@openinf/util';
  *
  * util.isUint32(123); // ↪ true

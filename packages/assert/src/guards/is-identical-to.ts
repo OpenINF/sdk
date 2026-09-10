@@ -10,7 +10,8 @@ import type { Guard } from '@openinf/util-core';
  * `Equatable`'s `equals` method.
  * @param expected The value to compare against.
  * @returns The guard.
- * @example ```ts
+ * @example
+ * ```ts
  * const isIdenticalToFoo = isIdenticalTo('foo');
  *
  * isIdenticalToFoo('foo'); // ↪ true

@@ -17,7 +17,8 @@ import type { Guard } from '@openinf/util-core';
  * @category Fundamental Object
  * @param value The value to identify.
  * @returns `true` if `value` is object-like; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isObjectLike({}); // ↪ true
  *
  * isObjectLike([1, 2, 3]); // ↪ true

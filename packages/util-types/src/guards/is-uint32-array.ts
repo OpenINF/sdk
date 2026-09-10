@@ -14,7 +14,8 @@ import { _tagTester } from '../_internal/_tag-tester';
  * @category Index Collections
  * @param value The value to identify.
  * @returns `true` if `value` is a `Uint32Array`; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isUint32Array(new Uint32Array()); // ↪ true
  *
  * isUint32Array([]]); // ↪ false

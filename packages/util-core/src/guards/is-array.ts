@@ -11,7 +11,8 @@ import { Guard } from '../types';
  * @category Index Collections
  * @param value The value to identify.
  * @returns `true` if `value` is an `Array`; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * import util from '@openinf/util';
  *
  * util.isArray([]); // ↪ true

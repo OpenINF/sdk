@@ -13,7 +13,8 @@ import { isArray, isFunction, isNullish } from '@openinf/util-core';
  * @category Index Collections
  * @param value The value to identify.
  * @returns `true` if `value` is array-like; else, `false`.
- * @example ```ts
+ * @example
+ * ```ts
  * isArrayLike([1, 2, 3]); // ↪ true
  *
  * isArrayLike(document.body.children); // ↪ true
