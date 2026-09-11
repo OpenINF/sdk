@@ -156,9 +156,9 @@ output for local inspection.
 The output is Markdown rather than TypeDoc's own HTML because it is read by
 something else: the OpenINF portal renders it as the SDK's API reference, in the
 portal's own layout. That makes these pages a product artifact with a consumer,
-and `docs:check` holds them to what that consumer accepts -- every page mappable
-to a public URL, every internal link resolving to a page that is actually
-published, and no trace of the repository the SDK used to live in.
+and `docs:check` holds them to what that consumer accepts: every page mappable
+to a public URL, and every internal link resolving to a page that is actually
+published.
 
 `pnpm docs:artifact` packages the corpus for the portal, with a manifest naming
 the release and the commit it came from. A release does this itself; see

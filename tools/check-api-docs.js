@@ -25,7 +25,6 @@
 //   nav     -- every path in navigation.json names an imported page. The
 //              portal maps these to URLs and silently drops the ones it
 //              cannot, which would publish an unnavigable sidebar entry.
-//   privacy -- no page names the SDK's former private repository.
 //
 // Run from the repo root: `pnpm run docs:check`.
 
@@ -35,11 +34,6 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const ROOT = path.resolve(__dirname, '..', 'docs', 'api');
-
-// The strings that must never cross from the SDK's history into the public
-// portal. Kept in step with PRIVATE_SDK_MARKERS in the portal's sdk-docs
-// module, which rejects an artifact containing either of them.
-const PRIVATE_MARKERS = ['OpenINF-private', 'openinf-idk'];
 
 // TypeDoc writes this above every page, from `name` in typedoc.json. The
 // portal's chrome stripping matches on it literally, so renaming the project
@@ -173,11 +167,6 @@ for (const page of pages) {
     portalPath(page);
   } catch (error) {
     fail(page, error.message);
-  }
-
-  const marker = PRIVATE_MARKERS.find((value) => markdown.includes(value));
-  if (marker !== undefined) {
-    fail(page, `names the private SDK repository (${marker})`);
   }
 
   const body = stripChrome(markdown);

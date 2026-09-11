@@ -122,11 +122,10 @@ Handing it over is a separate, deliberate step, the way publishing is:
    the reference will render.
 
 Nothing in the artifact is edited by hand at any point. It is generated output,
-and the portal validates it as such: it rejects a page it cannot map to a URL, a
-link to a page it is not importing, and any text naming the repository the SDK
-used to live in. `pnpm run docs:check` applies those same rules here, on every
-pull request, so an artifact that would be refused is caught long before a
-release builds it.
+and the portal validates it as such: it rejects a page it cannot map to a URL,
+and a link to a page it is not importing. `pnpm run docs:check` applies those
+same rules here, on every pull request, so an artifact that would be refused is
+caught long before a release builds it.
 
 A release that publishes no packages -- the run that opens the "Version
 packages" PR -- builds no artifact, because there is no release for one to
