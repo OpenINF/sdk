@@ -1,52 +1,27 @@
-<h1 align="center">@openinf/util-md-table</h1>
+# @openinf/util-md-table
 
-<p align="center">Common Markdown table-related utilities</p>
-
-<br />
-
-<p align="center">
-  <a href="https://www.npmjs.com/package/@openinf/util-md-table"><img src="https://img.shields.io/npm/v/@openinf/util-md-table?style=plastic" alt="view on npm" /></a>
-  <img src="https://img.shields.io/github/languages/top/openinf/util-md-table?color=blue&style=plastic" />
-  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/github/license/openinf/util-md-table?color=blue&style=plastic" alt="License: MIT" /></a>
-</p>
-
-<br />
-
-_The high-level goal of `@openinf/util-md-table` is to serve as a Node.js
-package containing utilities for **common operations on Markdown tables**
-allowing users to make use of them in new ways. As is the case with any software
-project in continuous development, omissions and errors may exist, for which
-contributions are welcome._
-
-<br />
-
----
-
-<br />
+Reads a Markdown table into an array of objects, one per row, keyed by the
+table's column headings. An optional transform runs over every cell on the way.
 
 ## Installation
 
-`@openinf/util-md-table` runs on Node.js and is available via `npm`.
-
-```shell
+```sh
 npm install @openinf/util-md-table
 ```
 
 ## Usage
 
 ```ts
-import { mdTable2json } from '@openinf/util-md-table';
+import { mdTbl2json } from '@openinf/util-md-table';
 
-const sampleTable = [
+const table = [
   '| Col1  | Col2  | Col3  | Col4  |',
   '|:-----:|:-----:|:-----:|:-----:|',
   '| one   | two   | three | four  |',
   '| Fee   | Fie   | Foe   | Fum   |',
 ].join('\n');
 
-const sampleTableObject = mdTbl2json(sampleTable, (v) => v.toLowerCase());
-
-console.log(sampleTableObject);
+console.log(mdTbl2json(table, (value) => value.toLowerCase()));
 ```
 
 ```console
@@ -55,28 +30,3 @@ console.log(sampleTableObject);
   { col1: 'fee', col2: 'fie', col3: 'foe', col4: 'fum' }
 ]
 ```
-
-<br />
-
----
-
-<br />
-
-## API Reference
-
-Type-aware API documentation for every `@openinf` package is generated with
-[TypeDoc](https://typedoc.org). To build and browse it locally:
-
-```shell
-pnpm docs:build   # writes a merged, multi-package site to docs/
-pnpm docs:serve   # serves it
-```
-
-<br />
-
----
-
-<br />
-
-<p align="center">&copy; The OpenINF Authors</center></p>
-<p align="center"><img height="32px" width="32px" src="https://raw.githubusercontent.com/openinf/openinf.github.io/live/logo.svg" /></p>

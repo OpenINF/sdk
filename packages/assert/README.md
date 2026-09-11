@@ -1,19 +1,12 @@
 # @openinf/assert
 
-Runtime assertion and comparison guard utilities.
-
----
-
-This module provides `assert`-style functions that throw a descriptive
-`AssertionError` when an expression, value, or comparison doesn't hold, plus the
-underlying `is*` comparison guards (`isEqualTo`, `isGreaterThan`,
-`isComparable`, etc.) they're built on.
+Runtime assertions that throw a descriptive `AssertionError` when an expression,
+value, or comparison does not hold, together with the `is*` comparison guards
+they are built on.
 
 ## Installation
 
-`@openinf/assert` runs on Node.js and is available via `npm`.
-
-```shell
+```sh
 npm install @openinf/assert
 ```
 
@@ -22,16 +15,11 @@ npm install @openinf/assert
 ```ts
 import { assert, assertIsDefined } from '@openinf/assert';
 
-assertIsDefined(value, 'value must be defined');
-assert(value > 0, 'value must be positive');
-```
+const port: number | undefined = Number(process.env['PORT']) || undefined;
 
-## API Reference
+assertIsDefined(port, 'PORT must be set');
+assert(port > 0, 'PORT must be positive');
 
-Type-aware API documentation for every `@openinf` package is generated with
-[TypeDoc](https://typedoc.org). To build and browse it locally:
-
-```shell
-pnpm docs:build   # writes a merged, multi-package site to docs/
-pnpm docs:serve   # serves it
+// Both narrow, so `port` is a number from here on.
+port.toFixed();
 ```

@@ -1,23 +1,16 @@
 # @openinf/util
 
-A collection of utilities useful for application and module development.
+Type guards, assertion helpers, and function argument validators covering every
+ECMAScript primitive.
 
----
-
-This module is for utilities common to several other dependencies in the OpenINF
-package ecosystem. It contains type guards, assertion helpers, function argument
-validators, and other niceties supporting all ECMAScript primitive data types.
-
-The type guards are not your average type-check shorthands. Each one carries an
-`expectation` describing what it tests for, which the assertion helpers and
-argument validators use to build readable error messages, so a guard doubles as
-the specification for the check it performs.
+The guards are not ordinary type-check shorthands. Each carries an `expectation`
+describing what it tests, which the assertion helpers and argument validators
+read to build their error messages, so a guard doubles as the specification for
+its own check.
 
 ## Installation
 
-`@openinf/util` runs on Node.js and is available via `npm`.
-
-```shell
+```sh
 npm install @openinf/util
 ```
 
@@ -59,13 +52,3 @@ name gives you the same function.
 
 Depend on `@openinf/util-core` directly if you only need that vocabulary; depend
 on this package for the full set of guards, validators, and helpers.
-
-## API Reference
-
-Type-aware API documentation for every `@openinf` package is generated with
-[TypeDoc](https://typedoc.org). To build and browse it locally:
-
-```shell
-pnpm docs:build   # writes a merged, multi-package site to docs/
-pnpm docs:serve   # serves it
-```

@@ -1,13 +1,27 @@
 # @openinf/util-core
 
-Foundational types and predicates shared across the OpenINF SDK.
+The shared vocabulary the rest of the SDK is written in: the `Guard` and
+`Validator` types, `Tagged`, `Comparable`, `Equatable`, and one predicate per
+elementary type test.
 
-This package exists so that a package needing only the shared vocabulary — the
-`Guard` and `Validator` types, `Tagged`, `Comparable`, `Equatable` — does not
-have to depend on all of
-[`@openinf/util`](https://www.npmjs.com/package/@openinf/util). It has no
-dependencies of its own, which is what lets the rest of the workspace layer
-cleanly on top of it.
+It has no dependencies, so a package needing only that vocabulary does not have
+to depend on all of
+[`@openinf/util`](https://www.npmjs.com/package/@openinf/util). That is also
+what lets the rest of the workspace layer cleanly on top of it.
+
+## Installation
+
+```sh
+npm install @openinf/util-core
+```
+
+## Usage
+
+```ts
+import { isString, type Guard } from '@openinf/util-core';
+
+isString('hi'); // ↪ true
+```
 
 ## What belongs here
 
@@ -33,27 +47,3 @@ appears.
 Most consumers should reach for
 [`@openinf/util`](https://www.npmjs.com/package/@openinf/util), which re-exports
 everything here alongside its full set of type guards.
-
-## Install
-
-```sh
-npm i @openinf/util-core
-```
-
-## Usage
-
-```ts
-import { isString, type Guard } from '@openinf/util-core';
-
-isString('hi'); // ↪ true
-```
-
-## API Reference
-
-Type-aware API documentation for every `@openinf` package is generated with
-[TypeDoc](https://typedoc.org). To build and browse it locally:
-
-```shell
-pnpm docs:build   # writes a merged, multi-package site to docs/
-pnpm docs:serve   # serves it
-```

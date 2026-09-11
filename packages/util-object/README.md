@@ -1,34 +1,12 @@
-<h1 align="center">@openinf/util-object</h1>
+# @openinf/util-object
 
-<p align="center">Common JavaScript Object type-related utilities</p>
-
-<br />
-
-<p align="center">
-  <a href="https://www.npmjs.com/package/@openinf/util-object"><img src="https://img.shields.io/npm/v/@openinf/util-object?style=plastic" alt="view on npm" /></a>
-  <img src="https://img.shields.io/github/languages/top/openinf/util-object?color=blue&style=plastic" />
-  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/github/license/openinf/util-object?color=blue&style=plastic" alt="License: MIT" /></a>
-</p>
-
-<br />
-
-_The high-level goal of `@openinf/util-object` is to serve as a Node.js package
-containing utilities for **common JavaScript Object type-related utilities**
-primarily enabling users to perform comparisons and analyze object contents. As
-is the case with any software project in continuous development, omissions and
-errors may exist, for which contributions are welcome._
-
-<br />
-
----
-
-<br />
+Object utilities for reading, comparing, and reshaping object contents:
+ownership and shape checks such as `hasOwn` and `isPlainObject`, shallow and
+deep comparison, cloning, merging, mixing in, and omitting keys.
 
 ## Installation
 
-`@openinf/util-object` runs on Node.js and is available via `npm`.
-
-```bash
+```sh
 npm install @openinf/util-object
 ```
 
@@ -37,36 +15,11 @@ npm install @openinf/util-object
 ```ts
 import { hasOwn } from '@openinf/util-object';
 
-export class GhFileImporter {
-  constructor(options: GhFileImporterOptions) {
-    if (!hasOwn(options, 'destDir')) {
-      throw new MissingOptionError('destDir');
-    }
-  }
+const value: object = JSON.parse('{ "id": 7 }');
+
+hasOwn(value, 'id'); // ↪ true
+
+if (hasOwn(value, 'id')) {
+  value.id; // ↪ narrowed to `unknown`, no cast needed
 }
 ```
-
-<br />
-
----
-
-<br />
-
-## API Reference
-
-Type-aware API documentation for every `@openinf` package is generated with
-[TypeDoc](https://typedoc.org). To build and browse it locally:
-
-```shell
-pnpm docs:build   # writes a merged, multi-package site to docs/
-pnpm docs:serve   # serves it
-```
-
-<br />
-
----
-
-<br />
-
-<p align="center">&copy; The OpenINF Authors</center></p>
-<p align="center"><img height="32px" width="32px" src="https://raw.githubusercontent.com/openinf/openinf.github.io/live/logo.svg" /></p>
