@@ -38,6 +38,17 @@ describe(hasInterface.name, () => {
       y: isNumber,
     }));
     assert.strictEqual(isPointLazy({ x: 1, y: 2 }), true);
+    assert.strictEqual(isPointLazy({ x: 1, y: 'two' }), false);
+    assert.strictEqual(isPointLazy({}), false);
+  });
+
+  it('should require a property even when its validator accepts undefined', () => {
+    const hasValue = hasInterface<{ value: undefined }>('HasValue', {
+      value: (value): value is undefined => value === undefined,
+    });
+
+    assert.strictEqual(hasValue({ value: undefined }), true);
+    assert.strictEqual(hasValue({}), false);
   });
 
   it('should set the expectation to reference the interface name', () => {
