@@ -16,10 +16,11 @@ export class NodeErrorAbstraction extends Error {
     super(message);
     this.code = code;
     this.name = name;
-    // This number changes depending on the name of this class
-    // 20 characters as of now
-    if (this.stack) {
-      this.stack = `${name} [${this.code}]${this.stack.slice(20)}`;
+    const stack = this.stack;
+    if (stack) {
+      const firstFrame = stack.indexOf('\n');
+      const frames = firstFrame === -1 ? '' : stack.slice(firstFrame);
+      this.stack = `${name} [${this.code}]: ${message}${frames}`;
     }
   }
 
