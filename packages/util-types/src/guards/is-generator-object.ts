@@ -34,8 +34,8 @@ import { _tagTester } from '../_internal/_tag-tester';
 export function isGeneratorObject(value: unknown): boolean {
   return (
     isObjectLike(value) &&
+    _tagTester('Generator')(value) &&
     typeof value['next'] === 'function' &&
-    typeof value['throw'] === 'function' &&
-    _tagTester('Generator')(value)
+    typeof value['throw'] === 'function'
   );
 }

@@ -6,9 +6,9 @@ import { describe, it } from 'node:test';
 import { isModuleNamespaceObject } from '../../src/guards/is-module-namespace-object';
 
 describe(isModuleNamespaceObject.name, () => {
-  it('should detect an object tagged as a Module', () => {
+  it('should reject an object merely tagged as a Module', () => {
     const fakeModule: unknown = { [Symbol.toStringTag]: 'Module' };
-    assert.strictEqual(isModuleNamespaceObject(fakeModule), true);
+    assert.strictEqual(isModuleNamespaceObject(fakeModule), false);
   });
 
   it('should reject a plain object', () => {

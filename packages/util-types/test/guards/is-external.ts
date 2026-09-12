@@ -6,7 +6,7 @@ import { describe, it } from 'node:test';
 import { isExternal } from '../../src/guards/is-external';
 
 describe(isExternal.name, () => {
-  it('should always return false', () => {
+  it('should reject ordinary JavaScript values', () => {
     assert.strictEqual(isExternal({}), false);
     assert.strictEqual(isExternal(null), false);
     assert.strictEqual(isExternal(42), false);

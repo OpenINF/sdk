@@ -3,18 +3,9 @@
 
 // Adapted from jQuery
 
+import { types as nodeTypes } from 'node:util';
+
 import { isObject } from '@openinf/util-core';
-
-import { getTag } from '../_internal/_get-tag';
-
-const class2type: Record<string, string> = {};
-
-// Populate the class2type map
-'Boolean Number String Function Array Date RegExp Object Error Symbol'
-  .split(' ')
-  .forEach((name) => {
-    class2type[`[object ${name}]`] = name.toLowerCase();
-  });
 
 /**
  * Determines the internal JavaScript [[Class]] of `obj`.
@@ -28,7 +19,17 @@ export function type(obj: unknown): string {
   if (obj === undefined) {
     return 'undefined';
   }
-  return isObject(obj) || typeof obj === 'function'
-    ? class2type[getTag(obj)] || 'object'
-    : typeof obj;
+  if (!isObject(obj) && typeof obj !== 'function') {
+    return typeof obj;
+  }
+  if (typeof obj === 'function') return 'function';
+  if (Array.isArray(obj)) return 'array';
+  if (nodeTypes.isBooleanObject(obj)) return 'boolean';
+  if (nodeTypes.isNumberObject(obj)) return 'number';
+  if (nodeTypes.isStringObject(obj)) return 'string';
+  if (nodeTypes.isSymbolObject(obj)) return 'symbol';
+  if (nodeTypes.isDate(obj)) return 'date';
+  if (nodeTypes.isRegExp(obj)) return 'regexp';
+  if (nodeTypes.isNativeError(obj)) return 'error';
+  return 'object';
 }
