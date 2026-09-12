@@ -12,10 +12,22 @@ export function arraysEqual<T>(
   b: readonly T[],
   equalityComparer: EqualityComparer<T> = equateValues
 ): boolean {
-  return (
-    a.length === b.length &&
-    // a.length === b.length guarantees index i is present in b.
-    // oxlint-disable-next-line typescript/no-unnecessary-type-assertion -- oxlint-tsgolint doesn't currently honor noUncheckedIndexedAccess; tsc does require this.
-    a.every((x, i) => equalityComparer(x, b[i]!))
-  );
+  if (a.length !== b.length) {
+    return false;
+  }
+
+  for (let i = 0; i < a.length; i++) {
+    const aHasElement = Object.hasOwn(a, i);
+    if (aHasElement !== Object.hasOwn(b, i)) {
+      return false;
+    }
+    // Matching holes contain no values to compare. When an element exists in
+    // each array, i < length guarantees both indexed accesses are present.
+    // oxlint-disable-next-line typescript/no-unnecessary-type-assertion -- oxlint-tsgolint does not honor noUncheckedIndexedAccess; tsc requires these assertions.
+    if (aHasElement && !equalityComparer(a[i]!, b[i]!)) {
+      return false;
+    }
+  }
+
+  return true;
 }
