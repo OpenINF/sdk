@@ -25,4 +25,26 @@ describe(copyError.name, () => {
     const copy = copyError(original) as Error & { extra: string };
     assert.strictEqual(copy.extra, 'x');
   });
+
+  it('should preserve every own property descriptor', () => {
+    const marker = Symbol('marker');
+    const cause = new Error('cause');
+    const original = new Error('boom', { cause }) as Error & {
+      [marker]?: string;
+    };
+    Object.defineProperty(original, 'hidden', {
+      configurable: true,
+      value: 42,
+    });
+    original[marker] = 'symbol value';
+
+    const copy = copyError(original);
+    assert.deepStrictEqual(Reflect.ownKeys(copy), Reflect.ownKeys(original));
+    for (const key of Reflect.ownKeys(original)) {
+      assert.deepStrictEqual(
+        Object.getOwnPropertyDescriptor(copy, key),
+        Object.getOwnPropertyDescriptor(original, key)
+      );
+    }
+  });
 });
