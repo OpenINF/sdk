@@ -9,14 +9,32 @@ interface TargetSourceDepth {
   t: Record<string, unknown>;
   s: Record<string, unknown>;
   d: number;
+  p?: SourcePath;
+}
+
+interface SourcePath {
+  source: Record<string, unknown>;
+  parent: SourcePath | undefined;
+}
+
+function sourcePathIncludes(
+  path: SourcePath | undefined,
+  source: Record<string, unknown>
+): boolean {
+  for (let current = path; current; current = current.parent) {
+    if (current.source === source) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /**
  * Deep merges source into target.
  * @param target The object to merge properties into.
  * @param source The object to merge properties from.
- * @param depth The maximum merge depth. If exceeded, `Object.assign` is used
- * instead.
+ * @param depth The maximum merge depth. If exceeded, properties are assigned
+ * without recursively merging them.
  * @returns The modified `target` object.
  * @throws {Error} If source contains a circular reference.
  * Note: Only nested objects are deep-merged, primitives and arrays are not.
@@ -26,11 +44,6 @@ export function deepMerge(
   source: Record<string, unknown>,
   depth = 10
 ): Record<string, unknown> {
-  // Keep track of seen objects to detect recursive references. A Set, not an
-  // array: this is consulted once per node, so a linear scan made merging an
-  // object with n nested objects quadratic.
-  const seen = new Set<Record<string, unknown>>();
-
   // Iterated rather than drained with `shift()`, which is O(n) on V8 because
   // it reindexes the array, and so was the other half of the quadratic
   // behavior. An array iterator rechecks `length` on each step, so entries
@@ -38,16 +51,20 @@ export function deepMerge(
   const queue: TargetSourceDepth[] = [{ t: target, s: source, d: 0 }];
 
   // BFS to ensure objects don't have recursive references at shallower depths.
-  for (const { t, s, d } of queue) {
-    if (seen.has(s)) {
+  for (const { t, s, d, p } of queue) {
+    if (sourcePathIncludes(p, s)) {
       throw new Error('Source object has a circular reference.');
     }
-    seen.add(s);
+    const path: SourcePath = { source: s, parent: p };
     if (t === s) {
       continue;
     }
     if (d > depth) {
-      Object.assign(t, s);
+      for (const key of Object.keys(s)) {
+        if (!_isUnsafeKey(key)) {
+          t[key] = s[key];
+        }
+      }
       continue;
     }
     Object.keys(s).forEach((key) => {
@@ -65,6 +82,7 @@ export function deepMerge(
             t: oldValue,
             s: newValue,
             d: d + 1,
+            p: path,
           });
           return;
         }
