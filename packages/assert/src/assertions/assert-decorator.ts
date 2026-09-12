@@ -34,6 +34,31 @@ interface NamedTarget {
   constructor: { name: string };
 }
 
+interface DecoratedProperty {
+  validators: ValidatorInfo[];
+  values: WeakMap<object, unknown>;
+}
+
+const decoratedProperties = new WeakMap<
+  object,
+  Map<PropertyKey, DecoratedProperty>
+>();
+
+function inheritedValidators(
+  target: object,
+  propertyKey: PropertyKey
+): readonly ValidatorInfo[] {
+  let ancestor = Object.getPrototypeOf(target) as object | null;
+  while (ancestor !== null) {
+    const property = decoratedProperties.get(ancestor)?.get(propertyKey);
+    if (property !== undefined) {
+      return property.validators;
+    }
+    ancestor = Object.getPrototypeOf(ancestor) as object | null;
+  }
+  return [];
+}
+
 /**
  * A decorator factory that returns a decorator that turns a property into a
  * getter/setter with a setter that asserts the value set matches the validator.
@@ -50,13 +75,7 @@ export function Assert(
 ): PropertyDecorator {
   // oxlint-disable-next-line typescript/no-wrapper-object-types -- PropertyDecorator's ambient signature requires `Object` here.
   return (target: Object, propertyKey: string | symbol) => {
-    const targetRecord = target as unknown as Record<PropertyKey, unknown>;
-
-    // Create the key for the private backing field by prefixing an underscore.
-    const key = `_${propertyKey.toString()}`;
-
-    // Create the key where the validators will be stored.
-    const validatorsKey = `${key}_validators`;
+    const objectTarget = target as object;
 
     // If no name is provided, use the class name combined with the property
     // key. If the target is a function, this is a static property; otherwise,
@@ -70,29 +89,38 @@ export function Assert(
             (target as unknown as NamedTarget).constructor.name
           }#${propertyKey.toString()}`);
 
-    let validatorInfos = targetRecord[validatorsKey] as
-      ValidatorInfo[] | undefined;
+    let properties = decoratedProperties.get(objectTarget);
+    if (properties === undefined) {
+      properties = new Map<PropertyKey, DecoratedProperty>();
+      decoratedProperties.set(objectTarget, properties);
+    }
+
+    let property = properties.get(propertyKey);
 
     // If this is the first decorator for the property, we need to create the
     // validators array and the new getter/setter.
-    if (!validatorInfos) {
-      validatorInfos = [];
-      targetRecord[validatorsKey] = validatorInfos;
+    if (property === undefined) {
+      const newProperty: DecoratedProperty = {
+        validators: [...inheritedValidators(objectTarget, propertyKey)],
+        values: new WeakMap<object, unknown>(),
+      };
+      property = newProperty;
+      properties.set(propertyKey, newProperty);
       Object.defineProperty(target, propertyKey, {
-        get(this: Record<PropertyKey, unknown>) {
-          return this[key];
+        get(this: object) {
+          return newProperty.values.get(this);
         },
-        set(this: Record<PropertyKey, unknown>, value: unknown) {
-          for (const info of validatorInfos ?? []) {
+        set(this: object, value: unknown) {
+          for (const info of newProperty.validators) {
             assertValue(info.validator, value, info.name, info.expectation);
           }
-          this[key] = value;
+          newProperty.values.set(this, value);
         },
       });
     }
 
     // Push the validator defined.
-    validatorInfos.push({
+    property.validators.push({
       validator,
       name: resolvedName,
       expectation,
