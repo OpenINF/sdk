@@ -3,19 +3,17 @@
 
 // Adapted from Node.js
 
+import { types as nodeTypes } from 'node:util';
+
 /**
  * Detects whether `value` is a
  * [`Proxy`](https://mdn.io/Global_Objects/Proxy) instance.
  *
- * A `Proxy` is transparent by design -- pure JavaScript code cannot
- * distinguish a proxied object from its target, so this always returns
- * `false`. It exists only for parity with Node's `util.types.isProxy`,
- * which relies on an internal V8 binding with no pure-JS equivalent.
  * @since 3.0.0
  * @category Reflection
- * @param _value The value to identify.
- * @returns `false`, always.
+ * @param value The value to identify.
+ * @returns `true` if `value` is a proxy; else, `false`.
  */
-export function isProxy(_value: unknown): boolean {
-  return false;
+export function isProxy(value: unknown): boolean {
+  return nodeTypes.isProxy(value);
 }

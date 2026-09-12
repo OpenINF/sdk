@@ -31,4 +31,9 @@ describe(type.name, () => {
       'function'
     );
   });
+
+  it('should ignore a forged Symbol.toStringTag', () => {
+    assert.strictEqual(type({ [Symbol.toStringTag]: 'Date' }), 'object');
+    assert.strictEqual(type({ [Symbol.toStringTag]: 'Error' }), 'object');
+  });
 });

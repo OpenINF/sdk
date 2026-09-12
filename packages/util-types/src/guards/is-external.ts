@@ -3,18 +3,16 @@
 
 // Adapted from Node.js
 
+import { types as nodeTypes } from 'node:util';
+
 /**
  * Detects whether `value` is a native `External` value.
  *
- * `External` values wrap C++ pointers and are never exposed to JavaScript in
- * a way pure-JS code could observe or construct, so this always returns
- * `false`. It exists only for parity with Node's `util.types.isExternal`,
- * which relies on an internal V8 binding with no pure-JS equivalent.
  * @since 3.0.0
  * @category Other
- * @param _value The value to identify.
- * @returns `false`, always.
+ * @param value The value to identify.
+ * @returns `true` if `value` is an external native value; else, `false`.
  */
-export function isExternal(_value: unknown): boolean {
-  return false;
+export function isExternal(value: unknown): boolean {
+  return nodeTypes.isExternal(value);
 }

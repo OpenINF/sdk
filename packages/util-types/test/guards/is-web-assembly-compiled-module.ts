@@ -6,11 +6,24 @@ import { describe, it } from 'node:test';
 import { isWebAssemblyCompiledModule } from '../../src/guards/is-web-assembly-compiled-module';
 
 describe(isWebAssemblyCompiledModule.name, () => {
-  it('should detect an object tagged as a WebAssembly.Module', () => {
+  it('should reject an object merely tagged as a WebAssembly.Module', () => {
     const fakeModule: unknown = {
       [Symbol.toStringTag]: 'WebAssembly.Module',
     };
-    assert.strictEqual(isWebAssemblyCompiledModule(fakeModule), true);
+    assert.strictEqual(isWebAssemblyCompiledModule(fakeModule), false);
+  });
+
+  it('should detect an actual WebAssembly.Module', () => {
+    const WebAssemblyModule = (
+      globalThis as unknown as {
+        WebAssembly: { Module: new (bytes: Uint8Array) => unknown };
+      }
+    ).WebAssembly.Module;
+    const bytes = new Uint8Array([0, 97, 115, 109, 1, 0, 0, 0]);
+    assert.strictEqual(
+      isWebAssemblyCompiledModule(new WebAssemblyModule(bytes)),
+      true
+    );
   });
 
   it('should reject a plain object', () => {

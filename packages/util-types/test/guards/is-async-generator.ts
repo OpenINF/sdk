@@ -20,4 +20,11 @@ describe(isAsyncGenerator.name, () => {
     assert.strictEqual(isAsyncGenerator(null), false);
     assert.strictEqual(isAsyncGenerator(42), false);
   });
+
+  it('should reject an object merely tagged as an async generator', () => {
+    assert.strictEqual(
+      isAsyncGenerator({ [Symbol.toStringTag]: 'AsyncGenerator' }),
+      false
+    );
+  });
 });

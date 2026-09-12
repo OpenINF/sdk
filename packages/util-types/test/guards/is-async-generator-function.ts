@@ -29,4 +29,11 @@ describe(isAsyncGeneratorFunction.name, () => {
       false
     );
   });
+
+  it('should reject a function merely tagged as an async generator function', () => {
+    const fake = Object.assign(function fake(): void {}, {
+      [Symbol.toStringTag]: 'AsyncGeneratorFunction',
+    });
+    assert.strictEqual(isAsyncGeneratorFunction(fake), false);
+  });
 });
