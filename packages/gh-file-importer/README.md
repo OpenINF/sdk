@@ -1,60 +1,23 @@
-<h1 align="center">@openinf/gh-file-importer</h1>
+# @openinf/gh-file-importer
 
-<p align="center">Utility that imports arbitrary files from remote GitHub repositories</p>
-
-<br />
-
-<p align="center">
-  <a href="https://www.npmjs.com/package/@openinf/gh-file-importer"><img src="https://img.shields.io/npm/v/@openinf/gh-file-importer?style=plastic" alt="view on npm" /></a>
-  <img src="https://img.shields.io/github/languages/top/openinf/gh-file-importer?color=blue&style=plastic" />
-  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/github/license/openinf/gh-file-importer?color=blue&style=plastic" alt="License: MIT" /></a>
-</p>
-
-<br />
-
-_The high-level goal of `@openinf/gh-file-importer` is to serve as a Node.js
-package containing a utility for **importing arbitrary files from remote GitHub
-repos** allowing users to make use of them locally. As is the case with any
-software project in continuous development, omissions and errors may exist, for
-which contributions are welcome._
-
-<br />
-
----
-
-<br />
+Fetches arbitrary files from remote GitHub repositories and writes them into a
+local directory.
 
 ## Installation
 
-`@openinf/gh-file-importer` runs on Node.js and is available via `npm`.
-
-```shell
+```sh
 npm install @openinf/gh-file-importer
 ```
 
 ## Usage
 
-Import the `GhFileImporter` constructor based on your platform.
-
-### Node.js
-
-Install with `npm install @openinf/gh-file-importer`
-
-```ts
-import { GhFileImporter } from '@openinf/gh-file-importer';
-```
-
-## Options
-
-Now instantiate your your API. All options are optional except for `destDir`,
-which is the location where your files will be stored.
+Every option is optional except `destDir`, which is where fetched files are
+written.
 
 ```ts
 import { GhFileImporter } from '@openinf/gh-file-importer';
 
-const DIR_TEMP = './tmp';
-
-const ghFileImporter = new GhFileImporter({ destDir: DIR_TEMP });
+const ghFileImporter = new GhFileImporter({ destDir: './tmp' });
 
 await ghFileImporter.importFile({
   owner: 'tc39',
@@ -63,70 +26,40 @@ await ghFileImporter.importFile({
 });
 ```
 
-**Note:** if needing to circumvent exceeding the GitHub API rate limit, be sure
-to have an environment variable called `GITHUB_TOKEN` containing a
-[GitHub person access token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token).
+To avoid exceeding the GitHub API rate limit, set a `GITHUB_TOKEN` environment
+variable containing a
+[personal access token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token).
 
-### Logging
+## Logging
 
-For custom logging, pass an object with `debug`, `info`, `warn`, and `error`
-methods as the `log` option.
+The built-in logger writes to the console. `logLevel` sets the lowest level it
+emits, one of `trace`, `debug`, `info`, `warn`, `error`, or `fatal`, and
+defaults to `info`.
 
 ```ts
+import { GhFileImporter } from '@openinf/gh-file-importer';
+
 const ghFileImporter = new GhFileImporter({
-  destDir: DIR_TEMP,
-  log: {
-    debug: () => {},
-    info: () => {},
-    warn: console.warn,
-    error: console.error
-  }
+  destDir: './tmp',
+  logLevel: 'debug',
+});
+```
+
+To send logging somewhere else, pass a `log` implementing all six levels. It
+replaces the built-in logger, so `logLevel` no longer applies, and Octokit's own
+request logging flows through it too.
+
+```ts
+import { GhFileImporter, type Logger } from '@openinf/gh-file-importer';
+
+const log: Logger = {
+  trace: () => {},
+  debug: () => {},
+  info: () => {},
+  warn: console.warn,
+  error: console.error,
+  fatal: console.error,
 };
+
+const ghFileImporter = new GhFileImporter({ destDir: './tmp', log });
 ```
-
-### Debug
-
-The simplest way to receive debug information is to set the `log` client option
-to `console`.
-
-```ts
-const ghFileImporter = new GhFileImporter({
-  destDir: DIR_TEMP,
-  log: console,
-});
-```
-
-If you like to support a configurable log level, we recommend using the
-[`console-log-level`](https://github.com/watson/console-log-level) module.
-
-```ts
-const ghFileImporter = new GhFileImporter({
-  destDir: DIR_TEMP,
-  log: require('console-log-level')({ level: 'info' }),
-});
-```
-
-<br />
-
----
-
-<br />
-
-## API Reference
-
-Type-aware API documentation for every `@openinf` package is generated with
-[TypeDoc](https://typedoc.org). To build and browse it locally:
-
-```shell
-pnpm docs:build   # writes a merged, multi-package site to docs/
-pnpm docs:serve   # serves it
-```
-
-<br />
-
----
-
-<br />
-
-<p align="center">&copy; The OpenINF Authors</center></p>
-<p align="center"><img height="32px" width="32px" src="https://raw.githubusercontent.com/openinf/openinf.github.io/live/logo.svg" /></p>
