@@ -23,4 +23,21 @@ describe(spliceOne.name, () => {
     spliceOne(list, 0);
     assert.deepStrictEqual(list, [2, 3]);
   });
+
+  it('should reject indices that do not identify an element', () => {
+    for (const index of [-1, 3, 1.5, Number.NaN]) {
+      const list = [1, 2, 3];
+      assert.throws(() => spliceOne(list, index), RangeError);
+      assert.deepStrictEqual(list, [1, 2, 3]);
+    }
+  });
+
+  it('should preserve holes when shifting sparse elements', () => {
+    const list = [1, , 3];
+    spliceOne(list, 0);
+
+    assert.strictEqual(list.length, 2);
+    assert.strictEqual(Object.hasOwn(list, 0), false);
+    assert.strictEqual(list[1], 3);
+  });
 });
