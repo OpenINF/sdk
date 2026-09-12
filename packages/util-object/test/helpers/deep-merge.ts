@@ -16,13 +16,33 @@ describe(deepMerge.name, () => {
     assert.strictEqual(deepMerge(target, { b: 2 }), target);
   });
 
-  it('should fall back to Object.assign beyond the max depth', () => {
+  it('should shallowly assign beyond the max depth', () => {
     const result = deepMerge(
       { a: { b: { c: 1 } } },
       { a: { b: { c: 2, d: 3 } } },
       0
     );
     assert.deepStrictEqual(result, { a: { b: { c: 2, d: 3 } } });
+  });
+
+  it('should filter unsafe keys beyond the max depth', () => {
+    const nested = JSON.parse(
+      '{"__proto__":{"polluted":true},"safe":"kept"}'
+    ) as Record<string, unknown>;
+    const result = deepMerge({ a: {} }, { a: nested }, 0);
+
+    assert.deepStrictEqual(result, { a: { safe: 'kept' } });
+    assert.strictEqual(Object.getPrototypeOf(result.a), Object.prototype);
+  });
+
+  it('should merge shared acyclic objects at each target path', () => {
+    const shared = { value: 'kept' };
+    const result = deepMerge({ a: {}, b: {} }, { a: shared, b: shared });
+
+    assert.deepStrictEqual(result, {
+      a: { value: 'kept' },
+      b: { value: 'kept' },
+    });
   });
 
   it('should throw when the source has a circular reference reachable via a shared key path', () => {
