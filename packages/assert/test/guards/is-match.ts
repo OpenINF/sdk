@@ -21,4 +21,22 @@ describe(isMatch.name, () => {
     assert.strictEqual(guard(42), false);
     assert.strictEqual(guard(null), false);
   });
+
+  it('should return the same result across calls for global patterns', () => {
+    const pattern = /foo/g;
+    const guard = isMatch(pattern);
+
+    assert.strictEqual(guard('foo'), true);
+    assert.strictEqual(guard('foo'), true);
+    assert.strictEqual(guard('foo'), true);
+    assert.strictEqual(pattern.lastIndex, 0);
+  });
+
+  it('should start sticky patterns at the beginning on every call', () => {
+    const guard = isMatch(/foo/y);
+
+    assert.strictEqual(guard('foo'), true);
+    assert.strictEqual(guard('foo'), true);
+    assert.strictEqual(guard('barfoo'), false);
+  });
 });

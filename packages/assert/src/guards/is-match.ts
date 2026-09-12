@@ -17,8 +17,12 @@ import type { Guard } from '@openinf/util-core';
  * ```
  */
 export function isMatch(pattern: RegExp): Guard<string> {
-  const guard: Guard<string> = (value: unknown): value is string =>
-    typeof value === 'string' && pattern.test(value);
+  const matcher = new RegExp(pattern.source, pattern.flags);
+  const guard: Guard<string> = (value: unknown): value is string => {
+    if (typeof value !== 'string') return false;
+    matcher.lastIndex = 0;
+    return matcher.test(value);
+  };
   guard.expectation = () => `match ${pattern.toString()}`;
   return guard;
 }

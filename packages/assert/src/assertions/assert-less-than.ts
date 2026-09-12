@@ -19,7 +19,7 @@ export function assertLessThan(
   msg?: string,
   stackCrawlMark?: AnyFunction
 ): void {
-  if (a >= b) {
+  if (!(a < b)) {
     fail(
       `Expected ${a} < ${b}. ${msg || ''}`,
       stackCrawlMark || assertLessThan

@@ -14,4 +14,8 @@ describe(assertGreaterThanOrEqual.name, () => {
   it('should throw when a is less than b', () => {
     assert.throws(() => assertGreaterThanOrEqual(1, 2), /Expected 1 >= 2/);
   });
+  it('should throw when either operand is NaN', () => {
+    assert.throws(() => assertGreaterThanOrEqual(Number.NaN, 1));
+    assert.throws(() => assertGreaterThanOrEqual(1, Number.NaN));
+  });
 });

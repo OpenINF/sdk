@@ -3,8 +3,26 @@
 
 import type { Guard } from '@openinf/util-core';
 
-function deepEqual(a: unknown, b: unknown): boolean {
-  if (Object.is(a, b)) {
+import { inspectValue } from '../helpers/inspect-value';
+
+function isPlainObject(value: object): boolean {
+  const prototype = Object.getPrototypeOf(value) as object | null;
+  return prototype === null || Object.getPrototypeOf(prototype) === null;
+}
+
+function enumerableOwnKeys(value: object): PropertyKey[] {
+  return Reflect.ownKeys(value).filter((key) =>
+    Object.prototype.propertyIsEnumerable.call(value, key)
+  );
+}
+
+function deepEqual(
+  a: unknown,
+  b: unknown,
+  aToB: WeakMap<object, object> = new WeakMap(),
+  bToA: WeakMap<object, object> = new WeakMap()
+): boolean {
+  if (a === b || (a !== a && b !== b)) {
     return true;
   }
 
@@ -17,24 +35,34 @@ function deepEqual(a: unknown, b: unknown): boolean {
     return false;
   }
 
-  if (Array.isArray(a) || Array.isArray(b)) {
-    return (
-      Array.isArray(a) &&
-      Array.isArray(b) &&
-      a.length === b.length &&
-      a.every((item, i) => deepEqual(item, b[i]))
-    );
+  const aIsArray = Array.isArray(a);
+  const bIsArray = Array.isArray(b);
+  if (aIsArray !== bIsArray) {
+    return false;
+  }
+  if (!aIsArray && (!isPlainObject(a) || !isPlainObject(b))) {
+    return false;
   }
 
-  const aRecord = a as Record<string, unknown>;
-  const bRecord = b as Record<string, unknown>;
-  const aKeys = Object.keys(aRecord);
-  const bKeys = Object.keys(bRecord);
+  const pairedB = aToB.get(a);
+  if (pairedB !== undefined) return pairedB === b;
+  const pairedA = bToA.get(b);
+  if (pairedA !== undefined) return pairedA === a;
+  aToB.set(a, b);
+  bToA.set(b, a);
+
+  const aRecord = a as Record<PropertyKey, unknown>;
+  const bRecord = b as Record<PropertyKey, unknown>;
+  const aKeys = enumerableOwnKeys(a);
+  const bKeys = enumerableOwnKeys(b);
 
   return (
     aKeys.length === bKeys.length &&
     aKeys.every(
-      (key) => key in bRecord && deepEqual(aRecord[key], bRecord[key])
+      (key) =>
+        Object.prototype.hasOwnProperty.call(bRecord, key) &&
+        Object.prototype.propertyIsEnumerable.call(bRecord, key) &&
+        deepEqual(aRecord[key], bRecord[key], aToB, bToA)
     )
   );
 }
@@ -59,6 +87,6 @@ function deepEqual(a: unknown, b: unknown): boolean {
 export function isDeepEqualTo<T>(expected: T): Guard<T> {
   const guard: Guard<T> = (value: unknown): value is T =>
     deepEqual(value, expected);
-  guard.expectation = () => `deeply equal ${JSON.stringify(expected)}`;
+  guard.expectation = () => `deeply equal ${inspectValue(expected)}`;
   return guard;
 }
