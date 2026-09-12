@@ -200,6 +200,30 @@ describe('checksVerdict', () => {
     deepStrictEqual(checksVerdict([run('Lint and test', 'success')], []), '');
   });
 
+  test('refuses to land when GitHub reports no checks', () => {
+    match(checksVerdict([], []), /reported no checks/);
+  });
+
+  test('requires configured check runs to report', () => {
+    match(
+      checksVerdict([run('build', 'success')], [], '', '', ['build', 'CodeQL']),
+      /have not reported: CodeQL/
+    );
+  });
+
+  test('accepts configured check runs after they pass', () => {
+    deepStrictEqual(
+      checksVerdict(
+        [run('build', 'success'), run('CodeQL', 'success')],
+        [],
+        '',
+        '',
+        ['build', 'CodeQL']
+      ),
+      ''
+    );
+  });
+
   test('reads only the newest run of a check', () => {
     // A workflow that cancels superseded runs leaves the cancelled one on the
     // commit beside the run that replaced it.
