@@ -16,15 +16,14 @@ export type Uint32 = Tagged<number, '__Uint32__'>;
  * @returns `true` if `value` is a uint32; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isUint32 } from '@openinf/util';
  *
- * util.isUint32(123); // ↪ true
+ * isUint32(123); // ↪ true
  *
- * util.isUint32('123'); // ↪ false
+ * isUint32('123'); // ↪ false
  * ```
  */
 export function isUint32(value: unknown): value is Uint32 {
-  const asNumber = Number(value);
-  return asNumber === asNumber >>> 0;
+  return typeof value === 'number' && value === value >>> 0;
 }
 (isUint32 as Guard).expectation = 'be a `Uint32`';

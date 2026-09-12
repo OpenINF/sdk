@@ -9,22 +9,21 @@ import type { Guard, Tagged } from '@openinf/util-core';
 export type Int32 = Tagged<number, '__Int32__'>;
 
 /**
- * Detects whether `value` is classified as a `Uint32`.
+ * Detects whether `value` is classified as an `Int32`.
  * @since 3.0.0
  * @category Numbers & Dates
  * @param value The value to be identified.
  * @returns `true` if `value` is an int32; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isInt32 } from '@openinf/util';
  *
- * util.isUint32(123); // ↪ true
+ * isInt32(123); // ↪ true
  *
- * util.isUint32('123'); // ↪ false
+ * isInt32('123'); // ↪ false
  * ```
  */
 export function isInt32(value: unknown): value is Int32 {
-  const asNumber = Number(value);
-  return asNumber === (asNumber | 0);
+  return typeof value === 'number' && value === (value | 0);
 }
 (isInt32 as Guard).expectation = 'be an Int32';

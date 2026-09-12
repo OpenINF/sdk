@@ -6,13 +6,18 @@ import { describe, it } from 'node:test';
 import { isArgValidBuffer } from '../../src/validators/is-arg-valid-buffer';
 
 describe(isArgValidBuffer.name, () => {
-  it('should not throw for a Buffer', () => {
+  it('should accept every ArrayBuffer view named by its contract', () => {
+    assert.doesNotThrow(() => isArgValidBuffer(Buffer.from('foo'), 'buffer'));
     assert.doesNotThrow(() =>
-      isArgValidBuffer(Buffer.from('foo') as any, 'buffer')
+      isArgValidBuffer(new Uint16Array(2), 'typedArray')
+    );
+    assert.doesNotThrow(() =>
+      isArgValidBuffer(new DataView(new ArrayBuffer(4)), 'dataView')
     );
   });
 
-  it('should throw for a non-Buffer', () => {
-    assert.throws(() => isArgValidBuffer([] as any, 'buffer'));
+  it('should reject values that are not ArrayBuffer views', () => {
+    assert.throws(() => isArgValidBuffer([], 'buffer'));
+    assert.throws(() => isArgValidBuffer(new ArrayBuffer(4), 'buffer'));
   });
 });
