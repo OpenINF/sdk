@@ -17,7 +17,7 @@ const isNumber = (value: unknown): value is number => typeof value === 'number';
 // assertValue reads `.expectation` to build its message, as real guards carry.
 (isNumber as unknown as { expectation: string }).expectation = 'be a number';
 
-type AnyRecord = Record<string, any>;
+type AnyRecord = Record<PropertyKey, any>;
 
 describe(Assert.name, () => {
   it('should install a getter/setter that validates on assignment', () => {
@@ -71,5 +71,42 @@ describe(Assert.name, () => {
     assert.throws(() => (target['value'] = -1));
     assert.doesNotThrow(() => (target['value'] = 5));
     assert.strictEqual(target['value'], 5);
+  });
+
+  it('should isolate a subclass validator from its base class', () => {
+    const isPositive = (value: unknown): boolean => (value as number) > 0;
+    class Base {}
+    class Child extends Base {}
+    Assert(isNumber)(Base.prototype, 'value');
+    Assert(isPositive)(Child.prototype, 'value');
+
+    const base = new Base() as AnyRecord;
+    const child = new Child() as AnyRecord;
+    assert.doesNotThrow(() => (base['value'] = -1));
+    assert.throws(() => (child['value'] = -1));
+    assert.throws(() => (child['value'] = 'not a number'));
+    assert.doesNotThrow(() => (child['value'] = 1));
+  });
+
+  it('should distinguish symbols with the same description', () => {
+    const first = Symbol('value');
+    const second = Symbol('value');
+    const target: AnyRecord = {};
+    Assert(isNumber)(target, first);
+    Assert((value) => typeof value === 'string')(target, second);
+
+    assert.doesNotThrow(() => (target[first] = 1));
+    assert.doesNotThrow(() => (target[second] = 'two'));
+    assert.strictEqual(target[first], 1);
+    assert.strictEqual(target[second], 'two');
+  });
+
+  it('should not overwrite a string-derived backing property', () => {
+    const target: AnyRecord = { _value: 'untouched' };
+    Assert(isNumber)(target, 'value');
+    target['value'] = 5;
+
+    assert.strictEqual(target['value'], 5);
+    assert.strictEqual(target['_value'], 'untouched');
   });
 });
