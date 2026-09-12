@@ -1,17 +1,29 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-/**
- * Strips only spaces, not tabs or newlines, as the original trim did.
- * @param value The string to trim.
- * @returns The string without leading or trailing spaces.
- */
-function trimSpaces(value: string): string {
-  let start = 0;
-  let end = value.length;
-  while (start < end && value.charAt(start) === ' ') start++;
-  while (end > start && value.charAt(end - 1) === ' ') end--;
-  return value.slice(start, end);
+interface BacktickRun {
+  start: number;
+  length: number;
+}
+
+function normalizeCodeSpan(value: string): string {
+  let normalized = value.replace(/\r\n?|\n/g, ' ');
+  if (
+    normalized.startsWith(' ') &&
+    normalized.endsWith(' ') &&
+    /[^ ]/.test(normalized)
+  ) {
+    normalized = normalized.slice(1, -1);
+  }
+  return normalized;
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
 }
 
 /**
@@ -26,72 +38,75 @@ function backtickRunLength(text: string, index: number): number {
   return i - index;
 }
 
+function findBacktickRuns(text: string): BacktickRun[] {
+  const runs: BacktickRun[] = [];
+  for (let i = 0; i < text.length;) {
+    const length = backtickRunLength(text, i);
+    if (length === 0) {
+      i++;
+    } else {
+      runs.push({ start: i, length });
+      i += length;
+    }
+  }
+  return runs;
+}
+
+function findMatchingRuns(runs: readonly BacktickRun[]): number[] {
+  const nextByLength = new Map<number, number>();
+  const matches = Array.from<number>({ length: runs.length }).fill(-1);
+
+  for (let i = runs.length - 1; i >= 0; i--) {
+    const run = runs.at(i);
+    if (run === undefined) {
+      continue;
+    }
+    const next = nextByLength.get(run.length);
+    if (next !== undefined) {
+      matches[i] = next;
+    }
+    nextByLength.set(run.length, i);
+  }
+  return matches;
+}
+
 /**
  * Processes the supplied string by transforming any Markdown backtick code
  * spans (beginning and ending with a matching run of backticks) into HTML
  * code elements.
  *
- * Implemented as a single left-to-right scan rather than a regular
- * expression. The previous pattern combined a lazy quantifier with a
- * backreference, which made the matcher backtrack quadratically: input of `n`
- * backticks followed by `n` other characters took time proportional to `n²`,
- * about 20 seconds at 80 KB and far worse beyond that. Untrusted Markdown
- * could stall the event loop with a single call. This scan is linear.
+ * Backtick runs and their next equal-length run are indexed before rendering,
+ * keeping unmatched fence patterns linear instead of repeatedly scanning the
+ * remaining input.
  * @param text The Markdown text to process.
  * @returns The processed text.
  */
 export function mdCodeSpans2html(text: string): string {
+  const runs = findBacktickRuns(text);
+  const matches = findMatchingRuns(runs);
   let out = '';
-  let i = 0;
+  let cursor = 0;
+  let runIndex = 0;
 
-  while (i < text.length) {
-    const openLength = backtickRunLength(text, i);
-
-    if (openLength === 0) {
-      out += text.charAt(i);
-      i++;
+  while (runIndex < runs.length) {
+    const closeIndex = matches.at(runIndex);
+    if (closeIndex === undefined || closeIndex === -1) {
+      runIndex++;
       continue;
     }
 
-    const contentStart = i + openLength;
-
-    // Find the next run of backticks of exactly the same length; a longer or
-    // shorter run cannot close this span, matching the old backreference plus
-    // its negative lookahead.
-    let closeStart = -1;
-    let scan = contentStart;
-    while (scan < text.length) {
-      const runLength = backtickRunLength(text, scan);
-      if (runLength === 0) {
-        scan++;
-      } else if (runLength === openLength) {
-        closeStart = scan;
-        break;
-      } else {
-        scan += runLength;
-      }
+    const open = runs.at(runIndex);
+    const close = runs.at(closeIndex);
+    if (open === undefined || close === undefined) {
+      break;
     }
+    const content = text.slice(open.start + open.length, close.start);
 
-    const content =
-      closeStart === -1 ? '' : text.slice(contentStart, closeStart);
-
-    // The old pattern required at least one character of content, and that it
-    // neither began nor ended with a backtick.
-    const isSpan =
-      closeStart !== -1 &&
-      content.length > 0 &&
-      !content.startsWith('`') &&
-      !content.endsWith('`');
-
-    if (!isSpan) {
-      out += text.slice(i, contentStart);
-      i = contentStart;
-      continue;
-    }
-
-    out += `<code>${trimSpaces(content)}</code>`;
-    i = closeStart + openLength;
+    out += text.slice(cursor, open.start);
+    out += `<code>${escapeHtml(normalizeCodeSpan(content))}</code>`;
+    cursor = close.start + close.length;
+    runIndex = closeIndex + 1;
   }
 
-  return out;
+  return out + text.slice(cursor);
 }
