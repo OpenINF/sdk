@@ -5,7 +5,8 @@
 // Requirements
 // -----------------------------------------------------------------------------
 
-import { mkdir, writeFile } from 'node:fs/promises';
+import { constants as fsConstants } from 'node:fs';
+import { mkdir, open, realpath } from 'node:fs/promises';
 import {
   basename as pathBasename,
   dirname as pathDirname,
@@ -196,6 +197,62 @@ function resolveWithinDestDir(destDir: string, relativePath: string): string {
   return resolved;
 }
 
+function isWithinDirectory(root: string, candidate: string): boolean {
+  return candidate === root || candidate.startsWith(root + pathSep);
+}
+
+/**
+ * Writes a file only after checking the physical parent directory. The lexical
+ * check in {@link resolveWithinDestDir} rejects `..` and absolute paths; this
+ * second check rejects paths whose existing symlink components leave
+ * `destDir`. `O_NOFOLLOW` applies the same rule to the final path component.
+ * @param destDir The directory writes are confined to.
+ * @param relativePath The caller-supplied path to resolve within it.
+ * @param text The contents to write.
+ * @returns The absolute path of the written file.
+ */
+async function writeWithinDestDir(
+  destDir: string,
+  relativePath: string,
+  text: string
+): Promise<string> {
+  const filepath = resolveWithinDestDir(destDir, relativePath);
+  const root = pathResolve(destDir);
+  const parent = pathDirname(filepath);
+
+  await mkdir(parent, { recursive: true });
+
+  const [physicalRoot, physicalParent] = await Promise.all([
+    realpath(root),
+    realpath(parent),
+  ]);
+  if (!isWithinDirectory(physicalRoot, physicalParent)) {
+    throw new InvalidArgValueError(
+      'destPath',
+      relativePath,
+      `is invalid because a symbolic link resolves outside ${curlyQuote(
+        physicalRoot
+      )}`
+    );
+  }
+
+  const handle = await open(
+    filepath,
+    fsConstants.O_CREAT |
+      fsConstants.O_TRUNC |
+      fsConstants.O_WRONLY |
+      fsConstants.O_NOFOLLOW,
+    0o666
+  );
+  try {
+    await handle.writeFile(text);
+  } finally {
+    await handle.close();
+  }
+
+  return filepath;
+}
+
 function validateUrl(url: string): void {
   if (typeof url !== 'string') {
     throw new InvalidArgTypeError('url', 'string', url);
@@ -330,6 +387,7 @@ export class GhFileImporter {
    * @returns The fetched body text.
    * @throws {InvalidArgTypeError} if `url` is not a string.
    * @throws {InvalidArgValueError} if `url` is an empty string.
+   * @throws {Error} if the server returns a non-success HTTP status.
    */
   public async fetchUrlText(url: string): Promise<string> {
     validateUrl(url);
@@ -339,6 +397,12 @@ export class GhFileImporter {
     );
 
     const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(
+        `Download of ${curlyQuote(url)} failed with HTTP ${response.status}` +
+          (response.statusText === '' ? '' : ` ${response.statusText}`)
+      );
+    }
     return response.text();
   }
 
@@ -362,13 +426,7 @@ export class GhFileImporter {
     destPath?: string
   ): Promise<string> {
     const text = await this.fetchFileText(location);
-    const filepath = resolveWithinDestDir(
-      this.#destDir,
-      destPath ?? location.path
-    );
-    await mkdir(pathDirname(filepath), { recursive: true });
-    await writeFile(filepath, text);
-    return filepath;
+    return writeWithinDestDir(this.#destDir, destPath ?? location.path, text);
   }
 
   /**
@@ -381,13 +439,17 @@ export class GhFileImporter {
    * @throws {InvalidArgValueError} if `url` is an empty string.
    */
   public async importUrl(url: string, destPath?: string): Promise<string> {
+    validateUrl(url);
+    const relativePath = destPath ?? pathBasename(new URL(url).pathname);
+    if (relativePath === '') {
+      throw new InvalidArgValueError(
+        'url',
+        url,
+        'is invalid because its pathname does not contain a filename'
+      );
+    }
+
     const text = await this.fetchUrlText(url);
-    const filepath = resolveWithinDestDir(
-      this.#destDir,
-      destPath ?? pathBasename(url)
-    );
-    await mkdir(pathDirname(filepath), { recursive: true });
-    await writeFile(filepath, text);
-    return filepath;
+    return writeWithinDestDir(this.#destDir, relativePath, text);
   }
 }

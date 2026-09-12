@@ -1,7 +1,7 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 import assert from 'node:assert/strict';
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join as pathJoin } from 'node:path';
 import { afterEach, describe, it, mock } from 'node:test';
@@ -36,8 +36,14 @@ function soleOctokitOptions(calls: unknown[]): Record<string, unknown> {
   return calls[0] as Record<string, unknown>;
 }
 
-function mockFetch(text: string): void {
+function mockFetch(
+  text: string,
+  response: { ok?: boolean; status?: number; statusText?: string } = {}
+): void {
   mock.method(globalThis, 'fetch', async () => ({
+    ok: response.ok ?? true,
+    status: response.status ?? 200,
+    statusText: response.statusText ?? 'OK',
     text: async () => text,
   }));
 }
@@ -432,6 +438,24 @@ describe('GhFileImporter', () => {
 
       assert.strictEqual(result, 'raw file contents');
     });
+
+    it('should reject a non-success HTTP response', async () => {
+      mockOctokit(() => {
+        throw new Error('should not be called');
+      });
+      mockFetch('not found', {
+        ok: false,
+        status: 404,
+        statusText: 'Not Found',
+      });
+      const { GhFileImporter } = freshRequire('../src/index');
+      const importer = new GhFileImporter({ destDir: '/tmp' });
+
+      await assert.rejects(
+        () => importer.fetchUrlText('https://example.com/missing.txt'),
+        /HTTP 404 Not Found/
+      );
+    });
   });
 
   describe('importFile', () => {
@@ -528,6 +552,27 @@ describe('GhFileImporter', () => {
         await rm(destDir, { recursive: true, force: true });
       }
     });
+
+    it('should ignore query and fragment text when deriving the filename', async () => {
+      mockOctokit(() => {
+        throw new Error('should not be called');
+      });
+      mockFetch('from url');
+      const { GhFileImporter } = freshRequire('../src/index');
+
+      const destDir = await mkdtemp(pathJoin(tmpdir(), 'gh-file-importer-'));
+      try {
+        const importer = new GhFileImporter({ destDir });
+        const written = await importer.importUrl(
+          'https://example.com/releases/archive.tgz?download=1#asset'
+        );
+
+        assert.strictEqual(written, pathJoin(destDir, 'archive.tgz'));
+        assert.strictEqual(await readFile(written, 'utf-8'), 'from url');
+      } finally {
+        await rm(destDir, { recursive: true, force: true });
+      }
+    });
   });
 });
 
@@ -578,6 +623,53 @@ describe('path traversal', () => {
       assert.strictEqual(await readFile(written, 'utf8'), 'payload');
     } finally {
       await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('should refuse a parent-directory symlink that leaves destDir', async () => {
+    mockOctokit(() => {
+      throw new Error('should not be called');
+    });
+    mockFetch('payload');
+    const dir = await mkdtemp(pathJoin(tmpdir(), 'ghfi-root-'));
+    const outside = await mkdtemp(pathJoin(tmpdir(), 'ghfi-outside-'));
+    try {
+      await symlink(outside, pathJoin(dir, 'linked'));
+      const { GhFileImporter } = freshRequire('../src/index');
+      const importer = new GhFileImporter({ destDir: dir });
+
+      await assert.rejects(
+        () => importer.importUrl('https://example.com/x', 'linked/escaped.txt'),
+        /symbolic link resolves outside/
+      );
+      await assert.rejects(() => readFile(pathJoin(outside, 'escaped.txt')));
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+      await rm(outside, { recursive: true, force: true });
+    }
+  });
+
+  it('should refuse a final-component symlink', async () => {
+    mockOctokit(() => {
+      throw new Error('should not be called');
+    });
+    mockFetch('replacement');
+    const dir = await mkdtemp(pathJoin(tmpdir(), 'ghfi-root-'));
+    const outsideDir = await mkdtemp(pathJoin(tmpdir(), 'ghfi-outside-'));
+    const outside = pathJoin(outsideDir, 'target.txt');
+    try {
+      await writeFile(outside, 'original');
+      await symlink(outside, pathJoin(dir, 'linked.txt'));
+      const { GhFileImporter } = freshRequire('../src/index');
+      const importer = new GhFileImporter({ destDir: dir });
+
+      await assert.rejects(() =>
+        importer.importUrl('https://example.com/x', 'linked.txt')
+      );
+      assert.strictEqual(await readFile(outside, 'utf8'), 'original');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+      await rm(outsideDir, { recursive: true, force: true });
     }
   });
 });
