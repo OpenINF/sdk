@@ -5,7 +5,8 @@
 // Requirements
 // -----------------------------------------------------------------------------
 
-import { mkdir, writeFile } from 'node:fs/promises';
+import { constants as fsConstants } from 'node:fs';
+import { lstat, mkdir, open, realpath } from 'node:fs/promises';
 import {
   basename as pathBasename,
   dirname as pathDirname,
@@ -196,6 +197,132 @@ function resolveWithinDestDir(destDir: string, relativePath: string): string {
   return resolved;
 }
 
+function isWithinDirectory(root: string, candidate: string): boolean {
+  return candidate === root || candidate.startsWith(root + pathSep);
+}
+
+/**
+ * The nearest ancestor of a path that exists, resolved through any symlinks.
+ *
+ * `mkdir` with `recursive` follows a symlink it finds along the way, so asking
+ * where a path *would* be created has to happen before anything is created.
+ * @param target The path that is about to be made.
+ * @returns The physical path of the deepest part of it that exists already.
+ */
+async function physicalAncestorOf(target: string): Promise<string> {
+  let candidate = target;
+
+  for (;;) {
+    try {
+      return await realpath(candidate);
+    } catch {
+      const parent = pathDirname(candidate);
+
+      // The root always exists, so this terminates; the guard is for a path
+      // shape no filesystem should produce rather than for an expected case.
+      if (parent === candidate) return candidate;
+
+      candidate = parent;
+    }
+  }
+}
+
+/**
+ * `O_NOFOLLOW` where the platform has it, and zero where it does not.
+ *
+ * It is POSIX. Windows defines no equivalent, and `undefined` contributes
+ * nothing to a bitwise or, so writing the flag inline would quietly turn the
+ * final-component check into an ordinary write on that platform. Naming it
+ * here is what lets the write say so instead.
+ */
+const O_NOFOLLOW = fsConstants.O_NOFOLLOW ?? 0;
+
+/**
+ * Writes a file, confined to `destDir` at every step.
+ *
+ * {@link resolveWithinDestDir} rejects `..` and absolute paths, which settles
+ * what the path says. What it resolves to is a separate question, since a
+ * symlink anywhere along it can lead out of the directory, so the physical
+ * path is checked as well: once before anything is created, because `mkdir`
+ * follows symlinks and would otherwise make directories outside `destDir`
+ * before being told not to, and once after, in case the tree changed in
+ * between. `O_NOFOLLOW` applies the same rule to the final component.
+ * @param destDir The directory writes are confined to.
+ * @param relativePath The caller-supplied path to resolve within it.
+ * @param text The contents to write.
+ * @returns The absolute path of the written file.
+ */
+async function writeWithinDestDir(
+  destDir: string,
+  relativePath: string,
+  text: string
+): Promise<string> {
+  const filepath = resolveWithinDestDir(destDir, relativePath);
+  const parent = pathDirname(filepath);
+  const root = pathResolve(destDir);
+
+  // The destination is made before it is resolved, because `realpath` of a
+  // directory that does not exist yet is an `ENOENT`, and importing into a
+  // fresh directory is the ordinary case. Creating the root is not an escape
+  // from it: `destDir` is the boundary the caller chose, not a path derived
+  // from the response.
+  await mkdir(root, { recursive: true });
+
+  const physicalRoot = await realpath(root);
+
+  const refuse = (): never => {
+    throw new InvalidArgValueError(
+      'destPath',
+      relativePath,
+      `is invalid because a symbolic link resolves outside ${curlyQuote(
+        physicalRoot
+      )}`
+    );
+  };
+
+  if (!isWithinDirectory(physicalRoot, await physicalAncestorOf(parent))) {
+    refuse();
+  }
+
+  await mkdir(parent, { recursive: true });
+
+  if (!isWithinDirectory(physicalRoot, await realpath(parent))) refuse();
+
+  // Where the flag is missing there is nothing to stop `open` following a
+  // symlink in the final component, so the link is looked for instead. That
+  // is a check rather than a guarantee -- it can go stale between the two
+  // calls -- but a check is what the platform leaves room for.
+  if (O_NOFOLLOW === 0) {
+    const existing = await lstat(filepath).catch(() => null);
+
+    if (existing?.isSymbolicLink() === true) refuse();
+  }
+
+  const handle = await open(
+    filepath,
+    fsConstants.O_CREAT |
+      fsConstants.O_TRUNC |
+      fsConstants.O_WRONLY |
+      O_NOFOLLOW,
+    0o666
+  ).catch((error: unknown) => {
+    // What `O_NOFOLLOW` reports when the final component is a symlink. On its
+    // own it reaches the caller as a bare errno, which says nothing about the
+    // rule it broke.
+    if ((error as NodeJS.ErrnoException).code === 'ELOOP') refuse();
+
+    throw error;
+  });
+
+  try {
+    await handle.writeFile(text);
+  } finally {
+    await handle.close();
+  }
+
+  return filepath;
+}
+
 function validateUrl(url: string): void {
   if (typeof url !== 'string') {
     throw new InvalidArgTypeError('url', 'string', url);
@@ -330,6 +457,7 @@ export class GhFileImporter {
    * @returns The fetched body text.
    * @throws {InvalidArgTypeError} if `url` is not a string.
    * @throws {InvalidArgValueError} if `url` is an empty string.
+   * @throws {Error} if the server returns a non-success HTTP status.
    */
   public async fetchUrlText(url: string): Promise<string> {
     validateUrl(url);
@@ -339,6 +467,12 @@ export class GhFileImporter {
     );
 
     const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(
+        `Download of ${curlyQuote(url)} failed with HTTP ${response.status}` +
+          (response.statusText === '' ? '' : ` ${response.statusText}`)
+      );
+    }
     return response.text();
   }
 
@@ -362,13 +496,7 @@ export class GhFileImporter {
     destPath?: string
   ): Promise<string> {
     const text = await this.fetchFileText(location);
-    const filepath = resolveWithinDestDir(
-      this.#destDir,
-      destPath ?? location.path
-    );
-    await mkdir(pathDirname(filepath), { recursive: true });
-    await writeFile(filepath, text);
-    return filepath;
+    return writeWithinDestDir(this.#destDir, destPath ?? location.path, text);
   }
 
   /**
@@ -381,13 +509,37 @@ export class GhFileImporter {
    * @throws {InvalidArgValueError} if `url` is an empty string.
    */
   public async importUrl(url: string, destPath?: string): Promise<string> {
+    validateUrl(url);
+
+    let relativePath = destPath;
+
+    if (relativePath === undefined) {
+      const { pathname } = new URL(url);
+
+      // A pathname ending in a separator names a directory, and `basename`
+      // answers with the directory's own name rather than nothing, so
+      // `/releases/` would be written as a file called `releases`. There is no
+      // filename in the URL to take, which is the same situation as `/`.
+      if (pathname.endsWith('/')) {
+        throw new InvalidArgValueError(
+          'url',
+          url,
+          'is invalid because its pathname names a directory'
+        );
+      }
+
+      relativePath = pathBasename(pathname);
+    }
+
+    if (relativePath === '') {
+      throw new InvalidArgValueError(
+        'url',
+        url,
+        'is invalid because its pathname does not contain a filename'
+      );
+    }
+
     const text = await this.fetchUrlText(url);
-    const filepath = resolveWithinDestDir(
-      this.#destDir,
-      destPath ?? pathBasename(url)
-    );
-    await mkdir(pathDirname(filepath), { recursive: true });
-    await writeFile(filepath, text);
-    return filepath;
+    return writeWithinDestDir(this.#destDir, relativePath, text);
   }
 }
