@@ -1,0 +1,60 @@
+{
+  // Markdown structure. Prettier owns how a file is laid out -- wrapping,
+  // indentation, blank lines, which fence character -- so every rule about
+  // shape is off here rather than arguing with the formatter on each save.
+  // What is left is what a formatter cannot know: whether a heading follows
+  // from the one above it, whether a link goes anywhere, whether a fence says
+  // what language it holds.
+  "config": {
+    "default": true,
+
+    // Prettier's job, all of it.
+    "MD004": false, // unordered list style
+    "MD007": false, // unordered list indentation
+    "MD009": false, // trailing spaces
+    "MD010": false, // hard tabs
+    "MD012": false, // multiple blank lines
+    "MD013": false, // line length: printWidth is 80 and proseWrap is always
+    "MD022": false, // blank lines around headings
+    "MD030": false, // spaces after list markers
+    "MD031": false, // blank lines around fences
+    "MD032": false, // blank lines around lists
+    "MD035": false, // horizontal rule style
+    "MD046": false, // code block style
+    "MD047": false, // single trailing newline
+    "MD048": false, // code fence style
+
+    // A README says `## Install` and so does the next one. Sibling headings
+    // inside one file are the collision worth reporting.
+    "MD024": { "siblings_only": true },
+
+    // Badges and the odd alignment wrapper. The portal sanitizes what it
+    // renders, which is the check that matters for anything published.
+    "MD033": false,
+
+    // A changeset is frontmatter and a sentence. There is no heading to put
+    // first, and adding one would land in the changelog.
+    "MD041": false,
+
+    // remark-lint-fenced-code-flag says which languages, not merely that
+    // there is one, and reports through the same run as everything else.
+    "MD040": false,
+  },
+
+  "globs": ["**/*.md"],
+
+  // A workspace has a `node_modules` under every package as well as at the
+  // root, so these are matched at any depth rather than only at the top.
+  "ignores": [
+    "**/node_modules/**",
+    "**/.pnpm-store/**",
+    // TypeDoc's output. Its prose comes from the sources, which are checked.
+    "docs/**",
+    // Written by `changeset version`; a fix here is overwritten by the next
+    // release, and nobody edits it by hand.
+    "CHANGELOG.md",
+    "packages/*/CHANGELOG.md",
+  ],
+
+  "outputFormatters": [["markdownlint-cli2-formatter-default"]],
+}

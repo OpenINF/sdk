@@ -6,7 +6,7 @@ its Node.js counterpart does.
 
 ## Installation
 
-```sh
+```bash
 npm install @openinf/util-errors
 ```
 

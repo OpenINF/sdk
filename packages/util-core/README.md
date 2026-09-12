@@ -11,7 +11,7 @@ what lets the rest of the workspace layer cleanly on top of it.
 
 ## Installation
 
-```sh
+```bash
 npm install @openinf/util-core
 ```
 

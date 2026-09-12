@@ -9,7 +9,16 @@
     // one, and trimming to what this repository happens to use is the thing
     // that would make the next sync a conflict.
     ".": {
-      "entry": ["build/shared/*.mts", "build/tasks/**/*.mts", "tools/*.js"],
+      "entry": [
+        "build/shared/*.mts",
+        "build/tasks/**/*.mts",
+        "tools/*.js",
+        "tools/*.mts",
+        // remark reads the nearest config to the file it is checking, so the
+        // one under `documentation/` is loaded by path rather than imported.
+        // knip knows about the one at the root already.
+        "documentation/.remarkrc.mjs",
+      ],
     },
 
     // Every package is a barrel: src/index.ts is the only thing consumers can
