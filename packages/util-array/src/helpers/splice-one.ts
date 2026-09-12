@@ -8,9 +8,20 @@
  * Removes a single element from `list` at `index`, in place.
  * @param list The array to remove the element from.
  * @param index The index of the element to remove.
+ * @throws {RangeError} If `index` is not an integer within `list`.
  */
 export function spliceOne<T>(list: T[], index: number): void {
-  // index + 1 < list.length guarantees list[index + 1] is present.
-  for (; index + 1 < list.length; index++) list[index] = list[index + 1]!;
+  if (!Number.isInteger(index) || index < 0 || index >= list.length) {
+    throw new RangeError('index must identify an element in list');
+  }
+
+  for (; index + 1 < list.length; index++) {
+    if (index + 1 in list) {
+      // index + 1 < list.length and the presence check guarantee this access.
+      list[index] = list[index + 1]!;
+    } else {
+      Reflect.deleteProperty(list, index);
+    }
+  }
   list.pop();
 }
