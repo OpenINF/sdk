@@ -25,7 +25,7 @@ Four exceptions put a space before a clause that already began with
 
 Before and after, for `new InvalidArgTypeError('x', 'string', 1)`:
 
-```
+```diff
 - The "x" argument must be string.of type "string". Received type "number" ("")
 + The "x" argument must be of type "string". Received type "number" ("1")
 ```

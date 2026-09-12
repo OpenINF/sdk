@@ -6,7 +6,7 @@ degrade to plain text where the terminal does not support them.
 
 ## Installation
 
-```sh
+```bash
 npm install @openinf/util-text
 ```
 

@@ -47,6 +47,11 @@ jobs:
       # Nothing else reads them, so nothing else notices them going stale.
       - run: pnpm run lint:examples
 
+      # The language on every fenced block, in Markdown and in the JSDoc that
+      # becomes it. The portal highlights by that flag and holds its own pages
+      # to the same set, so one it does not know is one it cannot style.
+      - run: pnpm run lint:fences
+
       # Packaging runs too, because a release is otherwise the only thing that
       # runs it, and by then the versions it describes are already published.
       # The version is a placeholder: only a release has one to declare.

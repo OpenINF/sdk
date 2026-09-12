@@ -30,7 +30,7 @@ write, so squashing or rewriting history doesn't affect them.
 
 After making a change that should appear in a release:
 
-```sh
+```bash
 pnpm changeset
 ```
 
@@ -48,7 +48,7 @@ hand-written entries drift downward and end up interleaved with generated ones.
 
 To see what a release would currently produce, without changing anything:
 
-```sh
+```bash
 pnpm changeset status --verbose
 ```
 
@@ -73,7 +73,7 @@ refreshed; it is not updated automatically.
 
 To do it by hand instead:
 
-```sh
+```bash
 pnpm run version-packages   # changeset version + lockfile refresh
 # review the diff, then:
 pnpm run build
@@ -162,7 +162,7 @@ re-run `pnpm run sync-metadata` so all ten packages stay in step.
 
 Verify it actually landed, rather than assuming:
 
-```sh
+```bash
 npm view @openinf/util --json | grep -A3 attestations
 ```
 
@@ -208,13 +208,13 @@ CI.
 `prepublishOnly` runs the build for each package, so a broken build can't be
 published. Beyond that:
 
-```sh
+```bash
 pnpm run build && pnpm run lint && pnpm run test
 ```
 
 To inspect exactly what a consumer will receive, without publishing:
 
-```sh
+```bash
 pnpm --filter @openinf/util-text pack
 tar -tzf openinf-util-text-*.tgz
 ```

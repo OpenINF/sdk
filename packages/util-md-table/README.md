@@ -5,7 +5,7 @@ table's column headings. An optional transform runs over every cell on the way.
 
 ## Installation
 
-```sh
+```bash
 npm install @openinf/util-md-table
 ```
 

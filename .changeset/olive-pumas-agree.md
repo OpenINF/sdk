@@ -18,7 +18,7 @@ If you relied on the old behavior, use the new `isValidDate` from
 `@openinf/util`, which is exactly the previous semantics under an accurate name
 — the same split `@sindresorhus/is` draws between `is.date` and `is.validDate`:
 
-```js
+```ts
 import { isDate, isValidDate } from '@openinf/util';
 
 isDate(new Date('nope')); // ↪ true  (it is a Date)

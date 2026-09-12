@@ -10,7 +10,7 @@ absolute path discards `destDir` entirely. The JSDoc described `destPath` as
 "relative to `destDir`", but nothing enforced it — so an application forwarding
 a user-chosen filename had an arbitrary file write.
 
-```js
+```ts
 await importer.importUrl(url, '../../../../etc/cron.d/evil'); // wrote there
 ```
 
