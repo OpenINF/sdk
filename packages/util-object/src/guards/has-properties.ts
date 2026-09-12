@@ -19,6 +19,7 @@ export type ExtractProperties<T extends PropertyValidators> = {
  */
 export interface PropertyValidators {
   [key: string]: Validator;
+  [key: symbol]: Validator;
 }
 
 /**
@@ -33,11 +34,14 @@ export function hasProperties<T extends PropertyValidators>(
   const guard = (value: unknown): value is ExtractProperties<T> => {
     if (!isObjectLike(value)) return false;
 
-    const record = value as Record<string, unknown>;
-    return Object.keys(validators).every((key) => {
-      // key comes from Object.keys(validators), so it is guaranteed present.
+    const record = value as Record<PropertyKey, unknown>;
+    const validatorRecord = validators as Record<PropertyKey, Validator>;
+    return Reflect.ownKeys(validators).every((key) => {
+      if (!(key in record)) return false;
+
+      // key comes from Reflect.ownKeys(validators), so it is guaranteed present.
       // oxlint-disable-next-line typescript/no-unnecessary-type-assertion -- oxlint-tsgolint doesn't currently honor noUncheckedIndexedAccess; tsc does require this.
-      return validators[key]!(record[key]);
+      return validatorRecord[key]!(record[key]);
     });
   };
   (guard as Guard).expectation = 'have specified properties';
