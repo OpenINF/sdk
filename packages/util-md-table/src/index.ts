@@ -3,6 +3,41 @@
 
 export type CellTransform = (value: string) => string;
 
+function splitRow(row: string): string[] {
+  const cells: string[] = [];
+  let cell = '';
+  let consecutiveBackslashes = 0;
+  let startsWithDelimiter = false;
+  let endsWithDelimiter = false;
+
+  for (let i = 0; i < row.length; i++) {
+    const character = row.charAt(i);
+    const isDelimiter = character === '|' && consecutiveBackslashes % 2 === 0;
+
+    if (isDelimiter) {
+      startsWithDelimiter ||= i === 0;
+      cells.push(cell.trim());
+      cell = '';
+      consecutiveBackslashes = 0;
+      endsWithDelimiter = true;
+    } else {
+      cell += character;
+      consecutiveBackslashes =
+        character === '\\' ? consecutiveBackslashes + 1 : 0;
+      endsWithDelimiter = false;
+    }
+  }
+  cells.push(cell.trim());
+
+  if (startsWithDelimiter) {
+    cells.shift();
+  }
+  if (endsWithDelimiter) {
+    cells.pop();
+  }
+  return cells;
+}
+
 /**
  * Parses a Markdown table into an array of row objects keyed by header cell.
  * @param mdTbl A markdown table as a string.
@@ -26,20 +61,14 @@ export function mdTbl2json(
   allRows.forEach((row, index) => {
     if (index === 0) {
       // These become the keys in each object of the array of objects.
-      const cells = row
-        .split('|')
-        .map((hd) => hd.trim())
-        .filter((hd) => hd && hd.length);
+      const cells = splitRow(row);
 
       allAttributes = cells.map((value) => {
         const cell = cellTransform ? cellTransform(value) : value;
         return attribCellTransform ? attribCellTransform(cell) : cell;
       });
     } else if (index > 1) {
-      let cells = row
-        .split('|')
-        .map((hd) => hd.trim())
-        .filter((hd) => hd && hd.length);
+      let cells = splitRow(row);
 
       cells = cells.map((value) =>
         cellTransform ? cellTransform(value) : value
@@ -48,9 +77,8 @@ export function mdTbl2json(
       const cellsMap = new Map<string, string>();
 
       allAttributes.forEach((value, i) => {
-        // A row with fewer cells than the header (e.g. from a filtered-out
-        // empty cell) should leave that attribute unset rather than write
-        // `undefined` into a Record<string, string>.
+        // A row with fewer cells than the header should leave that attribute
+        // unset rather than write `undefined` into a Record<string, string>.
         const cell = cells[i];
         // oxlint-disable-next-line typescript/no-unnecessary-condition -- oxlint-tsgolint doesn't currently honor noUncheckedIndexedAccess; cell can genuinely be undefined here.
         if (cell !== undefined) {

@@ -72,4 +72,33 @@ describe(mdTbl2json.name, () => {
     assert.deepStrictEqual(row, { Col1: 'one', Col2: 'two' });
     assert.equal(row && 'Col3' in row, false);
   });
+
+  it('should preserve empty cells in their original columns', () => {
+    const table = [
+      '| First | Middle | Last |',
+      '|:------|:-------|:-----|',
+      '| one   |        | three |',
+    ].join('\n');
+
+    assert.deepStrictEqual(mdTbl2json(table), [
+      { First: 'one', Middle: '', Last: 'three' },
+    ]);
+  });
+
+  it('should not split cells at escaped pipes', () => {
+    const table = [
+      '| Name | Expression |',
+      '|:-----|:-----------|',
+      '| OR   | left \\| right |',
+    ].join('\n');
+
+    assert.deepStrictEqual(mdTbl2json(table), [
+      { Name: 'OR', Expression: 'left \\| right' },
+    ]);
+  });
+
+  it('should support tables without leading or trailing pipes', () => {
+    const table = ['Name | Value', '-----|------', 'one  | two'].join('\n');
+    assert.deepStrictEqual(mdTbl2json(table), [{ Name: 'one', Value: 'two' }]);
+  });
 });
