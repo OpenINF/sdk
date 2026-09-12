@@ -20,8 +20,25 @@ describe(mdCodeSpans2html.name, () => {
     );
   });
 
-  it('should trim surrounding whitespace inside the code span', () => {
+  it('should remove one surrounding space when content is not all spaces', () => {
     assert.strictEqual(mdCodeSpans2html('` foo `'), '<code>foo</code>');
+    assert.strictEqual(mdCodeSpans2html('`  foo  `'), '<code> foo </code>');
+    assert.strictEqual(mdCodeSpans2html('`   `'), '<code>   </code>');
+    assert.strictEqual(mdCodeSpans2html('` foo`'), '<code> foo</code>');
+  });
+
+  it('should normalize line endings to spaces', () => {
+    assert.strictEqual(
+      mdCodeSpans2html('`one\r\ntwo\rthree\nfour`'),
+      '<code>one two three four</code>'
+    );
+  });
+
+  it('should escape HTML-significant code contents', () => {
+    assert.strictEqual(
+      mdCodeSpans2html('`<img src="x"> & &quot;`'),
+      '<code>&lt;img src=&quot;x&quot;&gt; &amp; &amp;quot;</code>'
+    );
   });
 
   it('should leave text without code spans unchanged', () => {
@@ -42,6 +59,20 @@ describe('mdCodeSpans2html performance', () => {
     assert.ok(
       elapsed < 2000,
       `expected under 2s for 400k chars, took ${elapsed}ms`
+    );
+  });
+
+  it('should stay linear across unmatched runs of different lengths', () => {
+    const adversarial = Array.from(
+      { length: 1000 },
+      (_, i) => `${'`'.repeat(i + 1)}x`
+    ).join('');
+    const start = Date.now();
+    mdCodeSpans2html(adversarial);
+    const elapsed = Date.now() - start;
+    assert.ok(
+      elapsed < 2000,
+      `expected under 2s for unmatched runs, took ${elapsed}ms`
     );
   });
 
