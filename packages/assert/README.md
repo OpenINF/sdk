@@ -6,7 +6,7 @@ they are built on.
 
 ## Installation
 
-```sh
+```bash
 npm install @openinf/assert
 ```
 

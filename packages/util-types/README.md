@@ -6,7 +6,7 @@ objects the language gives you no direct way to tell apart.
 
 ## Installation
 
-```sh
+```bash
 npm install @openinf/util-types
 ```
 

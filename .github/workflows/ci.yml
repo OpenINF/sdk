@@ -47,6 +47,15 @@ jobs:
       # Nothing else reads them, so nothing else notices them going stale.
       - run: pnpm run lint:examples
 
+      # Markdown, wherever it lives: the files, and the doc comments TypeDoc
+      # turns into pages. Both go through the same remark rules, so a fence
+      # the portal could not highlight fails here whichever one it sits in.
+      - run: pnpm run lint:md
+
+      # The repository's own tooling. Node strips the types off these as it
+      # runs them and never checks one, so this is the only thing that does.
+      - run: pnpm run lint:types
+
       # Packaging runs too, because a release is otherwise the only thing that
       # runs it, and by then the versions it describes are already published.
       # The version is a placeholder: only a release has one to declare.

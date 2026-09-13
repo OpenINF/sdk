@@ -7,7 +7,7 @@ packages that share a single version number.
 
 Node.js `>=20.19.0` and pnpm 11 are required.
 
-```shell
+```bash
 pnpm install
 pnpm run build
 pnpm run test
@@ -86,7 +86,7 @@ Conventions worth knowing before your first PR:
 
 ## Before you open a PR
 
-```shell
+```bash
 pnpm run build
 pnpm run lint          # oxlint, type-aware
 pnpm run test
@@ -94,6 +94,8 @@ pnpm run lint:format   # prettier, repo-wide
 pnpm run lint:knip     # unused files, exports, and dependencies
 pnpm run lint:commits  # commit message format and sign-off
 pnpm run lint:examples # README examples compile and claim true results
+pnpm run lint:md       # markdown, in files and in doc comments
+pnpm run lint:types    # the build tasks and checkers type-check
 pnpm run lint:spelling # cspell, en-US
 pnpm run lint:packages # publint + arethetypeswrong, against real tarballs
 ```
@@ -101,7 +103,7 @@ pnpm run lint:packages # publint + arethetypeswrong, against real tarballs
 `pnpm run format` fixes anything `lint:format` reports. It covers the whole
 repository, not just TypeScript -- Markdown, JSON, and YAML included.
 
-CI runs exactly these. The last four are the ones people forget: `lint:knip`
+CI runs exactly these. Four of them are the ones people forget: `lint:knip`
 catches an export you added but never wired into the barrel, `lint:commits`
 catches a message the commit queue would refuse to land, `lint:packages` catches
 a `package.json` change that breaks resolution for CommonJS or ESM consumers,
@@ -116,15 +118,57 @@ to -- rather than disabling the check inline.
 
 Coverage, if you want to see it:
 
-```shell
+```bash
 pnpm run test:coverage
 ```
+
+## Writing Markdown
+
+Markdown is a product here rather than a convenience. Every package README goes
+to npm, and every doc comment becomes a page in the API reference the portal
+publishes. `pnpm run lint:md` holds both to the same rules, in three passes:
+
+- **markdownlint** for structure -- heading order, empty links, list shape.
+- **remark** for meaning -- the language on a fence, and whether a relative link
+  or heading anchor resolves.
+- **the doc comments**, which `tools/check-jsdoc-markdown.mts` lifts out of the
+  TypeScript sources, strips the asterisk column from, and sends through those
+  same remark rules. Two thirds of this repository's fenced blocks live there,
+  where a Markdown linter would never look.
+
+Prettier owns the shape of a file: wrapping at 80, indentation, blank lines,
+which fence character. The rules that would argue with it are switched off, so
+`pnpm run format` and `pnpm run lint:md` never disagree.
+
+A fenced block has to name one of these:
+
+```text
+bash  console  diff  json  text  ts  yaml
+```
+
+The portal highlights a block by that flag and holds its own pages to the same
+list, so one it does not know is one it cannot style. `ts` rather than
+`typescript`, because the generated reference inherits `js` fences from
+declarations this repository does not write, and the short forms read as a pair.
+
+### In the editor
+
+Open the repository in VS Code and take the recommended extensions. Both linters
+then run over a Markdown file as you type, and Prettier formats it on save.
+markdownlint fixes what it can, and remark reports the rest against
+`.remarkrc.mjs` -- the file CI reads, so the squiggles are the failures.
+
+The doc comments are the exception. Nothing reads those in the editor, because
+the checker that lifts them out is a task rather than a language server, so
+`pnpm run lint:md` is what catches a bad fence in an `@example`.
+
+The dev container installs the extensions for you.
 
 ## Changesets
 
 Any change that affects a published package needs a changeset:
 
-```shell
+```bash
 pnpm exec changeset
 ```
 
@@ -207,7 +251,7 @@ comment.
 
 To read the message it would land, without landing anything:
 
-```shell
+```bash
 pnpm land <number> --dry-run
 ```
 

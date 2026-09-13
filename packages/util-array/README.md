@@ -6,7 +6,7 @@ searching, and combining arrays.
 
 ## Installation
 
-```sh
+```bash
 npm install @openinf/util-array
 ```
 

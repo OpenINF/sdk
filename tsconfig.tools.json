@@ -1,0 +1,43 @@
+{
+  // The repository's own tooling: the build tasks and the checkers in
+  // `tools/`. Nothing here is published, so nothing is emitted -- this exists
+  // so the types in those files are checked rather than decorative, and so an
+  // editor opening one resolves its imports the way Node will.
+  "extends": "./tsconfig.base.json",
+
+  "compilerOptions": {
+    // Node runs these files directly, stripping the types as it reads them.
+    // That means an import names the file on disk, `./landing.mts` and not
+    // `./landing.js`, which TypeScript otherwise refuses. Nothing is emitted,
+    // so there is no output for the extension to be wrong about.
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false,
+
+    // Node's own resolution, since Node is what runs them.
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+
+    // The remark configuration is `.mjs` rather than `.mts` on purpose -- see
+    // the note in `.remarkrc.mjs` -- so its types are the JSDoc in it, and
+    // saying they are checked means checking them.
+    "allowJs": true,
+    "checkJs": true,
+
+    // A style rule rather than a safety one, and the commit queue's modules
+    // are kept byte-identical with the copies in OpenINF/.github and the
+    // portal. Rewriting `groups.token` as `groups['token']` here would make
+    // the next sync a merge instead of a copy.
+    "noPropertyAccessFromIndexSignature": false
+  },
+
+  "include": [
+    "build/**/*.mts",
+    "tools/**/*.mts",
+    "build/shared/*.mjs",
+    ".remarkrc.mjs",
+    "documentation/.remarkrc.mjs"
+  ]
+}

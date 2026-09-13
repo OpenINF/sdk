@@ -9,7 +9,7 @@ caller-supplied keys onto a target.
 `deepAssign` and `deepMixin` allowed an attacker-influenced object to mutate
 `Object.prototype` for the entire realm:
 
-```js
+```ts
 deepAssign({}, JSON.parse('{"__proto__":{"isAdmin":true}}'));
 ({}).isAdmin; // → true, on every object in the process
 ```

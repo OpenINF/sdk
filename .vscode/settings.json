@@ -22,10 +22,44 @@
     "editor.formatOnSave": true
   },
 
+  // Markdown is a product here: package READMEs ship to npm and doc comments
+  // become the API reference the portal publishes. Prettier owns the shape of
+  // a file, markdownlint fixes what it can of the rest on save, and remark
+  // reports the things neither can fix -- a fence tagged with a language the
+  // portal cannot highlight, a relative link that goes nowhere.
   "[markdown]": {
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.markdownlint": "explicit"
+    },
+    // Prose, not code: wrap it where the window ends rather than letting a
+    // paragraph run off the side. Prettier still reflows it to 80 on save.
+    "editor.wordWrap": "bounded",
+    "editor.wordWrapColumn": 80,
+    "editor.quickSuggestions": {
+      "comments": false,
+      "other": false,
+      "strings": false
+    },
+    "editor.unicodeHighlight.ambiguousCharacters": false
   },
+
+  // Needs https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-remark
+  // Report against `.remarkrc.mjs` or not at all. Without this the extension
+  // falls back to its own defaults, and the squiggles in the editor stop
+  // being the failures `lint:md` will produce.
+  "remark.requireConfig": true,
+
+  // Preview what the portal will show, near enough: GitHub-flavoured tables
+  // and the heading anchors the API reference links between.
+  "markdown.preview.typographer": true,
+  "markdown.validate.enabled": true,
+  "markdown.validate.fileLinks.enabled": "error",
+  "markdown.validate.fragmentLinks.enabled": "error",
+  "markdown.validate.referenceLinks.enabled": "error",
+  "markdown.validate.unusedLinkDefinitions.enabled": "warning",
+  "markdown.updateLinksOnFileMove.enabled": "always",
 
   "[yaml]": { "editor.formatOnSave": true },
 

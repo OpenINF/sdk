@@ -84,6 +84,8 @@
         "streetsidesoftware.code-spell-checker",
         // https://marketplace.visualstudio.com/items?itemName=travisthetechie.write-good-linter
         "travisthetechie.write-good-linter",
+        // https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-remark
+        "unifiedjs.vscode-remark",
         // https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one
         "yzhang.markdown-all-in-one"
       ]

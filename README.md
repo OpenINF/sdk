@@ -62,7 +62,7 @@ Errors are classes, not string codes, so callers can catch by type.
 
 Install only what you need:
 
-```shell
+```bash
 npm install @openinf/util
 ```
 
