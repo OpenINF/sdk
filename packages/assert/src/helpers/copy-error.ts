@@ -8,17 +8,8 @@
  * @returns The copy.
  */
 export function copyError(source: Error): Error {
-  const keys = Object.keys(source);
-  const target = Object.create(Object.getPrototypeOf(source)) as Error;
-
-  for (const key of keys) {
-    const desc = Object.getOwnPropertyDescriptor(source, key);
-    if (desc !== undefined) {
-      Object.defineProperty(target, key, desc);
-    }
-  }
-
-  Object.defineProperty(target, 'message', { value: source.message });
-
-  return target;
+  return Object.create(
+    Object.getPrototypeOf(source),
+    Object.getOwnPropertyDescriptors(source)
+  ) as Error;
 }
