@@ -3,7 +3,7 @@
 
 import { hasProperties } from '@openinf/util-object';
 
-import { Guard } from '../types';
+import type { Guard } from '../types';
 
 // https://github.com/dtjohnson/typeshield/blob/master/src/guards/has-interface.ts
 
@@ -27,9 +27,14 @@ export function hasInterface<T>(
   interfaceName: string,
   validators: InterfaceValidators<T> | (() => InterfaceValidators<T>)
 ): Guard<T> {
-  // Need to cast to any as TS doesn't support symbol indexers so hasProperties
-  // won't take it.
-  const guard = hasProperties(validators as any) as Guard<T>;
+  const guard: Guard<T> = (value: unknown): value is T => {
+    const resolvedValidators =
+      typeof validators === 'function' ? validators() : validators;
+
+    // InterfaceValidators is a finite mapped type, while hasProperties accepts
+    // an open validator map. They describe the same runtime shape here.
+    return hasProperties(resolvedValidators as any)(value);
+  };
   guard.expectation = `implement '${interfaceName}'`;
   return guard;
 }

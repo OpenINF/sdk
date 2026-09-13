@@ -49,13 +49,17 @@ export function hasInterface<T>(
       return false;
     }
 
-    const resolvedValidators: Record<string, Guard> =
+    const resolvedValidators =
       typeof validators === 'function' ? validators() : validators;
+    const validatorRecord = resolvedValidators as Record<PropertyKey, Guard>;
+    const valueRecord = value as Record<PropertyKey, unknown>;
 
-    return Object.keys(resolvedValidators).every((key) =>
-      // key comes from Object.keys(resolvedValidators), so it is guaranteed present.
-      // oxlint-disable-next-line typescript/no-unnecessary-type-assertion -- oxlint-tsgolint doesn't currently honor noUncheckedIndexedAccess; tsc does require this.
-      resolvedValidators[key]!((value as Record<string, unknown>)[key])
+    return Reflect.ownKeys(resolvedValidators).every(
+      (key) =>
+        key in valueRecord &&
+        // key comes from Reflect.ownKeys(resolvedValidators), so it is guaranteed present.
+        // oxlint-disable-next-line typescript/no-unnecessary-type-assertion -- oxlint-tsgolint doesn't currently honor noUncheckedIndexedAccess; tsc does require this.
+        validatorRecord[key]!(valueRecord[key])
     );
   };
   guard.expectation = `implement '${interfaceName}'`;

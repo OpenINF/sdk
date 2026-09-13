@@ -28,6 +28,31 @@ describe(hasInterface.name, () => {
     assert.strictEqual(isPoint({ x: 1, y: 'two' }), false);
   });
 
+  it('should resolve and apply validators-producing functions', () => {
+    let resolutions = 0;
+    const isLazyPoint = hasInterface<Point>('Point', () => {
+      resolutions++;
+      return {
+        x: (value): value is number => typeof value === 'number',
+        y: (value): value is number => typeof value === 'number',
+      };
+    });
+
+    assert.strictEqual(isLazyPoint({ x: 1, y: 2 }), true);
+    assert.strictEqual(isLazyPoint({ x: 1, y: 'two' }), false);
+    assert.strictEqual(isLazyPoint({}), false);
+    assert.strictEqual(resolutions, 3);
+  });
+
+  it('should require a property even when its validator accepts undefined', () => {
+    const hasValue = hasInterface<{ value: undefined }>('HasValue', {
+      value: (value): value is undefined => value === undefined,
+    });
+
+    assert.strictEqual(hasValue({ value: undefined }), true);
+    assert.strictEqual(hasValue({}), false);
+  });
+
   it('should set an expectation describing the interface', () => {
     assert.strictEqual(isPoint.expectation, "implement 'Point'");
   });
