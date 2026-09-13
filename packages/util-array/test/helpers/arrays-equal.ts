@@ -19,6 +19,12 @@ describe(arraysEqual.name, () => {
     assert.strictEqual(arraysEqual([1, 2], [1, 3]), false);
   });
 
+  it('should compare sparse array shapes and values', () => {
+    assert.strictEqual(arraysEqual(new Array(1), [123]), false);
+    assert.strictEqual(arraysEqual(new Array(1), [undefined]), false);
+    assert.strictEqual(arraysEqual(new Array(1), new Array(1)), true);
+  });
+
   it('should use a custom equality comparer when provided', () => {
     const caseInsensitive = (a: string, b: string): boolean =>
       a.toLowerCase() === b.toLowerCase();
