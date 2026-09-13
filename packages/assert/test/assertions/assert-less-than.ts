@@ -18,4 +18,8 @@ describe(assertLessThan.name, () => {
   it('should append a provided message', () => {
     assert.throws(() => assertLessThan(2, 1, 'custom'), /custom/);
   });
+  it('should throw when either operand is NaN', () => {
+    assert.throws(() => assertLessThan(Number.NaN, 1));
+    assert.throws(() => assertLessThan(1, Number.NaN));
+  });
 });
