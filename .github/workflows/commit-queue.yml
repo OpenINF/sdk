@@ -72,6 +72,9 @@ jobs:
           # exits non-zero and leaves a failed check behind, so without this
           # the first one would be cited by every attempt after it.
           LAND_CHECK_NAME: Land
+          # Do not infer that a missing or not-yet-created check passed. These
+          # are the first-party gates this repository expects on every pull.
+          LAND_REQUIRED_CHECKS: build,Analyze,CodeQL,Title and description
         run: node build/tasks/land-pull-request.mts "${NUMBER}"
 
       # The label is a request, not a state: once the queue has answered it,
