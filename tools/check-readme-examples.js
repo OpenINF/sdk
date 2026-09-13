@@ -303,6 +303,13 @@ try {
   }
 }
 
+// An example is a few statements that run and finish. One that opens a server
+// or sets an interval holds the event loop instead, and a synchronous run with
+// no bound waits on it until the CI job's own limit ends the whole thing, with
+// nothing said about which block was responsible. Ten seconds is far more than
+// any example here takes and far less than that.
+const EXAMPLE_TIMEOUT_MS = 10_000;
+
 for (const block of blocks) {
   if (block.run === '') continue;
 
@@ -311,9 +318,19 @@ for (const block of blocks) {
       cwd: scratch,
       encoding: 'utf8',
       stdio: 'pipe',
+      timeout: EXAMPLE_TIMEOUT_MS,
       env: { ...process.env, README_CLAIMS: JSON.stringify(block.claims) },
     });
   } catch (error) {
+    if (error.code === 'ETIMEDOUT') {
+      failures.push(
+        `  ${block.name}/README.md:${block.line}\n` +
+          `      still running after ${EXAMPLE_TIMEOUT_MS / 1000} seconds; ` +
+          'an example has to finish on its own'
+      );
+      continue;
+    }
+
     failures.push(`  ${`${error.stderr ?? ''}`.trimEnd()}`);
   }
 }
