@@ -169,6 +169,14 @@ Developer Certificate of Origin, reproduced in full in the pull request
 template, and only the author can certify it -- an assistant discloses itself
 with `Assisted-by:` and signs nothing. `git commit -s` writes the line for you.
 
+`Co-authored-by:` is for people, and the check refuses one naming an assistant
+or a bot account. Authorship is a claim only a person can make, and an agent
+writing its own commit message reaches for that trailer by habit. It refuses on
+the `[bot]` suffix, which GitHub reserves so that no person can hold it, on the
+addresses the agents commit under, and on a handful of product names. Only the
+last can reach a person. If it ever refuses a real co-author, narrow the pattern
+in the same pull request rather than dropping the credit.
+
 `pnpm run lint:commits` holds every commit on your branch to all of this, and
 cross-checks its own reading of the trailers against `git interpret-trailers`,
 so the rules cannot quietly drift from the tool they describe. Commits written
