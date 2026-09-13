@@ -13,6 +13,7 @@
     "lint": "pnpm -r run lint",
     "lint:commits": "node build/tasks/verify/verify-commits.mts",
     "lint:examples": "node tools/check-readme-examples.js",
+    "lint:fences": "node tools/check-fence-languages.js",
     "lint:format": "prettier --check .",
     "lint:knip": "knip --no-progress",
     "lint:packages": "node tools/check-package-quality.js",

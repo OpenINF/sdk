@@ -6,7 +6,7 @@ deep comparison, cloning, merging, mixing in, and omitting keys.
 
 ## Installation
 
-```sh
+```bash
 npm install @openinf/util-object
 ```
 

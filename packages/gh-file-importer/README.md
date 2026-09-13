@@ -5,7 +5,7 @@ local directory.
 
 ## Installation
 
-```sh
+```bash
 npm install @openinf/gh-file-importer
 ```
 

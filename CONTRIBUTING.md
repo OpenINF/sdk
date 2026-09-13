@@ -7,7 +7,7 @@ packages that share a single version number.
 
 Node.js `>=20.19.0` and pnpm 11 are required.
 
-```shell
+```bash
 pnpm install
 pnpm run build
 pnpm run test
@@ -86,7 +86,7 @@ Conventions worth knowing before your first PR:
 
 ## Before you open a PR
 
-```shell
+```bash
 pnpm run build
 pnpm run lint          # oxlint, type-aware
 pnpm run test
@@ -94,6 +94,7 @@ pnpm run lint:format   # prettier, repo-wide
 pnpm run lint:knip     # unused files, exports, and dependencies
 pnpm run lint:commits  # commit message format and sign-off
 pnpm run lint:examples # README examples compile and claim true results
+pnpm run lint:fences   # every code fence names a language the portal knows
 pnpm run lint:spelling # cspell, en-US
 pnpm run lint:packages # publint + arethetypeswrong, against real tarballs
 ```
@@ -116,7 +117,7 @@ to -- rather than disabling the check inline.
 
 Coverage, if you want to see it:
 
-```shell
+```bash
 pnpm run test:coverage
 ```
 
@@ -124,7 +125,7 @@ pnpm run test:coverage
 
 Any change that affects a published package needs a changeset:
 
-```shell
+```bash
 pnpm exec changeset
 ```
 
@@ -207,7 +208,7 @@ comment.
 
 To read the message it would land, without landing anything:
 
-```shell
+```bash
 pnpm land <number> --dry-run
 ```
 

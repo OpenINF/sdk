@@ -10,7 +10,7 @@ its own check.
 
 ## Installation
 
-```sh
+```bash
 npm install @openinf/util
 ```
 
