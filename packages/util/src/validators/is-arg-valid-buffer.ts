@@ -6,7 +6,6 @@
 import { isString } from '@openinf/util-core';
 import { InvalidArgTypeError } from '@openinf/util-errors';
 
-import { isBuffer } from '../guards/is-buffer';
 import { assertValue } from '../helpers/assert-value';
 
 /**
@@ -24,7 +23,7 @@ export function isArgValidBuffer(
   argName: string = 'buffer'
 ): void {
   assertValue(isString, argName);
-  if (!isBuffer(buffer)) {
+  if (!ArrayBuffer.isView(buffer)) {
     throw new InvalidArgTypeError(
       argName,
       ['Buffer', 'TypedArray', 'DataView'],
