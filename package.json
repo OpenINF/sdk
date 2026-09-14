@@ -24,11 +24,11 @@
     "test": "pnpm -r run test && pnpm run test:queue",
     "test:coverage": "pnpm -r run test:coverage",
     "test:queue": "node --test build/shared/*.test.mts",
-    "version-packages": "changeset version && pnpm install --lockfile-only"
+    "version-packages": "changeset version && pnpm install --lockfile-only && prettier --write --ignore-path=/dev/null \"packages/*/CHANGELOG.md\""
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
-    "@changesets/cli": "^2.31.1",
+    "@changesets/cli": "^3.0.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
     "@types/node": "^26.1.2",
     "cspell": "^10.0.1",
