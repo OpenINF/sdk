@@ -11,7 +11,7 @@ export type Uint32 = Tagged<number, '__Uint32__'>;
 /**
  * Detects whether `value` is classified as a `Uint32`.
  * @since 3.0.0
- * @category Numbers & Dates
+ * @category Numbers and Dates
  * @param value The value to be identified.
  * @returns `true` if `value` is a uint32; else, `false`.
  * @example
@@ -26,4 +26,4 @@ export type Uint32 = Tagged<number, '__Uint32__'>;
 export function isUint32(value: unknown): value is Uint32 {
   return typeof value === 'number' && value === value >>> 0;
 }
-(isUint32 as Guard).expectation = 'be a `Uint32`';
+(isUint32 as Guard).expectation = 'be a Uint32';

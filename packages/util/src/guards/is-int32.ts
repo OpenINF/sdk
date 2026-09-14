@@ -11,7 +11,7 @@ export type Int32 = Tagged<number, '__Int32__'>;
 /**
  * Detects whether `value` is classified as an `Int32`.
  * @since 3.0.0
- * @category Numbers & Dates
+ * @category Numbers and Dates
  * @param value The value to be identified.
  * @returns `true` if `value` is an int32; else, `false`.
  * @example

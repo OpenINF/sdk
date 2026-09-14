@@ -10,9 +10,22 @@ import type { Guard, Tagged } from '@openinf/util-core';
 export type Integer = Tagged<number, '__Integer__'>;
 
 /**
- * Guard that tests if the value is an integer
- * @param value The value to test
- * @returns The result of the test
+ * Detects whether `value` is an integer: a number primitive with no
+ * fractional part. A `Number` object is refused.
+ * @since 3.0.0
+ * @category Numbers and Dates
+ * @param value The value to identify.
+ * @returns `true` if `value` is an integer; else, `false`.
+ * @example
+ * ```ts
+ * import { isInteger } from '@openinf/util';
+ *
+ * isInteger(3); // ↪ true
+ *
+ * isInteger(3.5); // ↪ false
+ *
+ * isInteger('3'); // ↪ false
+ * ```
  */
 export function isInteger(value: unknown): value is Integer {
   return isNumber(value) && Number.isInteger(value);

@@ -38,6 +38,7 @@ export * from './guards/is-finite-number';
 export * from './guards/is-int32';
 export * from './guards/is-integer';
 export * from './guards/is-iterator';
+export * from './guards/is-length';
 export * from './guards/is-nan';
 export * from './guards/is-negative-integer';
 export * from './guards/is-negative';

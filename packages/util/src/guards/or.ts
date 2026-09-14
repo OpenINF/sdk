@@ -30,6 +30,7 @@ export function or<T1, T2, T3, T4>(
 /**
  * Combines guards into a guard that tests if a value satisfies at least one
  * of them.
+ * @since 3.0.0
  * @param guards The guards to combine.
  * @returns A guard that tests if a value satisfies any of `guards`.
  * @example

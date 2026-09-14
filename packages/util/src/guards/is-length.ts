@@ -1,7 +1,14 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
+import type { Guard, Tagged } from '@openinf/util-core';
+
 import { isInteger } from './is-integer';
+
+/**
+ * A number usable as the length of an array-like value.
+ */
+export type Length = Tagged<number, '__Length__'>;
 
 /**
  * Checks if `value` is a valid array-like length.
@@ -23,6 +30,7 @@ import { isInteger } from './is-integer';
  * isLength('3'); // ↪ false
  * ```
  */
-export function isLength(value: unknown): boolean {
+export function isLength(value: unknown): value is Length {
   return isInteger(value) && value > -1 && value <= Number.MAX_SAFE_INTEGER;
 }
+(isLength as Guard).expectation = 'be a valid length';

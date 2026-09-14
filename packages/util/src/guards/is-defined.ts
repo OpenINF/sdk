@@ -24,4 +24,4 @@ import type { Guard } from '@openinf/util-core';
 export function isDefined<T>(value: T | undefined | null | void): value is T {
   return value !== undefined && value !== null;
 }
-(isDefined as Guard).expectation = 'not be of type `undefined` or `null`';
+(isDefined as Guard).expectation = 'not be undefined or null';

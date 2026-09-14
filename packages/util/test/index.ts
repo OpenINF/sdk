@@ -21,6 +21,7 @@ describe('index', () => {
       'isFunction',
       'isInt32',
       'isInteger',
+      'isLength',
       'isNaN',
       'isNegativeInteger',
       'isNegative',
