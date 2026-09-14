@@ -6,7 +6,33 @@ import { describe, it } from 'node:test';
 import { isAccessorDescriptor } from '../../src/guards/is-accessor-descriptor';
 
 describe(isAccessorDescriptor.name, () => {
-  it('should always return true (current stub implementation)', () => {
-    assert.strictEqual(isAccessorDescriptor(), true);
+  it('should detect getter and setter descriptors', () => {
+    assert.strictEqual(isAccessorDescriptor({ get: () => 1 }), true);
+    assert.strictEqual(
+      isAccessorDescriptor({ set: (_value: number) => {} }),
+      true
+    );
+    assert.strictEqual(
+      isAccessorDescriptor({
+        get: undefined,
+        set: undefined,
+        enumerable: false,
+        configurable: true,
+      }),
+      true
+    );
+  });
+
+  it('should reject invalid and non-accessor descriptors', () => {
+    assert.strictEqual(isAccessorDescriptor({}), false);
+    assert.strictEqual(isAccessorDescriptor({ value: 1 }), false);
+    assert.strictEqual(isAccessorDescriptor({ get: () => 1, value: 1 }), false);
+    assert.strictEqual(isAccessorDescriptor({ get: 1 }), false);
+    assert.strictEqual(isAccessorDescriptor({ set: 'setter' }), false);
+    assert.strictEqual(
+      isAccessorDescriptor({ get: undefined, enumerable: 1 }),
+      false
+    );
+    assert.strictEqual(isAccessorDescriptor(null), false);
   });
 });
