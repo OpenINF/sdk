@@ -31,4 +31,22 @@ describe(type.name, () => {
       'function'
     );
   });
+
+  it('should ignore a forged Symbol.toStringTag', () => {
+    assert.strictEqual(type({ [Symbol.toStringTag]: 'Date' }), 'object');
+    assert.strictEqual(type({ [Symbol.toStringTag]: 'Error' }), 'object');
+  });
+
+  it('should classify genuine objects with misleading tags', () => {
+    const date = Object.defineProperty(new Date(), Symbol.toStringTag, {
+      value: 'String',
+    });
+    assert.strictEqual(type(date), 'date');
+  });
+
+  it('should return object for a revoked object proxy', () => {
+    const { proxy, revoke } = Proxy.revocable({}, {});
+    revoke();
+    assert.strictEqual(type(proxy), 'object');
+  });
 });

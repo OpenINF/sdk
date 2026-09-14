@@ -5,16 +5,7 @@
 
 import { isObject } from '@openinf/util-core';
 
-import { getTag } from '../_internal/_get-tag';
-
-const class2type: Record<string, string> = {};
-
-// Populate the class2type map
-'Boolean Number String Function Array Date RegExp Object Error Symbol'
-  .split(' ')
-  .forEach((name) => {
-    class2type[`[object ${name}]`] = name.toLowerCase();
-  });
+import { _tagTester } from '../_internal/_tag-tester';
 
 /**
  * Determines the internal JavaScript [[Class]] of `obj`.
@@ -28,7 +19,21 @@ export function type(obj: unknown): string {
   if (obj === undefined) {
     return 'undefined';
   }
-  return isObject(obj) || typeof obj === 'function'
-    ? class2type[getTag(obj)] || 'object'
-    : typeof obj;
+  if (!isObject(obj) && typeof obj !== 'function') {
+    return typeof obj;
+  }
+  if (typeof obj === 'function') return 'function';
+  try {
+    if (Array.isArray(obj)) return 'array';
+  } catch {
+    return 'object';
+  }
+  if (_tagTester('Boolean')(obj)) return 'boolean';
+  if (_tagTester('Number')(obj)) return 'number';
+  if (_tagTester('String')(obj)) return 'string';
+  if (_tagTester('Symbol')(obj)) return 'symbol';
+  if (_tagTester('Date')(obj)) return 'date';
+  if (_tagTester('RegExp')(obj)) return 'regexp';
+  if (_tagTester('Error')(obj)) return 'error';
+  return 'object';
 }
