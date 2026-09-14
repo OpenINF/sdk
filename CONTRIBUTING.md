@@ -5,7 +5,15 @@ packages that share a single version number.
 
 ## Getting set up
 
-Node.js `>=20.19.0` and pnpm 11 are required.
+Node.js `>=24.15.0` and pnpm 11 are required. `.nvmrc` pins a version that meets
+it, and a version manager that reads it will pick that up.
+
+That is newer than the `>=20.19.0` the published packages declare, because the
+two are for different people. Installing an `@openinf/*` package needs only what
+the built code uses. Working on the repository also runs its tooling: the `.mts`
+tasks and checkers are handed to Node as TypeScript, and the package tests mock
+modules with the `exports` option of `mock.module`, which Node 24.15.0 is the
+first 24.x release to accept.
 
 ```bash
 pnpm install
