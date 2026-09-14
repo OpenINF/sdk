@@ -3,14 +3,14 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { isArgValidString } from '../../src/validators/is-arg-valid-string';
+import { validateString } from '../../src/validators/validate-string';
 
-describe(isArgValidString.name, () => {
+describe(validateString.name, () => {
   it('should not throw for a string', () => {
-    assert.doesNotThrow(() => isArgValidString('foo', 'argName'));
+    assert.doesNotThrow(() => validateString('foo', 'argName'));
   });
 
   it('should throw for a non-string', () => {
-    assert.throws(() => isArgValidString(42, 'argName'));
+    assert.throws(() => validateString(42, 'argName'));
   });
 });

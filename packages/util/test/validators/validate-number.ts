@@ -3,14 +3,14 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { isArgValidNumber } from '../../src/validators/is-arg-valid-number';
+import { validateNumber } from '../../src/validators/validate-number';
 
-describe(isArgValidNumber.name, () => {
+describe(validateNumber.name, () => {
   it('should not throw for a number', () => {
-    assert.doesNotThrow(() => isArgValidNumber(42, 'argName'));
+    assert.doesNotThrow(() => validateNumber(42, 'argName'));
   });
 
   it('should throw for a non-number', () => {
-    assert.throws(() => isArgValidNumber('42', 'argName'));
+    assert.throws(() => validateNumber('42', 'argName'));
   });
 });

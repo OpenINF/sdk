@@ -3,22 +3,22 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { isArgValidInt32 } from '../../src/validators/is-arg-valid-int32';
+import { validateInt32 } from '../../src/validators/validate-int32';
 
-describe(isArgValidInt32.name, () => {
+describe(validateInt32.name, () => {
   it('should not throw for a valid int32 within range', () => {
-    assert.doesNotThrow(() => isArgValidInt32(5, 'argName', 0, 10));
+    assert.doesNotThrow(() => validateInt32(5, 'argName', 0, 10));
   });
 
   it('should throw for a non-number', () => {
-    assert.throws(() => isArgValidInt32('abc', 'argName'));
+    assert.throws(() => validateInt32('abc', 'argName'));
   });
 
   it('should throw for a non-integer number', () => {
-    assert.throws(() => isArgValidInt32(5.5, 'argName'));
+    assert.throws(() => validateInt32(5.5, 'argName'));
   });
 
   it('should throw when out of the specified range', () => {
-    assert.throws(() => isArgValidInt32(20, 'argName', 0, 10));
+    assert.throws(() => validateInt32(20, 'argName', 0, 10));
   });
 });

@@ -11,16 +11,15 @@ import type { Integer } from '../guards/is-integer';
 import { assertValue } from '../helpers/assert-value';
 
 /**
- * Check to make sure the appropriate number of arguments are provided for a
- * public function.
- *
- * Throws an error if it fails.
- * @param fnName The function name.
- * @param minCount The minimum number of arguments to allow for the function call.
- * @param maxCount The maximum number of argument to allow for the function call.
- * @param argCount The actual number of arguments provided.
+ * Asserts that a function was called with between `minCount` and `maxCount`
+ * arguments.
+ * @param fnName The function's name, used in the error message.
+ * @param minCount The fewest arguments the function accepts.
+ * @param maxCount The most arguments the function accepts.
+ * @param argCount How many it was actually given.
+ * @throws {InvalidArgsNumberError} if `argCount` falls outside the range.
  */
-export function isArgCountValid(
+export function validateArgCount(
   fnName: string,
   minCount: Integer,
   maxCount: Integer,

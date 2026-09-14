@@ -11,10 +11,11 @@ import { assertValue } from '../helpers/assert-value';
 /**
  * Asserts that `buffer` is a `Buffer`, `TypedArray`, or `DataView`.
  *
- * The name follows Node's usage, where an argument called `buffer` means any
- * view over bytes rather than a `Buffer` in particular: `fs.read` and its
- * neighbors all document theirs as `Buffer | TypedArray | DataView` and accept
- * a `Uint8Array`. So does this. For the narrower question of whether a value
+ * The name is Node's, and so is its meaning: an argument called `buffer` is
+ * any view over bytes rather than a `Buffer` in particular. `fs.read` and its
+ * neighbors document theirs as `Buffer | TypedArray | DataView` and accept a
+ * `Uint8Array`, and Node, Deno and Bun all implement this same check under
+ * this same name. So does this. For the narrower question of whether a value
  * is a Node `Buffer` specifically, which is what unlocks methods like
  * `toString('utf8')` that a plain `Uint8Array` does not have, use `isBuffer`.
  *
@@ -28,7 +29,7 @@ import { assertValue } from '../helpers/assert-value';
  * @param argName The argument name to report in the error message.
  * @throws {InvalidArgTypeError} if `buffer` is not buffer-like.
  */
-export function isArgValidBuffer(
+export function validateBuffer(
   buffer: unknown,
   argName: string = 'buffer'
 ): void {

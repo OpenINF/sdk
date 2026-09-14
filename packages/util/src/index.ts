@@ -11,16 +11,16 @@ export * from '@openinf/util-core';
 export * from './assertions/assert-is-defined';
 
 // argument validators
-export * from './validators/is-arg-count-valid';
-export * from './validators/is-arg-valid-array';
-export * from './validators/is-arg-valid-boolean';
-export * from './validators/is-arg-valid-buffer';
-export * from './validators/is-arg-valid-function';
-export * from './validators/is-arg-valid-int32';
-export * from './validators/is-arg-valid-number';
-export * from './validators/is-arg-valid-object';
-export * from './validators/is-arg-valid-string';
-export * from './validators/is-arg-valid-uint32';
+export * from './validators/validate-arg-count';
+export * from './validators/validate-array';
+export * from './validators/validate-boolean';
+export * from './validators/validate-buffer';
+export * from './validators/validate-function';
+export * from './validators/validate-int32';
+export * from './validators/validate-number';
+export * from './validators/validate-object';
+export * from './validators/validate-string';
+export * from './validators/validate-uint32';
 
 // helpers
 export * from './helpers/generate-argument-error-message';

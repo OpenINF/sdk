@@ -13,16 +13,14 @@ import { isLength } from '../guards/is-length';
 import { assertValue } from '../helpers/assert-value';
 
 /**
- * Detects whether an array argument conforms to specified validity
- * parameters.
- * @param value The actual argument value.
- * @param argName The name of the argument in question.
- * @param minLength The minimum length of the array.
- * @throws { InvalidArgTypeError } if `value` is not an Array.
- * @throws { InvalidArgValueError } if the array length of `value` is less than
- * specified by `minLength`.
+ * Asserts that `value` is an array holding at least `minLength` elements.
+ * @param value The argument to check.
+ * @param argName The argument's name, used in the error message.
+ * @param minLength The fewest elements the array may hold.
+ * @throws {InvalidArgTypeError} if `value` is not an array.
+ * @throws {InvalidArgValueError} if it holds fewer than `minLength` elements.
  */
-export function isArgValidArray(
+export function validateArray(
   value: unknown,
   argName: string,
   minLength: number
@@ -31,7 +29,9 @@ export function isArgValidArray(
   assertValue(isLength, minLength);
   if (!isArray(value)) throw new InvalidArgTypeError(argName, 'Array', value);
   if (value.length < minLength) {
-    const reason = `must be longer than ${minLength}`;
+    // Node's wording, which it moved to from "must be longer than": the bound
+    // is inclusive, and an array holding exactly `minLength` elements passes.
+    const reason = `must have a length of at least ${minLength}`;
     throw new InvalidArgValueError(argName, value, reason);
   }
 }

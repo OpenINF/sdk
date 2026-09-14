@@ -3,14 +3,14 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { isArgValidFunction } from '../../src/validators/is-arg-valid-function';
+import { validateFunction } from '../../src/validators/validate-function';
 
-describe(isArgValidFunction.name, () => {
+describe(validateFunction.name, () => {
   it('should not throw for a function', () => {
-    assert.doesNotThrow(() => isArgValidFunction(() => {}, 'argName'));
+    assert.doesNotThrow(() => validateFunction(() => {}, 'argName'));
   });
 
   it('should throw for a non-function', () => {
-    assert.throws(() => isArgValidFunction('not a function', 'argName'));
+    assert.throws(() => validateFunction('not a function', 'argName'));
   });
 });
