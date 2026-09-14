@@ -3,6 +3,8 @@
 
 // Adapted from TypeShield.
 
+import type { Guard } from '@openinf/util-core';
+
 /**
  * Type guard that detects whether `value` is an `any` value (always true).
  * @since 3.0.0
@@ -12,3 +14,4 @@
 export function isAny(_value: unknown): _value is any {
   return true;
 }
+(isAny as Guard).expectation = 'be any value';

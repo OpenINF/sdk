@@ -18,6 +18,7 @@ export type InterfaceValidators<T> = {
 
 /**
  * Creates a guard that tests if a value implements a specified interface.
+ * @since 3.0.0
  * @param interfaceName The interface name to report in the error message.
  * @param validators The property validators (or function that returns them).
  * @returns The guard.

@@ -26,7 +26,7 @@ export type NaN = Tagged<typeof NaN, '__NaN__'>;
  *
  * util.isNaN(NaN); // ↪ true
  *
- * util.isNaN(new Number(NaN)); // ↪ true
+ * util.isNaN(new Number(NaN)); // ↪ false
  *
  * util.isNaN(undefined); // ↪ false
  * ```

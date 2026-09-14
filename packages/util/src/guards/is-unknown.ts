@@ -3,8 +3,10 @@
 
 // Adapted from TypeShield.
 
+import type { Guard } from '@openinf/util-core';
+
 /**
- * Detects whether `value` is is an `unknown` value (always true).
+ * Detects whether `value` is an `unknown` value (always true).
  * @since 3.0.0
  * @param _value The value to identify.
  * @returns `true` if `value` is `unknown` (always).
@@ -12,3 +14,4 @@
 export function isUnknown(_value: unknown): _value is unknown {
   return true;
 }
+(isUnknown as Guard).expectation = 'be any value';
