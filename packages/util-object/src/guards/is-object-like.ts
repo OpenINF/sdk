@@ -14,7 +14,7 @@ export type ObjectLike = Tagged<Record<string, unknown>, '__ObjectLike__'>;
  * has a `typeof` result of "object", its exclusion is special-cased to avoid
  * false-positives.
  * @since 3.0.0
- * @category Fundamental Object
+ * @category Fundamental Objects
  * @param value The value to identify.
  * @returns `true` if `value` is an object; else, `false`.
  * @example

@@ -3,6 +3,7 @@
 
 // Adapted from jQuery
 
+import type { Guard } from '@openinf/util-core';
 import { isArray, isFunction, isNullish } from '@openinf/util-core';
 
 /**
@@ -44,3 +45,4 @@ export function isArrayLike<T = unknown>(
     length <= Number.MAX_SAFE_INTEGER
   );
 }
+(isArrayLike as Guard).expectation = 'be array-like';

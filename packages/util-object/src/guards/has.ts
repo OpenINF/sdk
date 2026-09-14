@@ -4,7 +4,7 @@
 /**
  * Detects whether `key` is a direct or inherited property of `obj`.
  * @since 3.0.0
- * @category Object
+ * @category Fundamental Objects
  * @param obj The object to query.
  * @param key A property name.
  * @returns `true` if `key` exists in `obj`; else, `false`.

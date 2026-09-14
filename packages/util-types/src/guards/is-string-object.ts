@@ -6,6 +6,7 @@
 import { isObjectLike } from '@openinf/util-object';
 
 import { _tagTester } from '../_internal/_tag-tester';
+import type { Guard } from '../types';
 
 /**
  * Detects whether `value` is classified as a
@@ -26,3 +27,4 @@ export function isStringObject(
 ): value is object & { valueOf(): string } {
   return isObjectLike(value) && _tagTester('String')(value);
 }
+(isStringObject as Guard).expectation = 'be a String object';
