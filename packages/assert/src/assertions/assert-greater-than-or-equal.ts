@@ -17,7 +17,7 @@ export function assertGreaterThanOrEqual(
   b: number,
   stackCrawlMark?: AnyFunction
 ): void {
-  if (a < b) {
+  if (!(a >= b)) {
     fail(`Expected ${a} >= ${b}`, stackCrawlMark || assertGreaterThanOrEqual);
   }
 }
