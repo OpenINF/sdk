@@ -6,7 +6,7 @@
  * is `key`, or `undefined` if no such property exists (that is, a property
  * directly present on the object and not in the object's prototype chain).
  * @since 3.0.0
- * @category Object
+ * @category Fundamental Objects
  * @param obj The target object in which to look for the property.
  * @param key The name of the property to get a property descriptor for.
  * @returns The property descriptor object for `key` if `key` exists in `obj`;

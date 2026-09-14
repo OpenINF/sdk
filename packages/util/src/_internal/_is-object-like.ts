@@ -14,7 +14,7 @@ import type { Guard } from '@openinf/util-core';
  * [`Object`](https://tc39.es/ecma262/#sec-object-type) (e.g. arrays, functions,
  * objects, regexes, `new Number(0)`, and `new String('')`).
  * @since 3.0.0
- * @category Fundamental Object
+ * @category Fundamental Objects
  * @param value The value to identify.
  * @returns `true` if `value` is object-like; else, `false`.
  * @example

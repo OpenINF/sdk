@@ -5,9 +5,13 @@
 
 import { isObjectLike } from '@openinf/util-object';
 
+import type { Guard } from '../types';
+
 /**
  * Detects whether `value` is map-like, i.e. a non-array object whose
  * properties can be indexed by string.
+ * @since 3.0.0
+ * @category Keyed Collections
  * @param value The value to identify.
  * @returns `true` if `value` is map-like; else, `false`.
  * @example
@@ -22,3 +26,4 @@ export function isMapLike<T = unknown>(
 ): value is Record<string, T> {
   return isObjectLike(value) && !Array.isArray(value);
 }
+(isMapLike as Guard).expectation = 'be map-like';

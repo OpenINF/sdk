@@ -10,7 +10,7 @@
  * Detects whether `key` is an enumerable property of `obj`, walking the
  * prototype chain if `key` is inherited.
  * @since 3.0.0
- * @category Object
+ * @category Fundamental Objects
  * @param obj The object to query.
  * @param key A property name.
  * @returns `true` if `key` is an enumerable property of `obj`; else, `false`.

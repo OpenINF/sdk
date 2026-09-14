@@ -8,7 +8,7 @@ import { deepAssign } from './deep-assign';
  * `properties` object is given, its own enumerable string keyed properties
  * are assigned to the created object.
  * @since 3.0
- * @category Object
+ * @category Fundamental Objects
  * @param prototype The object to inherit from.
  * @param [properties] The properties to assign to the object.
  * @returns Returns the new object.

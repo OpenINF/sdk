@@ -4,7 +4,7 @@
 // Adapted from Node.js
 
 import { _typedArrayName } from '../_internal/_typed-array-name';
-import type { TypedArray } from '../types';
+import type { Guard, TypedArray } from '../types';
 
 /**
  * Determines if value is one of the
@@ -35,3 +35,4 @@ import type { TypedArray } from '../types';
 export function isTypedArray(value: unknown): value is TypedArray {
   return _typedArrayName(value) !== undefined;
 }
+(isTypedArray as Guard).expectation = 'be a typed array';

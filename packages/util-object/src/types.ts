@@ -1,6 +1,8 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
+import type { Guard } from '@openinf/util-core';
+
 import { _toString } from './_internal/_to-string';
 
 // Properties of the Object Prototype Object as per ES5 spec
@@ -248,6 +250,7 @@ export type TypedArrayTypeName = (typeof typedArrayTypeNames)[number];
 export function isTypedArrayName(name: unknown): name is TypedArrayTypeName {
   return typedArrayTypeNames.includes(name as TypedArrayTypeName);
 }
+(isTypedArrayName as Guard).expectation = 'be a typed array type name';
 
 export const objectTypeNames = [
   'Function',
@@ -281,6 +284,7 @@ export type ObjectTypeName = (typeof objectTypeNames)[number];
 export function isObjectTypeName(name: unknown): name is ObjectTypeName {
   return objectTypeNames.includes(name as ObjectTypeName);
 }
+(isObjectTypeName as Guard).expectation = 'be an object type name';
 
 export const primitiveTypeNames = [
   'null',
@@ -297,6 +301,7 @@ export type PrimitiveTypeName = (typeof primitiveTypeNames)[number];
 export function isPrimitiveTypeName(name: unknown): name is PrimitiveTypeName {
   return primitiveTypeNames.includes(name as PrimitiveTypeName);
 }
+(isPrimitiveTypeName as Guard).expectation = 'be a primitive type name';
 
 export type TypeName = ObjectTypeName | PrimitiveTypeName;
 

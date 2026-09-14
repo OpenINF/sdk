@@ -4,6 +4,7 @@
 import { isObjectLike } from '@openinf/util-object';
 
 import { _tagTester } from '../_internal/_tag-tester';
+import type { Guard } from '../types';
 
 /**
  * Detects whether `value` is classified as a
@@ -31,3 +32,4 @@ import { _tagTester } from '../_internal/_tag-tester';
 export function isDate(value: unknown): value is Date {
   return isObjectLike(value) && _tagTester('Date')(value);
 }
+(isDate as Guard).expectation = 'be a Date object';

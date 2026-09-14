@@ -11,7 +11,7 @@
  * known to carry the very property being tested for, which is the question
  * this answers.
  * @since 3.0.0
- * @category Object
+ * @category Fundamental Objects
  * @param obj The object to query.
  * @param key A property name.
  * @returns `true` iff `key` is an own property of `obj`; else, `false`.
