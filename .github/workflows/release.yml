@@ -46,15 +46,19 @@ jobs:
       #   - none     -> publishes whatever versions are not yet on the registry.
       # So a release is two deliberate runs: one to raise the PR, and one after
       # merging it to publish.
+      #
+      # Version 2 of the action renamed every input this step uses, and it
+      # throws rather than ignoring the old names, so the upgrade and the renames
+      # have to land together. It also takes the token as an input, defaulting to
+      # the workflow's own, and refuses a GITHUB_TOKEN environment variable that
+      # disagrees with it, so none is set here.
       - id: changesets
         uses: changesets/action@8488615a623b1b9c987934bb89eae8af6a946ac1 # v2.1.1
         with:
-          version: pnpm run version-packages
-          publish: pnpm run release
-          commit: 'Version packages'
-          title: 'Version packages'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          version-script: pnpm run version-packages
+          publish-script: pnpm run release
+          commit-message: 'Version packages'
+          pr-title: 'Version packages'
 
       # The portal renders this release's API reference from a versioned
       # Markdown artifact, which it keeps one directory of per release. Only a

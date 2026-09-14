@@ -24,7 +24,7 @@
     "test": "pnpm -r run test && pnpm run test:queue",
     "test:coverage": "pnpm -r run test:coverage",
     "test:queue": "node --test build/shared/*.test.mts",
-    "version-packages": "changeset version && pnpm install --lockfile-only"
+    "version-packages": "changeset version && pnpm install --lockfile-only && prettier --write --ignore-path=/dev/null \"packages/*/CHANGELOG.md\""
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
