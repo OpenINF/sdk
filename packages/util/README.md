@@ -31,11 +31,11 @@ Argument validators throw the corresponding `@openinf/util-errors` exception, so
 a caller can catch by class:
 
 ```ts
-import { isArgValidString } from '@openinf/util';
+import { validateString } from '@openinf/util';
 import { InvalidArgTypeError } from '@openinf/util-errors';
 
 try {
-  isArgValidString(42, 'name');
+  validateString(42, 'name');
 } catch (error) {
   error instanceof InvalidArgTypeError; // ↪ true
 }

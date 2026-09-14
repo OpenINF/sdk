@@ -8,7 +8,13 @@ import { InvalidArgTypeError } from '@openinf/util-errors';
 
 import { assertValue } from '../helpers/assert-value';
 
-export function isArgValidFunction(value: unknown, argName: string): void {
+/**
+ * Asserts that `value` is callable. Classes count, since they are functions.
+ * @param value The argument to check.
+ * @param argName The argument's name, used in the error message.
+ * @throws {InvalidArgTypeError} if `value` is not a function.
+ */
+export function validateFunction(value: unknown, argName: string): void {
   assertValue(isString, argName);
   if (!isFunction(value))
     throw new InvalidArgTypeError(argName, 'Function', value);

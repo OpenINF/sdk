@@ -11,14 +11,15 @@ import { isInteger } from '../guards/is-integer';
 import { assertValue } from '../helpers/assert-value';
 
 /**
- * Detects whether an argument is a valid signed 32-bit integer within the
- * specified range.
- * @param value The actual argument value.
- * @param argName The name of the argument in question.
- * @param min The minimum accepted value.
- * @param max The maximum accepted value.
+ * Asserts that `value` is a signed 32-bit integer between `min` and `max`.
+ * @param value The argument to check.
+ * @param argName The argument's name, used in the error message.
+ * @param min The smallest value accepted, by default the int32 minimum.
+ * @param max The largest value accepted, by default the int32 maximum.
+ * @throws {InvalidArgTypeError} if `value` is not a number.
+ * @throws {OutOfRangeError} if it is not an integer, or is outside the range.
  */
-export function isArgValidInt32(
+export function validateInt32(
   value: unknown,
   argName: string,
   min = -2147483648,

@@ -35,10 +35,10 @@ Which is what makes the validators worth using: the message is derived, not
 written by hand at each call site.
 
 ```ts
-import { isArgValidString } from '@openinf/util';
+import { validateString } from '@openinf/util';
 import { InvalidArgTypeError } from '@openinf/util-errors';
 
-isArgValidString(42, 'name');
+validateString(42, 'name');
 // ↪ InvalidArgTypeError: The "name" argument must be of type "string".
 //   Received type "number" ("42")
 ```

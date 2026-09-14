@@ -3,22 +3,22 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { isArgValidUint32 } from '../../src/validators/is-arg-valid-uint32';
+import { validateUint32 } from '../../src/validators/validate-uint32';
 
-describe(isArgValidUint32.name, () => {
+describe(validateUint32.name, () => {
   it('should not throw for a valid uint32', () => {
-    assert.doesNotThrow(() => isArgValidUint32(5, 'argName', false));
+    assert.doesNotThrow(() => validateUint32(5, 'argName', false));
   });
 
   it('should throw for a negative number', () => {
-    assert.throws(() => isArgValidUint32(-1, 'argName', false));
+    assert.throws(() => validateUint32(-1, 'argName', false));
   });
 
   it('should throw for a non-number', () => {
-    assert.throws(() => isArgValidUint32('abc', 'argName', false));
+    assert.throws(() => validateUint32('abc', 'argName', false));
   });
 
   it('should throw for zero when positive is required', () => {
-    assert.throws(() => isArgValidUint32(0, 'argName', true));
+    assert.throws(() => validateUint32(0, 'argName', true));
   });
 });

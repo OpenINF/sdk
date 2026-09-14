@@ -11,12 +11,15 @@ import { isUint32 } from '../guards/is-uint32';
 import { assertValue } from '../helpers/assert-value';
 
 /**
- * Detects whether an argument is a valid unsigned 32-bit integer.
- * @param value The actual argument value.
- * @param argName The name of the argument in question.
- * @param positive Whether `value` must be strictly greater than zero.
+ * Asserts that `value` is an unsigned 32-bit integer.
+ * @param value The argument to check.
+ * @param argName The argument's name, used in the error message.
+ * @param positive Whether zero is refused as well.
+ * @throws {InvalidArgTypeError} if `value` is not a number.
+ * @throws {OutOfRangeError} if it is not an integer, is outside the uint32
+ * range, or is zero when `positive` is set.
  */
-export function isArgValidUint32(
+export function validateUint32(
   value: unknown,
   argName: string,
   positive: boolean

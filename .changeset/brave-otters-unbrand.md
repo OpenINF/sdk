@@ -14,7 +14,7 @@ These wrapped their underlying type in a phantom tag
 nominal — nothing else is assignable to `string` — and built-in object types are
 impractical to impersonate, with the runtime guard rejecting impostors
 regardless. What the brands did do is make ordinary values unusable.
-`isArgValidBuffer` could not be called with a real `Buffer`, because
+`validateBuffer` could not be called with a real `Buffer`, because
 `Buffer.from('x')` lacked the phantom `__Buffer__` property. Guards now narrow
 to the real types, so values flow through normally.
 

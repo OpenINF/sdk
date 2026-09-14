@@ -11,10 +11,10 @@ these are additions to the public API.
 **`@openinf/util`** (+15) — `assertIsDefined`; the guards `isFalsy` and
 `isIterator` (plus the `Falsy` and `Iterator` types); the helpers
 `generateArgumentErrorMessage` and `isNode`; and the argument validators
-`isArgCountValid`, `isArgValidArray`, `isArgValidBoolean`, `isArgValidBuffer`,
-`isArgValidFunction`, `isArgValidInt32`, `isArgValidNumber`, `isArgValidObject`,
-`isArgValidString`, and `isArgValidUint32`. Most of these were sitting commented
-out in `src/index.ts`.
+`validateArgCount`, `validateArray`, `validateBoolean`, `validateBuffer`,
+`validateFunction`, `validateInt32`, `validateNumber`, `validateObject`,
+`validateString`, and `validateUint32`. Most of these were sitting commented out
+in `src/index.ts`.
 
 **`@openinf/assert`** (+2) — `copyError` and `generateStackTrace`.
 

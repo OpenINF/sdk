@@ -3,14 +3,14 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { isArgValidBoolean } from '../../src/validators/is-arg-valid-boolean';
+import { validateBoolean } from '../../src/validators/validate-boolean';
 
-describe(isArgValidBoolean.name, () => {
+describe(validateBoolean.name, () => {
   it('should not throw for a boolean value', () => {
-    assert.doesNotThrow(() => isArgValidBoolean(true, 'argName'));
+    assert.doesNotThrow(() => validateBoolean(true, 'argName'));
   });
 
   it('should throw for a non-boolean value', () => {
-    assert.throws(() => isArgValidBoolean('true', 'argName'));
+    assert.throws(() => validateBoolean('true', 'argName'));
   });
 });

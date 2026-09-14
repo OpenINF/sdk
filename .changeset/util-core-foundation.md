@@ -32,9 +32,9 @@ Consequences of the relayering:
 
 - `@openinf/util`'s validators throw the real `@openinf/util-errors` classes, so
   `err instanceof InvalidArgTypeError` now works against errors thrown by
-  `isArgValidString` and friends. It previously returned `false`, since the
-  class was a private lookalike.
-- `isArgCountValid` reports the canonical `InvalidArgsNumberError` message
+  `validateString` and friends. It previously returned `false`, since the class
+  was a private lookalike.
+- `validateArgCount` reports the canonical `InvalidArgsNumberError` message
   instead of a bespoke one.
 - `assertValue` is now a single implementation, owned by `@openinf/assert` and
   re-exported by `@openinf/util`. It gains lazy-guard support, caller-supplied

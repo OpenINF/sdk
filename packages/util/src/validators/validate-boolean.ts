@@ -9,11 +9,12 @@ import { InvalidArgTypeError } from '@openinf/util-errors';
 import { assertValue } from '../helpers/assert-value';
 
 /**
- * Detects whether an argument is classified as a Boolean primitive or object.
- * @param value The actual argument value.
- * @param argName The name of the argument in question.
+ * Asserts that `value` is a boolean primitive. A `Boolean` object is refused.
+ * @param value The argument to check.
+ * @param argName The argument's name, used in the error message.
+ * @throws {InvalidArgTypeError} if `value` is not a boolean.
  */
-export function isArgValidBoolean(value: unknown, argName: string): void {
+export function validateBoolean(value: unknown, argName: string): void {
   assertValue(isString, argName);
   if (!isBoolean(value))
     throw new InvalidArgTypeError(argName, 'boolean', value);

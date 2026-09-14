@@ -14,7 +14,19 @@ export interface ConformanceDescriptor {
   allowFunction: boolean;
 }
 
-export function isArgValidObject(
+/**
+ * Asserts that `value` is an object, with `null`, arrays and functions each
+ * refused unless the descriptor allows them.
+ * @param value The argument to check.
+ * @param argName The argument's name, used in the error message.
+ * @param root0 Which of the borderline cases to accept.
+ * @param root0.nullable Whether `null` is accepted.
+ * @param root0.allowArray Whether an array is accepted.
+ * @param root0.allowFunction Whether a function is accepted.
+ * @throws {InvalidArgTypeError} if `value` is not an object the descriptor
+ * allows.
+ */
+export function validateObject(
   value: unknown,
   argName: string,
   { nullable, allowArray, allowFunction }: ConformanceDescriptor
