@@ -10,6 +10,9 @@ import { _tagTester } from '../_internal/_tag-tester';
 /**
  * Detects whether `value` is classified as a
  * [`Generator`](https://mdn.io/Global_Objects/Generator) object.
+ * This is a tag-and-shape heuristic, not an internal-brand guarantee. It
+ * avoids calling ordinary getters, but a carefully constructed object or
+ * proxy can produce false positives. Do not use it as a security boundary.
  * @since 3.0.0
  * @category Control Abstraction Objects
  * @param value The value to identify.
@@ -32,10 +35,5 @@ import { _tagTester } from '../_internal/_tag-tester';
  * ```
  */
 export function isGeneratorObject(value: unknown): boolean {
-  return (
-    isObjectLike(value) &&
-    typeof value['next'] === 'function' &&
-    typeof value['throw'] === 'function' &&
-    _tagTester('Generator')(value)
-  );
+  return isObjectLike(value) && _tagTester('Generator')(value);
 }

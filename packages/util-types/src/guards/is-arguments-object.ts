@@ -10,6 +10,9 @@ import { _tagTester } from '../_internal/_tag-tester';
 /**
  * Detects whether `value` is likely an
  * [`arguments`](https://mdn.io/Reference/Functions/arguments) object.
+ * This is a tag-and-shape heuristic, not an internal-brand guarantee. It
+ * avoids calling ordinary getters, but a carefully constructed object or
+ * proxy can produce false positives. Do not use it as a security boundary.
  * @since 3.0.0
  * @category Other
  * @param value The value to identify.

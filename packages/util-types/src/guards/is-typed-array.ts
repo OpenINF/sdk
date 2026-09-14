@@ -3,9 +3,7 @@
 
 // Adapted from Node.js
 
-import { isObjectLike } from '@openinf/util-object';
-
-import { getTag } from '../_internal/_get-tag';
+import { _typedArrayName } from '../_internal/_typed-array-name';
 import type { TypedArray } from '../types';
 
 /**
@@ -35,8 +33,5 @@ import type { TypedArray } from '../types';
  * ```
  */
 export function isTypedArray(value: unknown): value is TypedArray {
-  // Used to match `getTag` values of typed arrays.
-  const reTypedTag =
-    /^\[object (?:Float(?:32|64)|(?:Int|Uint)(?:8|16|32)|(?:Big)(?:Int|Uint)(?:64)|Uint8Clamped)Array\]$/;
-  return isObjectLike(value) && reTypedTag.test(getTag(value));
+  return _typedArrayName(value) !== undefined;
 }

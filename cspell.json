@@ -51,6 +51,7 @@
     "rxvt",
 
     // Tools, packages, and organizations
+    "Endo",
     "ianvs",
     "memoizee",
     "npmjs",
@@ -75,11 +76,13 @@
     "downleveling",
     "elems",
     "extensionless",
+    "externref",
     "footgun",
     "frontmatter",
     "fullwidth",
     "relayering",
     "retarget",
+    "thenables",
     "unloadable"
   ]
 }

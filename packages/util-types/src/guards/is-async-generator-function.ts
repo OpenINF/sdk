@@ -13,6 +13,9 @@ import { _tagTester } from '../_internal/_tag-tester';
  *
  * **Note:** The `AsyncGeneratorFunction` constructor is not globally
  * accessible, but can be obtained from existing instances/declarations.
+ * This is a tag-and-shape heuristic, not an internal-brand guarantee. It
+ * avoids calling ordinary getters, but a carefully constructed object or
+ * proxy can produce false positives. Do not use it as a security boundary.
  * @since 3.0.0
  * @category Control Abstraction Objects
  * @param value The value to identify.

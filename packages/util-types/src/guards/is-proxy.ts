@@ -3,19 +3,26 @@
 
 // Adapted from Node.js
 
+const { isArray } = Array;
+
 /**
  * Detects whether `value` is a
  * [`Proxy`](https://mdn.io/Global_Objects/Proxy) instance.
  *
- * A `Proxy` is transparent by design -- pure JavaScript code cannot
- * distinguish a proxied object from its target, so this always returns
- * `false`. It exists only for parity with Node's `util.types.isProxy`,
- * which relies on an internal V8 binding with no pure-JS equivalent.
+ * Best effort: detects revoked proxies, including live proxies wrapping a
+ * revoked proxy. The captured `Array.isArray` throws on their revoked target
+ * without invoking proxy traps. Live proxies with ordinary targets remain
+ * undetectable here, so `false` does not establish that a value is not a proxy.
  * @since 3.0.0
  * @category Reflection
- * @param _value The value to identify.
- * @returns `false`, always.
+ * @param value The value to identify.
+ * @returns `true` if a revoked proxy is detected; otherwise, `false`.
  */
-export function isProxy(_value: unknown): boolean {
-  return false;
+export function isProxy(value: unknown): boolean {
+  try {
+    isArray(value);
+    return false;
+  } catch {
+    return true;
+  }
 }

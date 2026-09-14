@@ -17,6 +17,11 @@ import { _tagTester } from '../_internal/_tag-tester';
  * - [`URIError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError)
  * - [`AggregateError `](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
  * - [`InternalError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError)
+ *
+ * Uses `Error.isError` where available. On older engines, local error ancestry
+ * and the legacy cross-realm tag provide a best-effort fallback that can be
+ * fooled by forged prototypes or proxy traps. Do not use it as a security
+ * boundary.
  * @param value The value to be checked.
  * @returns `true` if the value is a native error; otherwise, `false`.
  */

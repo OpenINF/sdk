@@ -3,11 +3,7 @@
 
 // Adapted from Node.js
 
-import { isObjectLike } from '@openinf/util-object';
-
-import { internalSlotsTester } from '../_internal/internal-slots-tester';
-
-const hasWeakSetSlots = internalSlotsTester('WeakSet');
+import { _tagTester } from '../_internal/_tag-tester';
 
 /**
  * Detects whether `value` is classified as a
@@ -18,5 +14,5 @@ const hasWeakSetSlots = internalSlotsTester('WeakSet');
  * @returns `true` if `value` is a `WeakSet`; else, `false`.
  */
 export function isWeakSet(value: unknown): boolean {
-  return isObjectLike(value) && hasWeakSetSlots(value);
+  return _tagTester('WeakSet')(value);
 }

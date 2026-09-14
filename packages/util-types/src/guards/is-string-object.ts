@@ -21,6 +21,8 @@ import { _tagTester } from '../_internal/_tag-tester';
  * isStringObject('Foo'); // ↪ false
  * ```
  */
-export function isStringObject(value: unknown): value is string {
+export function isStringObject(
+  value: unknown
+): value is object & { valueOf(): string } {
   return isObjectLike(value) && _tagTester('String')(value);
 }
