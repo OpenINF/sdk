@@ -3,9 +3,9 @@
 
 // Adapted from Node.js
 
-import { _typedArrayName } from '@openinf/util-core';
+import { _typedArrayName, type Guard } from '@openinf/util-core';
 
-import type { Guard, TypedArray } from '../types';
+import type { TypedArray } from '../types';
 
 /**
  * Determines if value is one of the

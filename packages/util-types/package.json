@@ -64,6 +64,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@openinf/util-array": "workspace:*",
     "@openinf/util-core": "workspace:*",
     "@openinf/util-date": "workspace:*",
     "@openinf/util-number": "workspace:*"

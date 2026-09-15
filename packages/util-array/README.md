@@ -1,8 +1,9 @@
 # @openinf/util-array
 
-Array utilities with no third-party dependencies: the type guards
-`isArrayHomogenous` and `isArrayLike`, and functions for converting, comparing,
-searching, and combining arrays.
+Array utilities with no third-party dependencies, following section 23 of the
+ECMAScript specification, Indexed Collections: the guards `isArrayHomogenous`
+and `isArrayLike`, a guard for each typed array and `isTypedArray` for any of
+them, and functions for converting, comparing, searching, and combining arrays.
 
 ## Installation
 
