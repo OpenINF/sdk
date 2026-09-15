@@ -5,6 +5,7 @@ import { isArray } from '@openinf/util-core';
 
 /**
  * Converts a non-array to an array.
+ * @category Indexed Collections
  * @param value The value to potentially convert into an array.
  * @returns If the value is already an array, returns itself untouched.
  */

@@ -7,7 +7,7 @@ import type { Guard } from '../types';
  * Detects whether `value` is classified as a
  * [`String`](https://mdn.io/Global_Objects/String) primitive or object.
  * @since 3.0.0
- * @category Text Processing
+ * @category Data Types and Values
  * @param value The value to identify.
  * @returns `true` if `value` is a string; else, `false`.
  * @example

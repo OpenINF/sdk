@@ -14,6 +14,7 @@ import { assertValue } from '../helpers/assert-value';
 
 /**
  * Asserts that `value` is an array holding at least `minLength` elements.
+ * @category Indexed Collections
  * @param value The argument to check.
  * @param argName The argument's name, used in the error message.
  * @param minLength The fewest elements the array may hold.

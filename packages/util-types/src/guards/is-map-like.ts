@@ -11,7 +11,7 @@ import type { Guard } from '../types';
  * Detects whether `value` is map-like, i.e. a non-array object whose
  * properties can be indexed by string.
  * @since 3.0.0
- * @category Keyed Collections
+ * @category Fundamental Objects
  * @param value The value to identify.
  * @returns `true` if `value` is map-like; else, `false`.
  * @example

@@ -17,6 +17,10 @@ export type {
   Arrayish,
 } from '@openinf/util-core';
 
+/**
+ * An object indexed by string keys, with values of any type.
+ * @category Fundamental Objects
+ */
 export interface Mapish {
   [k: string]: unknown;
 }
@@ -25,12 +29,27 @@ export interface Mapish {
 
 // Adapted from TypeShield
 
+/**
+ * `T`, or `null`.
+ * @category Data Types and Values
+ */
 export type MaybeNull<T> = T | null;
+
+/**
+ * `T`, or `undefined`.
+ * @category Data Types and Values
+ */
 export type MaybeDefined<T> = T | undefined;
+
+/**
+ * `T`, `null`, or `undefined`.
+ * @category Data Types and Values
+ */
 export type MaybeNullish<T> = T | null | undefined;
 
 /**
  * Matches any [typed array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), like `Uint8Array` or `Float64Array`.
+ * @category Indexed Collections
  */
 export type TypedArray =
   | Int8Array

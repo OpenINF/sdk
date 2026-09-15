@@ -6,6 +6,7 @@ import { hasOwn } from '@openinf/util-object';
 
 /**
  * Returns a human-readable string representation of `token`.
+ * @category Text Processing
  * @param token The value to stringify.
  * @returns The string representation.
  */

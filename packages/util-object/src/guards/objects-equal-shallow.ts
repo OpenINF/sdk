@@ -3,6 +3,7 @@
 
 /**
  * Performs a shallow equality comparison of the contents of two map-likes.
+ * @category Fundamental Objects
  * @param obj1 A map-like whose properties should be compared.
  * @param obj2 A map-like whose properties should be compared.
  * @returns `true` if the two map-likes are shallowly equal; else, `false`.

@@ -50,6 +50,7 @@ function deepCopy<T>(value: T, inherited: boolean): T {
  * Recursively copies the elements of an array, deep-copying any nested
  * arrays and plain objects encountered along the way. Non-plain objects
  * (e.g. class instances, `Date`, `Map`) are copied by reference.
+ * @category Indexed Collections
  * @param array The array to copy.
  * @param inherited Whether to also copy a plain object's inherited
  * enumerable properties, not just its own.

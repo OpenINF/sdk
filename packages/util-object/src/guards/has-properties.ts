@@ -9,6 +9,7 @@ import { isObjectLike } from './is-object-like';
 
 /**
  * Extract an object of types from an object of guards.
+ * @category Testing and Comparison Operations
  */
 export type ExtractProperties<T extends PropertyValidators> = {
   [TP in keyof T]: T[TP] extends Guard<infer U> ? U : unknown;
@@ -16,6 +17,7 @@ export type ExtractProperties<T extends PropertyValidators> = {
 
 /**
  * A collection of property validators.
+ * @category Testing and Comparison Operations
  */
 export interface PropertyValidators {
   [key: string]: Validator;
@@ -25,6 +27,7 @@ export interface PropertyValidators {
 /**
  * Creates a guard that detects whether a value is an object with properties
  * matching the specified property validators.
+ * @category Testing and Comparison Operations
  * @param validators The property validators.
  * @returns The guard.
  */

@@ -6,6 +6,7 @@
  * the property is undefined, it generates a value with the factory function,
  * updates the object originally passed, and returns the value that was returned
  * by the factory function.
+ * @category Fundamental Objects
  * @param obj The object to read from and, if necessary, write to.
  * @param prop The property name to look up.
  * @param factory The function used to generate a value if `obj[prop]` is

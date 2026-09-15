@@ -9,6 +9,7 @@ import { _tagTester } from '../_internal/_tag-tester';
 
 /**
  * Determines the internal JavaScript [[Class]] of `obj`.
+ * @category Data Types and Values
  * @param obj The value to query.
  * @returns The lowercased type name of `obj`.
  */

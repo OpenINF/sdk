@@ -20,7 +20,7 @@
  * - [`Float64Array`](https://mdn.io/Global_Objects/Float64Array)
  * - [`DataView`](https://mdn.io/Global_Objects/DataView)
  * @since 3.0.0
- * @category Index Collections
+ * @category Structured Data
  * @param value The value to identify.
  * @returns `true` if `value` is an `ArrayBufferView`; else, `false`.
  * @example

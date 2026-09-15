@@ -5,6 +5,7 @@
 
 /**
  * Filters the elements of an array-like using a callback function.
+ * @category Indexed Collections
  * @param elems The elements to filter.
  * @param callback The function to test each element with.
  * @param invert If `true`, keeps elements for which `callback` returns

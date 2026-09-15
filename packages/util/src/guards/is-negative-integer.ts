@@ -7,6 +7,7 @@ import { isInteger } from './is-integer';
 
 /**
  * An integer that is negative.
+ * @category Numbers and Dates
  */
 export type NegativeInteger = Tagged<number, '__NegativeInteger__'>;
 

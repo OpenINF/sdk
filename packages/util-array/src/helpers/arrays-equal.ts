@@ -7,6 +7,17 @@ function equateValues<T>(a: T, b: T): boolean {
   return a === b;
 }
 
+/**
+ * Detects whether two arrays have the same length, holes at the same
+ * indices, and equal elements everywhere else, as `equalityComparer` judges
+ * equality.
+ * @category Indexed Collections
+ * @param a The first array.
+ * @param b The second array.
+ * @param equalityComparer Decides whether two elements are equal. Defaults
+ * to strict equality.
+ * @returns `true` if the arrays are equal; else, `false`.
+ */
 export function arraysEqual<T>(
   a: readonly T[],
   b: readonly T[],

@@ -6,6 +6,7 @@ import { contains } from './contains';
 
 /**
  * push value to array only if Unique
+ * @category Indexed Collections
  * @param array The array to potentially push to.
  * @param toAdd The value to potentially push.
  * @param equalityComparer The function that determines equality.

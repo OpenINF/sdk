@@ -4,6 +4,7 @@
 /**
  * Type guard that ensures that the value can be coerced to Object
  * to weed out host objects that do not derive from Object.
+ * @category Testing and Comparison Operations
  * @param  value The value to check
  * @returns       If the value is coercible into an Object
  */

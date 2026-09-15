@@ -7,7 +7,7 @@ import type { Guard } from '../types';
  * Detects whether `value` is classified as a
  * [`BigInt`](https://mdn.io/BigInt) primitive or object.
  * @since 3.0.0
- * @category Numbers and Dates
+ * @category Data Types and Values
  * @param value The value to identify.
  * @returns `true` if `value` is a bigint; else, `false`.
  * @example

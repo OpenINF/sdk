@@ -5,6 +5,7 @@ import { isNullish } from '@openinf/util-core';
 
 /**
  * Determines if any element is in an array.
+ * @category Indexed Collections
  * @param elem The array element.
  * @param arr The array.
  * @param i The index.

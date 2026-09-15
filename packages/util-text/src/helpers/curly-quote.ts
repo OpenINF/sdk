@@ -6,6 +6,7 @@ import { UnicodeEscapes } from '../types';
 
 /**
  * Returns the supplied string as curly quoted if Unicode is supported.
+ * @category Text Processing
  * @param text The string to quote.
  * @returns The curly quoted string.
  */

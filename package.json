@@ -10,7 +10,8 @@
     "docs:serve": "http-server -c-1 -o docs/api/",
     "format": "prettier --write .",
     "land": "node build/tasks/land-pull-request.mts",
-    "lint": "pnpm -r run lint && pnpm run lint:guards",
+    "lint": "pnpm -r run lint && pnpm run lint:guards && pnpm run lint:categories",
+    "lint:categories": "node tools/check-api-categories.mts",
     "lint:commits": "node build/tasks/verify/verify-commits.mts",
     "lint:examples": "node tools/check-readme-examples.js",
     "lint:guards": "node tools/check-guard-expectations.mts",
@@ -22,9 +23,10 @@
     "lint:types": "tsc -p tsconfig.tools.json",
     "release": "pnpm -r publish --no-git-checks --provenance",
     "sync-metadata": "node tools/sync-package-metadata.js",
-    "test": "pnpm -r run test && pnpm run test:queue",
+    "test": "pnpm -r run test && pnpm run test:queue && pnpm run test:tools",
     "test:coverage": "pnpm -r run test:coverage",
     "test:queue": "node --test build/shared/*.test.mts",
+    "test:tools": "node --test tools/*.test.mts",
     "version-packages": "changeset version && pnpm install --lockfile-only && prettier --write --ignore-path=/dev/null \"packages/*/CHANGELOG.md\""
   },
   "devDependencies": {

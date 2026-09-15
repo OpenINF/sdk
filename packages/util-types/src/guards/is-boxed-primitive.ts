@@ -20,7 +20,7 @@ import { isSymbolObject } from './is-symbol-object';
  * - [`Symbol`](https://mdn.io/Global_Objects/Symbol)
  * - [`BigInt`](https://mdn.io/Global_Objects/BigInt)
  * @since 3.0.0
- * @category Other
+ * @category Type Conversion
  * @param value The value to identify.
  * @returns `true` if `value` is a boxed primitive; else, `false`.
  * @example

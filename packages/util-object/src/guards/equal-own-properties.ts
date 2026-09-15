@@ -6,6 +6,7 @@ import { hasOwn } from './has-own';
 
 /**
  * Performs a shallow equality comparison of the contents of two map-likes.
+ * @category Fundamental Objects
  * @param left A map-like whose properties should be compared.
  * @param right A map-like whose properties should be compared.
  * @param equalityComparer A comparer function. Defaults to strict equality.

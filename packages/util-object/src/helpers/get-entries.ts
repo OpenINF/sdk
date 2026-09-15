@@ -8,6 +8,7 @@ import { getOwnKeys } from './get-own-keys';
 
 /**
  * Gets the key/values of the enumerable properties of an object.
+ * @category Fundamental Objects
  * @param obj Object that contains the properties and methods. This can be an
  * object that you created or an existing Document Object Model (DOM) object.
  * @returns An array of key/values of the enumerable properties of an object.

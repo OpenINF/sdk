@@ -7,6 +7,7 @@ import { hasOwn } from '../guards/has-own';
 
 /**
  * Gets the value of an owned property of an object.
+ * @category Fundamental Objects
  * @param obj An object.
  * @param key A property key name.
  * @returns The value of an owned property in an object.

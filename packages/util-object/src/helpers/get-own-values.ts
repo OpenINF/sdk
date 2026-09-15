@@ -3,6 +3,7 @@
 
 /**
  * Gets the values at the own, present indices of a (possibly sparse) array.
+ * @category Indexed Collections
  * @param sparseArray The array to query.
  * @returns The values at the array's own indices.
  */

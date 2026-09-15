@@ -8,18 +8,17 @@ import { isNaN, type NaN as NaNType } from './is-nan';
 
 /**
  * A value that is Falsy.
+ * @category Type Conversion
  */
 export type Falsy =
   // oxlint-disable-next-line no-duplicate-type-constituents -- NaNType is a branded number, distinct from the 0/-0 literals.
   false | 0 | -0 | 0n | '' | null | undefined | NaNType;
 
-// TODO: Category?
-
 /**
  * Detects whether `value` is classified as
  * [`Falsy`](https://mdn.io/Glossary/Falsy).
  * @since 3.0.0
- * @category Evaluation
+ * @category Type Conversion
  * @param value The value to identify.
  * @returns `true` if `value` is falsy; else, `false`.
  * @example

@@ -6,7 +6,7 @@ import type { Guard } from '../types';
 /**
  * Detects whether `value` is classified as a `Symbol` primitive or object.
  * @since 3.0.0
- * @category Fundamental Objects
+ * @category Data Types and Values
  * @param value The value to be identified.
  * @returns `true` if `value` is a symbol; else, `false`.
  * @example

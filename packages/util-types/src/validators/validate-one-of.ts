@@ -7,6 +7,7 @@ import { hideStackFrames } from '../_internal/hide-stack-frames';
 
 /**
  * Validates that `value` is one of the values in `oneOf`.
+ * @category Testing and Comparison Operations
  * @param value The value to validate.
  * @param name The name to use in the thrown error message.
  * @param oneOf The allowed values.

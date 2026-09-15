@@ -7,7 +7,7 @@ import type { Guard } from '@openinf/util-core';
  * Detects whether `value` conforms to the
  * [iterator protocol](https://mdn.io/iteration_protocols#the_iterator_protocol).
  * @since 3.0.0
- * @category Other
+ * @category Control Abstraction Objects
  * @param value The value to identify.
  * @returns `true` if `value` is an iterator; else, `false`.
  * @example

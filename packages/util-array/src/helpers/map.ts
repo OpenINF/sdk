@@ -8,6 +8,7 @@ import { isArrayLike } from '../guards/is-array-like';
 /**
  * Translates the elements of an array-like or object into a new array,
  * flattening any nested arrays produced by `callback` one level deep.
+ * @category Indexed Collections
  * @param elems The array-like or object to map over.
  * @param callback The function used to translate each element.
  * @param arg An extra argument passed through to `callback`; for internal

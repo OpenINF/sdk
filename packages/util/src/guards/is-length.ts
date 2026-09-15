@@ -7,6 +7,7 @@ import { isInteger } from './is-integer';
 
 /**
  * A number usable as the length of an array-like value.
+ * @category Type Conversion
  */
 export type Length = Tagged<number, '__Length__'>;
 
@@ -16,7 +17,7 @@ export type Length = Tagged<number, '__Length__'>;
  * **Note:** This method is loosely based on
  * [`ToLength`](http://ecma-international.org/ecma-262/11.0/#sec-tolength).
  * @since 3.0.0
- * @category Index Collections
+ * @category Type Conversion
  * @param value The value to identify.
  * @returns `true` if `value` is a valid length; else, `false`.
  * @example

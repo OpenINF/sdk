@@ -13,6 +13,7 @@ import { assertValue } from '../helpers/assert-value';
 /**
  * Asserts that a function was called with between `minCount` and `maxCount`
  * arguments.
+ * @category Fundamental Objects
  * @param fnName The function's name, used in the error message.
  * @param minCount The fewest arguments the function accepts.
  * @param maxCount The most arguments the function accepts.

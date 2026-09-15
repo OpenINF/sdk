@@ -7,6 +7,7 @@ import { hideStackFrames } from '../_internal/hide-stack-frames';
 
 /**
  * Validates that `callback` is a function.
+ * @category Testing and Comparison Operations
  * @param callback The value to validate.
  * @throws {TypeError} if `callback` is not a function.
  */

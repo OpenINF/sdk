@@ -25,6 +25,7 @@ import { assertValue } from '../helpers/assert-value';
  * Takes `unknown` rather than `Buffer`: the whole point is to check a value
  * whose type is not yet known, so requiring the caller to already have a
  * `Buffer` would defeat it.
+ * @category Structured Data
  * @param buffer The value to validate.
  * @param argName The argument name to report in the error message.
  * @throws {InvalidArgTypeError} if `buffer` is not buffer-like.

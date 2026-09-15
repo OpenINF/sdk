@@ -6,6 +6,7 @@ import type { Named } from '../guards/is-named';
 
 /**
  * Asserts that `value` has a `name` property of type `string`.
+ * @category Fundamental Objects
  * @param value The value to check.
  * @param message An optional message to use in the thrown error.
  * @throws { TypeError } if `value` is not named.

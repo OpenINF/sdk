@@ -6,6 +6,7 @@ import type { Guard, Tagged } from '@openinf/util-core';
 
 /**
  * A number that is finite.
+ * @category Numbers and Dates
  */
 export type FiniteNumber = Tagged<number, '__FiniteNumber__'>;
 

@@ -6,6 +6,7 @@
 /**
  * Joins the elements of an array-like into a string, separated by
  * `separator`.
+ * @category Indexed Collections
  * @param output The elements to join.
  * @param separator The separator to insert between elements.
  * @returns The joined string.

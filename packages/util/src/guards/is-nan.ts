@@ -5,6 +5,7 @@ import type { Guard, Tagged } from '@openinf/util-core';
 
 /**
  * A NaN value.
+ * @category Numbers and Dates
  */
 // oxlint-disable-next-line no-shadow-restricted-names -- type/value namespaces are distinct; `typeof NaN` refers to the global value.
 export type NaN = Tagged<typeof NaN, '__NaN__'>;

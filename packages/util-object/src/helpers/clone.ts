@@ -6,6 +6,7 @@ import { hasOwn } from '../guards/has-own';
 
 /**
  * Shallowly clones an object's own enumerable properties.
+ * @category Fundamental Objects
  * @param object The object to clone.
  * @returns The clone.
  */

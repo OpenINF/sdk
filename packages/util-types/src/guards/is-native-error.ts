@@ -22,6 +22,7 @@ import { _tagTester } from '../_internal/_tag-tester';
  * and the legacy cross-realm tag provide a best-effort fallback that can be
  * fooled by forged prototypes or proxy traps. Do not use it as a security
  * boundary.
+ * @category Fundamental Objects
  * @param value The value to be checked.
  * @returns `true` if the value is a native error; otherwise, `false`.
  */

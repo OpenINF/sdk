@@ -7,7 +7,7 @@ import type { Guard } from '@openinf/util-core';
  * Detects whether `value` is _defined_, which passes for all value types
  * other than `undefined` and `null`.
  * @since 3.0.0
- * @category Value Properties
+ * @category Data Types and Values
  * @param value The value to identify.
  * @returns `true` if `value` is not `undefined` or `null`; else, `false`.
  * @example

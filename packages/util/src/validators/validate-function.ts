@@ -10,6 +10,7 @@ import { assertValue } from '../helpers/assert-value';
 
 /**
  * Asserts that `value` is callable. Classes count, since they are functions.
+ * @category Testing and Comparison Operations
  * @param value The argument to check.
  * @param argName The argument's name, used in the error message.
  * @throws {InvalidArgTypeError} if `value` is not a function.

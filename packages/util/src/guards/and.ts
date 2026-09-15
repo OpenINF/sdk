@@ -31,6 +31,7 @@ export function and<T1, T2, T3, T4>(
  * Combines guards into a guard that tests if a value satisfies every one of
  * them.
  * @since 3.0.0
+ * @category Testing and Comparison Operations
  * @param guards The guards to combine.
  * @returns A guard that tests if a value satisfies all of `guards`.
  * @example

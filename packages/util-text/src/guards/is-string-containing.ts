@@ -7,6 +7,7 @@ import type { Guard } from '@openinf/util-core';
 
 /**
  * Creates a guard that tests if a string value contains `substring`.
+ * @category Text Processing
  * @param substring The substring to search for.
  * @returns The guard.
  * @example

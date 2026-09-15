@@ -8,6 +8,7 @@ import type { MapLike } from '../types';
 
 /**
  * Gets the owned, enumerable property keys of a map-like.
+ * @category Fundamental Objects
  * @param map A map-like object to query.
  * @returns A list of keys.
  */

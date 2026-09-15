@@ -9,7 +9,7 @@ import type { Guard } from '@openinf/util-core';
  * Detects whether `value` is classified as a
  * [`Buffer`](https://nodejs.org/dist/latest/docs/api/buffer.html) object.
  * @since 3.0.0
- * @category Typed Arrays
+ * @category Hosts and Implementations
  * @param value The value to identify.
  * @returns `true` if `value` is a Buffer; else, `false`.
  * @example
@@ -19,7 +19,7 @@ import type { Guard } from '@openinf/util-core';
  * util.isBuffer({ length: 0 }); // ↪ false
  *
  * util.isBuffer([]); // ↪ false
- 
+ *
  * util.isBuffer(Buffer.from('foo')); // ↪ true
  *
  * util.isBuffer(new Uint8Array(1024)); // ↪ false

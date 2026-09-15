@@ -22,7 +22,7 @@ import type { Guard, TypedArray } from '../types';
  * - [`BigInt64Array`](https://mdn.io/Global_Objects/BigInt64Array)
  * - [`BigUint64Array`](https://mdn.io/Global_Objects/BigUint64Array)
  * @since 3.0.0
- * @category Index Collections
+ * @category Indexed Collections
  * @param value The value to identify.
  * @returns `true` if `value` is a typed array; else, `false`.
  * @example

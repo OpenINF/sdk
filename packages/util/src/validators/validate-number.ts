@@ -13,6 +13,7 @@ import { assertValue } from '../helpers/assert-value';
  *
  * `NaN` passes, since it is a number; use `validateInt32` or `validateUint32`
  * where the value also has to be a usable integer.
+ * @category Data Types and Values
  * @param value The argument to check.
  * @param argName The argument's name, used in the error message.
  * @throws {InvalidArgTypeError} if `value` is not a number.

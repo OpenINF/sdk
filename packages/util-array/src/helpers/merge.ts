@@ -5,6 +5,7 @@
 
 /**
  * Merge the elements of two array.
+ * @category Indexed Collections
  * @param first Array 1
  * @param second Array 2
  * @returns The two merged arrays.

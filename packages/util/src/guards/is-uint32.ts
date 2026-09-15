@@ -5,13 +5,14 @@ import type { Guard, Tagged } from '@openinf/util-core';
 
 /**
  * A value that is a Uint32.
+ * @category Type Conversion
  */
 export type Uint32 = Tagged<number, '__Uint32__'>;
 
 /**
  * Detects whether `value` is classified as a `Uint32`.
  * @since 3.0.0
- * @category Numbers and Dates
+ * @category Type Conversion
  * @param value The value to be identified.
  * @returns `true` if `value` is a uint32; else, `false`.
  * @example
