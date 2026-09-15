@@ -49,19 +49,6 @@ export type MaybeDefined<T> = T | undefined;
  */
 export type MaybeNullish<T> = T | null | undefined;
 
-/**
- * Matches any [typed array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), like `Uint8Array` or `Float64Array`.
- * @category Indexed Collections
- */
-export type TypedArray =
-  | Int8Array
-  | Uint8Array
-  | Uint8ClampedArray
-  | Int16Array
-  | Uint16Array
-  | Int32Array
-  | Uint32Array
-  | Float32Array
-  | Float64Array
-  | BigInt64Array
-  | BigUint64Array;
+// A typed array is §23.2, and the type lives in @openinf/util-array with the
+// guards that narrow to it.
+export type { TypedArray } from '@openinf/util-array';

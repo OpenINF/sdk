@@ -4,6 +4,18 @@
 // guards
 export * from './guards/is-array-homogenous';
 export * from './guards/is-array-like';
+export * from './guards/is-big-int64-array';
+export * from './guards/is-big-uint64-array';
+export * from './guards/is-float32-array';
+export * from './guards/is-float64-array';
+export * from './guards/is-int16-array';
+export * from './guards/is-int32-array';
+export * from './guards/is-int8-array';
+export * from './guards/is-typed-array';
+export * from './guards/is-uint16-array';
+export * from './guards/is-uint32-array';
+export * from './guards/is-uint8-array';
+export * from './guards/is-uint8-clamped-array';
 
 // helpers
 export * from './helpers/array-of';
