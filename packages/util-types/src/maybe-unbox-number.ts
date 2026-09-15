@@ -11,6 +11,7 @@ const numberValueOf = (value: Number): number =>
 
 /**
  * Unboxes a number if it is a boxed primitive object.
+ * @category Numbers and Dates
  * @param value A number primitive or number boxed primitive.
  * @returns A number primitive.
  */

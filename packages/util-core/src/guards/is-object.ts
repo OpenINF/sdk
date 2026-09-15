@@ -7,7 +7,7 @@ import type { Guard } from '../types';
  * Detects whether `value` is strictly an `Object` **and** _not_ a `Function`
  * (even though functions are objects in JavaScript).
  * @since 3.0.0
- * @category Fundamental Objects
+ * @category Data Types and Values
  * @param value The value to identify.
  * @returns `true` if `value` is an object; else, `false`.
  * @example

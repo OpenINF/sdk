@@ -5,6 +5,7 @@ import { AssertionError } from '@openinf/assert';
 
 /**
  * Asserts that `val` is neither `undefined` nor `null`.
+ * @category Data Types and Values
  * @param val The value to assert is defined.
  * @throws { AssertionError } if `val` is `undefined` or `null`.
  */

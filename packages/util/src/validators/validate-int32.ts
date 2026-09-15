@@ -12,6 +12,7 @@ import { assertValue } from '../helpers/assert-value';
 
 /**
  * Asserts that `value` is a signed 32-bit integer between `min` and `max`.
+ * @category Type Conversion
  * @param value The argument to check.
  * @param argName The argument's name, used in the error message.
  * @param min The smallest value accepted, by default the int32 minimum.

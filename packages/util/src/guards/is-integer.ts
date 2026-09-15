@@ -6,6 +6,7 @@ import type { Guard, Tagged } from '@openinf/util-core';
 
 /**
  * A number that is an integer.
+ * @category Numbers and Dates
  */
 export type Integer = Tagged<number, '__Integer__'>;
 

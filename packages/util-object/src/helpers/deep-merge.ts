@@ -31,6 +31,7 @@ function sourcePathIncludes(
 
 /**
  * Deep merges source into target.
+ * @category Fundamental Objects
  * @param target The object to merge properties into.
  * @param source The object to merge properties from.
  * @param depth The maximum merge depth. If exceeded, properties are assigned

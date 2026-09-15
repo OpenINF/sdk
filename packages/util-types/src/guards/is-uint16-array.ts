@@ -11,7 +11,7 @@ import { _tagTester } from '../_internal/_tag-tester';
  * Detects whether `value` is classified as a
  * [`Uint16Array`](https://mdn.io/Global_Objects/Uint16Array).
  * @since 3.0.0
- * @category Index Collections
+ * @category Indexed Collections
  * @param value The value to identify.
  * @returns `true` if `value` is a `Uint16Array`; else, `false`.
  * @example

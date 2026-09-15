@@ -7,7 +7,7 @@ import type { AnyFunction, Guard } from '../types';
  * Detects whether `value` is classified as a
  * [`Function`](https://mdn.io/Global_Objects/Function) object.
  * @since 3.0.0
- * @category Fundamental Objects
+ * @category Testing and Comparison Operations
  * @param value The value to identify.
  * @returns `true` if `value` is a function; else, `false`.
  * @example

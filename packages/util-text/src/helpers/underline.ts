@@ -6,6 +6,7 @@ import { supportsAnsi } from '../_internal/supports-ansi';
 
 /**
  * Returns the supplied string as underlined if ANSI escapes are supported.
+ * @category Text Processing
  * @param text The string to underline.
  * @returns The underlined string, or `text` unchanged.
  */

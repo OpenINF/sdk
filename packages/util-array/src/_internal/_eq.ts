@@ -6,7 +6,7 @@
  * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
  * comparison between two values to determine if they are equivalent.
  * @since 4.0.0
- * @category Lang
+ * @category Testing and Comparison Operations
  * @param value The value to compare.
  * @param other The other value to compare.
  * @returns Returns `true` if the values are equivalent, else `false`.

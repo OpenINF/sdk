@@ -6,6 +6,7 @@ import type { AnyFunction } from '@openinf/util-core';
 /**
  * Walks up `obj`'s prototype chain and returns the first named constructor
  * function found.
+ * @category Fundamental Objects
  * @param obj The object to inspect.
  * @returns The constructor function, or `null` if none was found.
  */

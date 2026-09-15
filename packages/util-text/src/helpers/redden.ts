@@ -6,6 +6,7 @@ import { supportsAnsi } from '../_internal/supports-ansi';
 
 /**
  * Returns the supplied string as red colored if ANSI escapes are supported.
+ * @category Text Processing
  * @param text The string to colorize.
  * @returns The red colored string, or `text` unchanged.
  */

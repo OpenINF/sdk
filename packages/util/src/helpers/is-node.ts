@@ -7,6 +7,7 @@
  * Guarded rather than reading `process.versions.node` directly, so that
  * bundling this package for a non-Node target yields `false` instead of a
  * `ReferenceError` for the missing `process` global.
+ * @category Hosts and Implementations
  */
 export const isNode: boolean =
   typeof process !== 'undefined' && Boolean(process.versions?.node);

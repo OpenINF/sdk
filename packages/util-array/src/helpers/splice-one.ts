@@ -6,6 +6,7 @@
 
 /**
  * Removes a single element from `list` at `index`, in place.
+ * @category Indexed Collections
  * @param list The array to remove the element from.
  * @param index The index of the element to remove.
  * @throws {RangeError} If `index` is not an integer within `list`.

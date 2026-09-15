@@ -8,6 +8,10 @@ import { InvalidArgTypeError } from '@openinf/util-errors';
 
 import { assertValue } from '../helpers/assert-value';
 
+/**
+ * Which borderline values `validateObject` accepts as an object.
+ * @category Data Types and Values
+ */
 export interface ConformanceDescriptor {
   nullable: boolean;
   allowArray: boolean;
@@ -17,6 +21,7 @@ export interface ConformanceDescriptor {
 /**
  * Asserts that `value` is an object, with `null`, arrays and functions each
  * refused unless the descriptor allows them.
+ * @category Data Types and Values
  * @param value The argument to check.
  * @param argName The argument's name, used in the error message.
  * @param root0 Which of the borderline cases to accept.

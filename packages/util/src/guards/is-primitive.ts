@@ -7,6 +7,7 @@ import { _isObjectLike } from '../_internal/_is-object-like';
 
 /**
  * A value that is of a primitive data type.
+ * @category Data Types and Values
  */
 export type Primitive =
   string | number | boolean | bigint | symbol | undefined | null;
@@ -16,7 +17,7 @@ export type Primitive =
  * [**primitive**](https://mdn.io/Glossary/Primitive)
  * data type.
  * @since 3.0.0
- * @category Other
+ * @category Data Types and Values
  * @param value The value to identify.
  * @returns `true` if `value` is a primitive; else, `false`.
  * @example

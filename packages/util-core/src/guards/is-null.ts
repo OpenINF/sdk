@@ -6,7 +6,7 @@ import type { Guard } from '../types';
 /**
  * Detects whether `value` is [`null`](https://mdn.io/Global_Objects/null).
  * @since 3.0.0
- * @category Value Properties
+ * @category Data Types and Values
  * @param value The value to identify.
  * @returns `true` if `value` is `null`; else, `false`.
  * @example

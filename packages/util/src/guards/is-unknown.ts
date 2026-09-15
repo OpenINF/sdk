@@ -8,6 +8,7 @@ import type { Guard } from '@openinf/util-core';
 /**
  * Detects whether `value` is an `unknown` value (always true).
  * @since 3.0.0
+ * @category Data Types and Values
  * @param _value The value to identify.
  * @returns `true` if `value` is `unknown` (always).
  */

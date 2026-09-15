@@ -11,7 +11,7 @@
  * compatibility with Node's `util.types.isExternal`,
  * which relies on an internal V8 binding with no pure-JS equivalent.
  * @since 3.0.0
- * @category Other
+ * @category Hosts and Implementations
  * @param _value The value to identify.
  * @returns `false`, always.
  */

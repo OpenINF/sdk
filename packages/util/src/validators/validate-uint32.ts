@@ -12,6 +12,7 @@ import { assertValue } from '../helpers/assert-value';
 
 /**
  * Asserts that `value` is an unsigned 32-bit integer.
+ * @category Type Conversion
  * @param value The argument to check.
  * @param argName The argument's name, used in the error message.
  * @param positive Whether zero is refused as well.

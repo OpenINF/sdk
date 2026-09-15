@@ -6,6 +6,7 @@ import type { Guard, Tagged } from '@openinf/util-core';
 
 /**
  * A number that is negative.
+ * @category Numbers and Dates
  */
 export type Negative = Tagged<number, '__Negative__'>;
 

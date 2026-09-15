@@ -13,7 +13,7 @@ import { _tagTester } from '../_internal/_tag-tester';
  * Detects whether `value` is a compiled
  * [`WebAssembly.Module`](https://mdn.io/WebAssembly/Module) instance.
  * @since 3.0.0
- * @category Structured Data
+ * @category Hosts and Implementations
  * @param value The value to identify.
  * @returns `true` if `value` is a `WebAssembly.Module`; else, `false`.
  */

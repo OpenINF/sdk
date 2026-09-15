@@ -1,14 +1,15 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
+import { _isUnsafeKey } from '../_internal/_is-unsafe-key';
+
 /**
  * Creates an object with the given properties removed.
+ * @category Fundamental Objects
  * @param obj An object to remove properties from.
  * @param props A list of properties to remove from the Object.
  * @returns An object with the given properties removed.
  */
-import { _isUnsafeKey } from '../_internal/_is-unsafe-key';
-
 export function omit<T>(
   obj: Record<string, T>,
   props: string[]

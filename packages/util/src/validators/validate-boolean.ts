@@ -10,6 +10,7 @@ import { assertValue } from '../helpers/assert-value';
 
 /**
  * Asserts that `value` is a boolean primitive. A `Boolean` object is refused.
+ * @category Data Types and Values
  * @param value The argument to check.
  * @param argName The argument's name, used in the error message.
  * @throws {InvalidArgTypeError} if `value` is not a boolean.

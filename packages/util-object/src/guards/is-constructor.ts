@@ -6,7 +6,7 @@ import type { AnyConstructor, Guard } from '@openinf/util-core';
 /**
  * Detects whether `value` can be called with `new`.
  * @since 3.0.0
- * @category Fundamental Objects
+ * @category Testing and Comparison Operations
  * @param value The value to identify.
  * @returns `true` if `value` is a constructor; else, `false`.
  * @example

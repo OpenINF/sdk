@@ -7,6 +7,7 @@ import { hideStackFrames } from '../_internal/hide-stack-frames';
 
 /**
  * Validates that `value` is an integer within the given range.
+ * @category Numbers and Dates
  * @param value The value to validate.
  * @param name The name to use in the thrown error message.
  * @param min The minimum accepted value.

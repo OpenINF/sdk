@@ -5,6 +5,7 @@
 
 /**
  * Check to see if an object is empty (contains no enumerable properties).
+ * @category Fundamental Objects
  * @param obj The object to check.
  * @returns `true` if no own property keys exist on the object; else, `false`.
  */

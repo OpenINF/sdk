@@ -12,7 +12,7 @@ import type { Guard } from '../types';
  * **Note:** To exclude `Infinity`, `-Infinity`, and `NaN`, which are
  * also classified as numbers, use `isNumeric` instead.
  * @since 3.0.0
- * @category Numbers and Dates
+ * @category Data Types and Values
  * @param value The value to identify.
  * @returns `true` if `value` is a number; else, `false`.
  * @see isNumberObject, isNumeric, isInteger, toInteger, toNumber

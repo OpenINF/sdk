@@ -9,6 +9,13 @@ import { _isFunctionLike } from '../_internal/_is-function-like';
 // https://github.com/chaijs/get-func-name
 // https://github.com/microsoft/TypeScript/blob/38da7c600c83e7b31193a62495239a0fe478cb67/src/compiler/debug.ts#L286-L298
 
+/**
+ * Gets a function's name: its `displayName`, else its `name`, else the name
+ * in its source text, else an empty string.
+ * @category Fundamental Objects
+ * @param fn The function to name.
+ * @returns The function's name, or `''` when none can be found.
+ */
 export function getFunctionName(fn: () => unknown): string {
   if (!_isFunctionLike(fn)) {
     return '';

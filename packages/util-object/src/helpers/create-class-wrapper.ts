@@ -17,6 +17,7 @@ interface ClassLike {
 /**
  * Wraps an ES6 class with a constructor function that can be called without
  * `new`.
+ * @category Fundamental Objects
  * @param type The class to wrap.
  * @returns The wrapper function, callable both with and without `new`.
  */

@@ -7,7 +7,7 @@ import type { Guard } from '../types';
  * Detects whether `value` is classified as a
  * [`Boolean`](https://mdn.io/Global_Objects/Boolean) primitive or object.
  * @since 3.0.0
- * @category Fundamental Objects
+ * @category Data Types and Values
  * @param value The value to identify.
  * @returns `true` if `value` is a `Function`; else, `false`.
  * @example

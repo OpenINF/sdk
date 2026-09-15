@@ -172,6 +172,64 @@ the checker that lifts them out is a task rather than a language server, so
 
 The dev container installs the extensions for you.
 
+## Categorizing the API reference
+
+TypeDoc lists a package's exports under the heading each one's `@category` tag
+names. Once a package uses categories, anything without one is listed under
+**Other**, which tells a reader nothing. So in those packages every export
+carries a category, and the category is one of these, taken from the ECMAScript
+specification:
+
+| Category                            | ECMA-262                                               |
+| :---------------------------------- | :----------------------------------------------------- |
+| `Hosts and Implementations`         | 4.2 Hosts and Implementations                          |
+| `Data Types and Values`             | 6 ECMAScript Data Types and Values                     |
+| `Type Conversion`                   | 7.1 Type Conversion                                    |
+| `Testing and Comparison Operations` | 7.2 Testing and Comparison Operations                  |
+| `Exotic Objects`                    | 10.4 Built-in Exotic Object Internal Methods and Slots |
+| `Fundamental Objects`               | 20 Fundamental Objects                                 |
+| `Numbers and Dates`                 | 21 Numbers and Dates                                   |
+| `Text Processing`                   | 22 Text Processing                                     |
+| `Indexed Collections`               | 23 Indexed Collections                                 |
+| `Keyed Collections`                 | 24 Keyed Collections                                   |
+| `Structured Data`                   | 25 Structured Data                                     |
+| `Managing Memory`                   | 26 Managing Memory                                     |
+| `Control Abstraction Objects`       | 27 Control Abstraction Objects                         |
+| `Reflection`                        | 28 Reflection                                          |
+
+The section numbers are the current draft's, at <https://tc39.es/ecma262/>. File
+an export under the section that defines what it tests or works with:
+
+- **A language type** is `Data Types and Values`. That covers the guards and
+  validators for a primitive (`isString`, `isNumber`, `validateBoolean`), for
+  `null` and `undefined`, and for "any object" (`isObject`). The object
+  counterparts belong to their own chapter: `isStringObject` is
+  `Text Processing`, `isNumberObject` is `Numbers and Dates`.
+- **A range the language converts into** is `Type Conversion`: `isInt32` and
+  `isUint32` for ToInt32 and ToUint32, `isLength` for ToLength, `isFalsy` for
+  ToBoolean.
+- **An abstract test with no built-in method of its own** is
+  `Testing and Comparison Operations`: `isFunction` for IsCallable,
+  `isConstructor` for IsConstructor, `and`, `hasInterface`, and the `Guard` type
+  itself. A test the language exposes as a method goes with that method's
+  object, so `isArray` is `Indexed Collections`, where `Array.isArray` is.
+- **Everything else** goes under the chapter of the object it concerns. A
+  "map-like" is a plain object, so `isMapLike` is `Fundamental Objects` rather
+  than `Keyed Collections`, which is `Map` and `Set`. An `ArrayBuffer` view is
+  `Structured Data`, where `ArrayBuffer.isView` is defined.
+- **What the host provides rather than the language**, such as Node's `Buffer`
+  or WebAssembly, is `Hosts and Implementations`.
+
+There is no `Value Properties` category. Section 19.1 is the four value
+properties of the global object, `globalThis`, `Infinity`, `NaN` and
+`undefined`, and nothing here is one. `null` in particular is a type, 6.1.2, not
+a property of anything.
+
+TypeDoc matches the tag as an exact string, so `Fundamental Object` would make a
+second heading beside `Fundamental Objects`. `pnpm run lint:categories` refuses
+a category that is not in this table, and an export left without one, and runs
+as part of `pnpm run lint`.
+
 ## Changesets
 
 Any change that affects a published package needs a changeset:

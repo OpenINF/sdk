@@ -8,7 +8,7 @@ import type { Guard } from '../types';
  * [`null`](https://mdn.io/Global_Objects/null) nor
  * [`undefined`](https://mdn.io/Global_Objects/undefined).
  * @since 3.0.0
- * @category Value Properties
+ * @category Data Types and Values
  * @param value The value to identify.
  * @returns `true` if `value` is non-nullish; else, `false`.
  * @example

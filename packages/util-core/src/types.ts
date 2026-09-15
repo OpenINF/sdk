@@ -11,13 +11,26 @@
 /**
  * Safer version of `Function` which should not be called.
  * Every function should be assignable to this, but this should not be assignable to every function.
+ * @category Data Types and Values
  */
 export type AnyFunction = (...args: never[]) => void;
 
+/**
+ * Any constructor, whatever arguments it takes and whatever it constructs.
+ * @category Data Types and Values
+ */
 export type AnyConstructor = new (...args: unknown[]) => unknown;
 
+/**
+ * An object with string keys and values of any type.
+ * @category Data Types and Values
+ */
 export type AnyObject = Record<string, any>;
 
+/**
+ * A string, or an array-like of numbers.
+ * @category Indexed Collections
+ */
 export type Arrayish = string | ArrayLike<number>;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -26,6 +39,7 @@ export type Arrayish = string | ArrayLike<number>;
 
 /**
  * An object that has an optional expectation string.
+ * @category Testing and Comparison Operations
  */
 export interface HasExpectation {
   /**
@@ -37,18 +51,21 @@ export interface HasExpectation {
 /**
  * A function that performs a validation on an unknown value and returns a
  * boolean.
+ * @category Testing and Comparison Operations
  */
 export type Validator = ((value: unknown) => boolean) & HasExpectation;
 
 /**
  * A function that performs a validation on an unknown value and returns a
  * boolean indicating the type of the value.
+ * @category Testing and Comparison Operations
  */
 export type Guard<T = unknown> = ((value: unknown) => value is T) &
   HasExpectation;
 
 /**
  * Interface for defining a type-specific method for determining equality.
+ * @category Testing and Comparison Operations
  */
 export interface Equatable {
   /**
@@ -61,6 +78,7 @@ export interface Equatable {
 
 /**
  * Interface for defining a type-specific method for relation.
+ * @category Testing and Comparison Operations
  */
 export interface Comparable {
   /**
@@ -77,11 +95,13 @@ export interface Comparable {
  * * `-1` if the current instance is less than the other.
  * * `1` if the current instance is greater than the other.
  * * `undefined` if the objects are not comparable to each other.
+ * @category Testing and Comparison Operations
  */
 export type ComparisonResult = -1 | 0 | 1 | undefined;
 
 /**
  * Union of types that TypeScript can narrow to literal types.
+ * @category Data Types and Values
  */
 export type Narrowable =
   string | number | boolean | undefined | null | void | {};
@@ -90,6 +110,7 @@ export type Narrowable =
  * The phantom property a {@link Tagged} type carries.
  *
  * Exists only in the type system; there is no such property at runtime.
+ * @category Data Types and Values
  * @template T The tag's unique string name.
  */
 export type Tag<T extends string> = {
@@ -153,6 +174,7 @@ export type Tag<T extends string> = {
  * interface, and a runtime guard rejects impostors anyway. So
  * `Tagged<string, '__String__'>` and `Tagged<Date, '__Date__'>` buy nothing
  * that `string` and `Date` don't already provide.
+ * @category Data Types and Values
  * @template TValue The underlying runtime type.
  * @template TTag A unique string identifying the brand, by convention
  *  written as `'__Name__'`.

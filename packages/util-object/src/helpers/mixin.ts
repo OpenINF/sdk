@@ -8,6 +8,7 @@ import { _mixin } from '../_internal/_mixin';
 /**
  * Copies the values of all enumerable (own or inherited) properties of one or
  * more source objects to the target object.
+ * @category Fundamental Objects
  * @returns The modified target object
  */
 export function mixin<

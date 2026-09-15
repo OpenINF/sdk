@@ -5,6 +5,7 @@ import { hasOwn } from '../guards/has-own';
 
 /**
  * Gets the map[key] iff the key is the map's own property
+ * @category Fundamental Objects
  * @param map A map-like.
  * @param key A property key.
  * @returns map[key] iff the key is the map's own property (is not inherited);

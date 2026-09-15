@@ -6,6 +6,7 @@ import type { Guard, Tagged } from '@openinf/util-core';
 
 /**
  * A number that is positive.
+ * @category Numbers and Dates
  */
 export type Positive = Tagged<number, '__Positive__'>;
 

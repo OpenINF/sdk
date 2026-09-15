@@ -8,6 +8,7 @@ import type { Guard } from '@openinf/util-core';
 
 /**
  * Collection of interface validators.
+ * @category Testing and Comparison Operations
  */
 export type InterfaceValidators<T> = {
   /**
@@ -19,6 +20,7 @@ export type InterfaceValidators<T> = {
 /**
  * Creates a guard that tests if a value implements a specified interface.
  * @since 3.0.0
+ * @category Testing and Comparison Operations
  * @param interfaceName The interface name to report in the error message.
  * @param validators The property validators (or function that returns them).
  * @returns The guard.

@@ -5,6 +5,7 @@ import type { Guard } from '../types';
 
 /**
  * A value that is [nullish](https://mdn.io/Glossary/Nullish).
+ * @category Data Types and Values
  */
 export type Nullish = null | undefined;
 
@@ -13,7 +14,7 @@ export type Nullish = null | undefined;
  * [`null`](https://mdn.io/Global_Objects/null) or
  * [`undefined`](https://mdn.io/Global_Objects/undefined).
  * @since 3.0.0
- * @category Value Properties
+ * @category Data Types and Values
  * @param value The value to identify.
  * @returns `true` if `value` is nullish; else, `false`.
  * @example

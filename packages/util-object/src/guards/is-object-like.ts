@@ -5,6 +5,7 @@ import type { Guard, Tagged } from '@openinf/util-core';
 
 /**
  * A value that is object-like.
+ * @category Data Types and Values
  */
 export type ObjectLike = Tagged<Record<string, unknown>, '__ObjectLike__'>;
 
@@ -14,7 +15,7 @@ export type ObjectLike = Tagged<Record<string, unknown>, '__ObjectLike__'>;
  * has a `typeof` result of "object", its exclusion is special-cased to avoid
  * false-positives.
  * @since 3.0.0
- * @category Fundamental Objects
+ * @category Data Types and Values
  * @param value The value to identify.
  * @returns `true` if `value` is an object; else, `false`.
  * @example

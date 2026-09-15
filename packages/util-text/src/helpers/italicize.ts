@@ -6,6 +6,7 @@ import { supportsAnsi } from '../_internal/supports-ansi';
 
 /**
  * Returns the supplied string as italicized if ANSI escapes are supported.
+ * @category Text Processing
  * @param text The string to italicize.
  * @returns The italicized string, or `text` unchanged.
  */

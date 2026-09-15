@@ -8,7 +8,7 @@ import { Guard } from '../types';
  * Detects whether `value` is classified as an
  * [`Array`](https://mdn.io/Global_Objects/Array).
  * @since 3.0.0
- * @category Index Collections
+ * @category Indexed Collections
  * @param value The value to identify.
  * @returns `true` if `value` is an `Array`; else, `false`.
  * @example

@@ -7,6 +7,7 @@ import { isInteger } from './is-integer';
 
 /**
  * An integer that is positive.
+ * @category Numbers and Dates
  */
 export type PositiveInteger = Tagged<number, '__PositiveInteger__'>;
 

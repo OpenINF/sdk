@@ -78,6 +78,7 @@ function findMatchingRuns(runs: readonly BacktickRun[]): number[] {
  * Backtick runs and their next equal-length run are indexed before rendering,
  * keeping unmatched fence patterns linear instead of repeatedly scanning the
  * remaining input.
+ * @category Text Processing
  * @param text The Markdown text to process.
  * @returns The processed text.
  */

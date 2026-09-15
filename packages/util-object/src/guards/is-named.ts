@@ -5,6 +5,7 @@ import type { Guard } from '@openinf/util-core';
 
 /**
  * An object that is named.
+ * @category Fundamental Objects
  */
 export interface Named {
   name: string;
@@ -13,7 +14,7 @@ export interface Named {
 /**
  * Detects whether `value` has a `name` property of type `string`.
  * @since 3.0.0
- * @category Exotic Objects
+ * @category Fundamental Objects
  * @param value The value to identify.
  * @returns `true` if `value` is an `Array`; else, `false`.
  * @example

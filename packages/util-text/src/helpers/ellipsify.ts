@@ -6,6 +6,7 @@ import { UnicodeEscapes } from '../types';
 
 /**
  * Returns the supplied string as ellipsified if Unicode is supported.
+ * @category Text Processing
  * @param text The string to ellipsify.
  * @returns The ellipsified string.
  */
