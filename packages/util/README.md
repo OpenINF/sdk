@@ -41,14 +41,18 @@ try {
 }
 ```
 
-## Relationship to `@openinf/util-core`
+## Relationship to the other packages
 
-The shared vocabulary every `@openinf` package builds on — the `Guard` and
-`Validator` types, `Tagged`, `Comparable`, `Equatable`, and the elementary type
-predicates such as `isString` and `isNumber` — lives in
-[`@openinf/util-core`](https://www.npmjs.com/package/@openinf/util-core), which
-has no dependencies. This package re-exports all of it, so importing from either
-name gives you the same function.
+This package re-exports two others in full, so importing from either name gives
+you the same function:
 
-Depend on `@openinf/util-core` directly if you only need that vocabulary; depend
-on this package for the full set of guards, validators, and helpers.
+- [`@openinf/util-core`](https://www.npmjs.com/package/@openinf/util-core) holds
+  the shared vocabulary every `@openinf` package builds on: the `Guard` and
+  `Validator` types, `Tagged`, `Comparable`, `Equatable`, and the language type
+  guards such as `isString` and `isNumber`. It has no dependencies.
+- [`@openinf/util-number`](https://www.npmjs.com/package/@openinf/util-number)
+  holds the number guards: `isInteger`, `isInt32`, `isUint32`, `isLength`,
+  `isNaN` and the sign checks.
+
+Depend on one of those directly if it is all you need; depend on this package
+for the full set of guards, validators, and helpers.

@@ -3,9 +3,8 @@
 
 // Adapted from Node.js
 
-import { isObjectLike } from '@openinf/util-core';
+import { _tagTester, isObjectLike } from '@openinf/util-core';
 
-import { _tagTester } from '../_internal/_tag-tester';
 import type { Guard } from '../types';
 
 /**

@@ -10,6 +10,7 @@
     "packages/util-core",
     "packages/util-errors",
     "packages/util-md-table",
+    "packages/util-number",
     "packages/util-object",
     "packages/util-text",
     "packages/util-types"

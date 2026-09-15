@@ -1,7 +1,7 @@
 # Contributing
 
-Thanks for taking the time. This is a pnpm workspace containing ten `@openinf/*`
-packages that share a single version number.
+Thanks for taking the time. This is a pnpm workspace containing eleven
+`@openinf/*` packages that share a single version number.
 
 ## Getting set up
 
@@ -22,8 +22,8 @@ pnpm run test
 ```
 
 `pnpm run build` compiles every package twice -- once to CommonJS and once to
-ESM -- because all ten ship dual entrypoints. If a build behaves oddly, run it
-twice: the second run exercises the incremental cache, and a cache bug only
+ESM -- because all eleven ship dual entrypoints. If a build behaves oddly, run
+it twice: the second run exercises the incremental cache, and a cache bug only
 shows up then.
 
 ### Two TypeScript versions, deliberately

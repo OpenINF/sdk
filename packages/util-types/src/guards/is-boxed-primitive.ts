@@ -3,9 +3,9 @@
 
 // Adapted from Node.js
 
-import { isBigIntObject } from './is-big-int-object';
+import { isBigIntObject, isNumberObject } from '@openinf/util-number';
+
 import { isBooleanObject } from './is-boolean-object';
-import { isNumberObject } from './is-number-object';
 import { isStringObject } from './is-string-object';
 import { isSymbolObject } from './is-symbol-object';
 

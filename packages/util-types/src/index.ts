@@ -10,7 +10,6 @@ export * from './guards/is-array-buffer';
 export * from './guards/is-async-function';
 export * from './guards/is-async-generator-function';
 export * from './guards/is-async-generator';
-export * from './guards/is-big-int-object';
 export * from './guards/is-big-int64-array';
 export * from './guards/is-big-uint64-array';
 export * from './guards/is-boolean-object';
@@ -30,7 +29,6 @@ export * from './guards/is-map-like';
 export * from './guards/is-map';
 export * from './guards/is-module-namespace-object';
 export * from './guards/is-native-error';
-export * from './guards/is-number-object';
 export * from './guards/is-promise';
 export * from './guards/is-proxy';
 export * from './guards/is-reg-exp';
@@ -51,12 +49,16 @@ export * from './guards/type';
 
 // helpers
 export * from './get-expectation';
-export * from './maybe-unbox-number';
 
 // validators
 export * from './validators/validate-callback';
 export * from './validators/validate-integer';
 export * from './validators/validate-integer-range';
 export * from './validators/validate-one-of';
+
+// Node's util.types checks the boxed Number and BigInt objects too. They are
+// numbers, and live in @openinf/util-number; this package re-exports them so it
+// stays a drop-in for util.types.
+export { isBigIntObject, isNumberObject } from '@openinf/util-number';
 
 export * from './types';

@@ -5,9 +5,7 @@
 
 // https://nodejs.org/dist/latest-v16.x/docs/api/util.html#util_util_types_iswebassemblycompiledmodule_value
 
-import { isObjectLike } from '@openinf/util-core';
-
-import { _tagTester } from '../_internal/_tag-tester';
+import { _tagTester, isObjectLike } from '@openinf/util-core';
 
 /**
  * Detects whether `value` is a compiled

@@ -23,4 +23,11 @@ export * from './guards/is-undefined';
 export * from './guards/is-unknown';
 export * from './guards/or';
 
+// The brand-check machinery the guards for built-in objects are made from. It
+// is shared with the other @openinf packages rather than published for general
+// use, which is why its declarations are marked private and left out of the
+// API reference.
+export { _tagTester } from './_internal/_tag-tester';
+export { _typedArrayName } from './_internal/_typed-array-name';
+
 export * from './types';

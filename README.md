@@ -1,7 +1,8 @@
 # OpenINF
 
-Ten small TypeScript packages for the unglamorous parts of Node.js development:
-type guards, argument validation, structured errors, and terminal text.
+Eleven small TypeScript packages for the unglamorous parts of Node.js
+development: type guards, argument validation, structured errors, and terminal
+text.
 
 They are published separately, versioned together, and depend on almost nothing.
 
@@ -49,14 +50,15 @@ Errors are classes, not string codes, so callers can catch by type.
 
 | Package                                                  |                                                                          | Exports |
 | -------------------------------------------------------- | ------------------------------------------------------------------------ | ------: |
-| [`@openinf/util`](packages/util)                         | Guards, validators, and assertion helpers for every ECMAScript primitive |      58 |
-| [`@openinf/util-types`](packages/util-types)             | Type-related predicates, including exotic and internal-slot detection    |      51 |
+| [`@openinf/util`](packages/util)                         | Guards, validators, and assertion helpers for every ECMAScript primitive |      61 |
+| [`@openinf/util-types`](packages/util-types)             | Type-related predicates, including exotic and internal-slot detection    |      50 |
 | [`@openinf/util-object`](packages/util-object)           | Object utilities -- merge, clone, mixin, omit                            |      41 |
 | [`@openinf/assert`](packages/assert)                     | Runtime assertions and comparison guards                                 |      23 |
+| [`@openinf/util-core`](packages/util-core)               | The language types and the guard vocabulary. No dependencies             |      20 |
 | [`@openinf/util-array`](packages/util-array)             | Array utilities                                                          |      16 |
 | [`@openinf/util-text`](packages/util-text)               | Terminal-friendly text: quoting, color, ellipsis, Markdown               |      15 |
 | [`@openinf/util-errors`](packages/util-errors)           | Error classes modeled on Node.js core error codes                        |      13 |
-| [`@openinf/util-core`](packages/util-core)               | The language types and the guard vocabulary. No dependencies             |      20 |
+| [`@openinf/util-number`](packages/util-number)           | Integers, their sign and ranges, and Number and BigInt objects           |      13 |
 | [`@openinf/gh-file-importer`](packages/gh-file-importer) | Fetches arbitrary files from remote GitHub repositories                  |       2 |
 | [`@openinf/util-md-table`](packages/util-md-table)       | Markdown table generation                                                |       1 |
 
@@ -66,39 +68,41 @@ Install only what you need:
 npm install @openinf/util
 ```
 
-`@openinf/util` re-exports all of `@openinf/util-core`, so most consumers want
-one of those two and nothing else.
+`@openinf/util` re-exports all of `@openinf/util-core` and
+`@openinf/util-number`, so most consumers want it and nothing else.
 
 ## Design
 
-**Nine of the ten have no third-party runtime dependencies.** The exception is
+**Ten of the eleven have no third-party runtime dependencies.** The exception is
 `gh-file-importer`, which needs `@octokit/rest` to talk to GitHub. Several
 packages previously depended on small unmaintained modules; those were
 reimplemented in TypeScript and verified against the originals by differential
 testing before removal.
 
-**The graph is layered.** `util-core` sits at the bottom with no dependencies at
-all, holding the vocabulary everything else is written in -- `Guard`,
-`Validator`, `Tagged`, and the elementary predicates. Depend on it alone if that
-is all you need.
+**The graph is layered, and follows the specification.** `util-core` sits at the
+bottom with no dependencies at all. It holds the language types and testing
+operations of ECMAScript sections 6 and 7.2, and the vocabulary everything else
+is written in -- `Guard`, `Validator` and `Tagged`. A package for a chapter of
+the specification builds on it: `util-number` for Number, BigInt and Math.
+Depend on any of them alone if that is all you need.
 
-Redundant transitive edges omitted, so this is the shape of the graph rather
-than the full list of every declared dependency. A package with more than one
-parent is drawn under one of them, and names the others beside it:
+Each package builds only on the ones listed above it. A package names only the
+dependencies it does not already reach through another, so `util-errors` names
+`assert`, which brings `util-text` and the rest with it:
 
-```text
-util-core
-  ├── util-types
-  └── util-array
-        └── util-object
-              └── util-text
-                    └── assert
-                          └── util-errors
-                                ├── util
-                                └── gh-file-importer
-
-util-md-table   (independent of the rest)
-```
+| Package            | Builds on                    |
+| ------------------ | ---------------------------- |
+| `util-core`        | nothing                      |
+| `util-md-table`    | nothing                      |
+| `util-array`       | `util-core`                  |
+| `util-number`      | `util-core`                  |
+| `util-object`      | `util-array`                 |
+| `util-types`       | `util-number`                |
+| `util-text`        | `util-object`                |
+| `assert`           | `util-text`                  |
+| `util-errors`      | `assert`                     |
+| `gh-file-importer` | `util-errors`                |
+| `util`             | `util-errors`, `util-number` |
 
 **Dual CommonJS and ESM, with types for both.** Each package ships a CJS build
 and an ESM build with `.mjs`/`.d.mts` extensions behind an `exports` map. A
@@ -110,7 +114,7 @@ modes against the real packed tarball rather than trusting the config.
 every top-level statement, not by assuming. Bundlers can drop what you do not
 import.
 
-**One version for all ten.** A breaking change in `util-core` can reach a
+**One version for all eleven.** A breaking change in `util-core` can reach a
 consumer through re-exports from a package that did not itself change;
 independent versioning would report that as a patch bump and understate it.
 

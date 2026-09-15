@@ -64,7 +64,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@openinf/util-core": "workspace:*"
+    "@openinf/util-core": "workspace:*",
+    "@openinf/util-number": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^26.1.2",

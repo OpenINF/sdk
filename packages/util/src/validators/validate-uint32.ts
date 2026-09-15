@@ -5,9 +5,8 @@
 
 import { isNumber, isString } from '@openinf/util-core';
 import { InvalidArgTypeError, OutOfRangeError } from '@openinf/util-errors';
+import { isInteger, isUint32 } from '@openinf/util-number';
 
-import { isInteger } from '../guards/is-integer';
-import { isUint32 } from '../guards/is-uint32';
 import { assertValue } from '../helpers/assert-value';
 
 /**

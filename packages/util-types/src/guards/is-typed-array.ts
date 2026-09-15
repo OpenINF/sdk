@@ -3,7 +3,8 @@
 
 // Adapted from Node.js
 
-import { _typedArrayName } from '../_internal/_typed-array-name';
+import { _typedArrayName } from '@openinf/util-core';
+
 import type { Guard, TypedArray } from '../types';
 
 /**

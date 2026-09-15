@@ -3,9 +3,7 @@
 
 // Adapted from Node.js
 
-import { isObjectLike } from '@openinf/util-core';
-
-import { _tagTester } from '../_internal/_tag-tester';
+import { _tagTester, isObjectLike } from '@openinf/util-core';
 
 /**
  * Determines whether the passed value is one of the native error types:

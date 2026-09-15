@@ -1,7 +1,7 @@
 {
-  "name": "@openinf/util",
+  "name": "@openinf/util-number",
   "version": "0.0.0",
-  "description": "A collection of utilities useful for application and module development",
+  "description": "Guards for ECMAScript numbers: integer ranges, sign, and Number and BigInt objects",
   "main": "./dist/cjs/index.js",
   "types": "./dist/cjs/index.d.ts",
   "exports": {
@@ -37,19 +37,17 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/OpenINF/sdk.git",
-    "directory": "packages/util"
+    "directory": "packages/util-number"
   },
   "bugs": {
     "url": "https://github.com/OpenINF/sdk/issues"
   },
   "keywords": [
-    "utilities",
-    "type-guards",
+    "number",
+    "integer",
+    "bigint",
     "guards",
-    "predicates",
-    "typescript",
-    "stdlib",
-    "validation"
+    "typescript"
   ],
   "files": [
     "dist",
@@ -64,15 +62,11 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@openinf/assert": "workspace:*",
-    "@openinf/util-core": "workspace:*",
-    "@openinf/util-errors": "workspace:*",
-    "@openinf/util-number": "workspace:*",
-    "@openinf/util-object": "workspace:*"
-  },
   "devDependencies": {
     "@types/node": "^26.1.2",
     "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "@openinf/util-core": "workspace:*"
   }
 }
