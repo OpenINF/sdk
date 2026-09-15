@@ -3,9 +3,8 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { isNumber } from '@openinf/util-core';
-
 import { hasInterface } from '../../src/guards/has-interface';
+import { isNumber } from '../../src/guards/is-number';
 
 interface Point {
   x: number;
@@ -30,6 +29,11 @@ describe(hasInterface.name, () => {
   it('should return false for non-objects', () => {
     assert.strictEqual(isPoint(null), false);
     assert.strictEqual(isPoint(42), false);
+  });
+
+  it('should accept a function that implements the interface', () => {
+    const pointClass = Object.assign(function Point() {}, { x: 0, y: 0 });
+    assert.strictEqual(isPoint(pointClass), true);
   });
 
   it('should support a validators-producing function', () => {

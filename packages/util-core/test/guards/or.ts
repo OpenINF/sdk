@@ -3,8 +3,8 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { isNumber, isUndefined } from '@openinf/util-core';
-
+import { isNumber } from '../../src/guards/is-number';
+import { isUndefined } from '../../src/guards/is-undefined';
 import { or } from '../../src/guards/or';
 
 describe(or.name, () => {

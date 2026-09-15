@@ -49,14 +49,14 @@ Errors are classes, not string codes, so callers can catch by type.
 
 | Package                                                  |                                                                          | Exports |
 | -------------------------------------------------------- | ------------------------------------------------------------------------ | ------: |
-| [`@openinf/util`](packages/util)                         | Guards, validators, and assertion helpers for every ECMAScript primitive |      56 |
-| [`@openinf/util-types`](packages/util-types)             | Type-related predicates, including exotic and internal-slot detection    |      52 |
-| [`@openinf/util-object`](packages/util-object)           | Object utilities -- merge, clone, mixin, omit                            |      42 |
+| [`@openinf/util`](packages/util)                         | Guards, validators, and assertion helpers for every ECMAScript primitive |      58 |
+| [`@openinf/util-types`](packages/util-types)             | Type-related predicates, including exotic and internal-slot detection    |      51 |
+| [`@openinf/util-object`](packages/util-object)           | Object utilities -- merge, clone, mixin, omit                            |      41 |
 | [`@openinf/assert`](packages/assert)                     | Runtime assertions and comparison guards                                 |      23 |
 | [`@openinf/util-array`](packages/util-array)             | Array utilities                                                          |      16 |
 | [`@openinf/util-text`](packages/util-text)               | Terminal-friendly text: quoting, color, ellipsis, Markdown               |      15 |
 | [`@openinf/util-errors`](packages/util-errors)           | Error classes modeled on Node.js core error codes                        |      13 |
-| [`@openinf/util-core`](packages/util-core)               | The shared vocabulary. No dependencies                                   |      12 |
+| [`@openinf/util-core`](packages/util-core)               | The language types and the guard vocabulary. No dependencies             |      20 |
 | [`@openinf/gh-file-importer`](packages/gh-file-importer) | Fetches arbitrary files from remote GitHub repositories                  |       2 |
 | [`@openinf/util-md-table`](packages/util-md-table)       | Markdown table generation                                                |       1 |
 
@@ -83,13 +83,14 @@ all, holding the vocabulary everything else is written in -- `Guard`,
 is all you need.
 
 Redundant transitive edges omitted, so this is the shape of the graph rather
-than the full list of every declared dependency:
+than the full list of every declared dependency. A package with more than one
+parent is drawn under one of them, and names the others beside it:
 
 ```text
 util-core
+  ├── util-types
   └── util-array
         └── util-object
-              ├── util-types
               └── util-text
                     └── assert
                           └── util-errors

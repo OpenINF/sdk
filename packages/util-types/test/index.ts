@@ -27,7 +27,6 @@ describe('index', () => {
       'isFloat64Array',
       'isGeneratorFunction',
       'isGeneratorObject',
-      'hasInterface',
       'isInt8Array',
       'isInt16Array',
       'isInt32Array',

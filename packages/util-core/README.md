@@ -25,24 +25,26 @@ isString('hi'); // ↪ true
 
 ## What belongs here
 
-Two things, and nothing else:
+The parts of the ECMAScript specification that every other package is built on,
+and nothing else:
 
-1. **The shared vocabulary types** — `Guard`, `Validator`, `HasExpectation`,
-   `Tag`, `Tagged`, `Comparable`, `Equatable`, `ComparisonResult`, `Narrowable`,
-   `AnyFunction`, `AnyConstructor`, `AnyObject`, `Arrayish`.
-2. **One predicate per elementary type test** — a guard whose implementation is
-   a single `typeof` comparison, `Array.isArray`, or a `null`/`undefined`
-   comparison: `isString`, `isNumber`, `isBoolean`, `isBigInt`, `isSymbol`,
-   `isUndefined`, `isNull`, `isFunction`, `isObject`, `isArray`, `isNullish`,
-   `isNonNullish`.
+1. **The language types, section 6.** One guard per type: `isUndefined`,
+   `isNull`, `isBoolean`, `isString`, `isSymbol`, `isNumber`, `isBigInt` and
+   `isObject`. Also the unions over them, `isNullish`, `isNonNullish`,
+   `isDefined`, `isPrimitive` and `isObjectLike`, and the types that name them,
+   such as `Primitive` and `Nullish`.
+2. **Testing and comparison, section 7.2.** `isArray` for IsArray and
+   `isFunction` for IsCallable, with what every guard is made from: `Guard`,
+   `Validator`, `HasExpectation`, `and`, `or`, `hasInterface`, `isAny` and
+   `isUnknown`.
+3. **The shared vocabulary types.** `Tag`, `Tagged`, `Comparable`, `Equatable`,
+   `ComparisonResult`, `Narrowable`, `AnyFunction`, `AnyConstructor`,
+   `AnyObject` and `Arrayish`.
 
-Anything composite belongs in `@openinf/util`, even when it looks primitive.
-`isPrimitive` is a union over this set rather than a single test, and
-`isInteger` refines `number` rather than identifying a type, so both live there.
-
-The rule matters because the alternative is a boundary drawn by whatever happens
-to be imported across packages today, which shifts every time a new call site
-appears.
+A guard about a particular kind of built-in object belongs with that object
+instead. An integer range, a `Date` and a `Map` each have a chapter of the
+specification, and a package that follows it. That is what keeps this package
+free of dependencies: nothing here needs anything more specific than itself.
 
 Most consumers should reach for
 [`@openinf/util`](https://www.npmjs.com/package/@openinf/util), which re-exports

@@ -3,7 +3,7 @@
 
 // Adapted from TypeShield.
 
-import type { Guard } from '@openinf/util-core';
+import type { Guard } from '../types';
 
 /**
  * Detects whether `value` is an `unknown` value (always true).

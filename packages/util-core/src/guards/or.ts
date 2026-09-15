@@ -4,7 +4,7 @@
 // Adapted from TypeShield
 // https://github.com/dtjohnson/typeshield/blob/master/src/guards/or.ts
 
-import type { Guard } from '@openinf/util-core';
+import type { Guard } from '../types';
 
 function expectationOf(guard: Guard): string {
   return typeof guard.expectation === 'function'

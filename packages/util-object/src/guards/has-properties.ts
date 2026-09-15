@@ -4,8 +4,7 @@
 // Adapted from TypeShield.
 
 import type { Guard, Validator } from '@openinf/util-core';
-
-import { isObjectLike } from './is-object-like';
+import { isObjectLike } from '@openinf/util-core';
 
 /**
  * Extract an object of types from an object of guards.

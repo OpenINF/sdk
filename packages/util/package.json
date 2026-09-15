@@ -67,7 +67,8 @@
   "dependencies": {
     "@openinf/assert": "workspace:*",
     "@openinf/util-core": "workspace:*",
-    "@openinf/util-errors": "workspace:*"
+    "@openinf/util-errors": "workspace:*",
+    "@openinf/util-object": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^26.1.2",

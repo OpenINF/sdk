@@ -3,7 +3,7 @@
 
 // Adapted from TypeShield.
 
-import type { Guard } from '@openinf/util-core';
+import type { Guard } from '../types';
 
 /**
  * Type guard that detects whether `value` is an `any` value (always true).

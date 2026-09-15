@@ -133,6 +133,9 @@ importers:
       '@openinf/util-errors':
         specifier: workspace:*
         version: link:../util-errors
+      '@openinf/util-object':
+        specifier: workspace:*
+        version: link:../util-object
     devDependencies:
       '@types/node':
         specifier: ^26.1.2
@@ -228,9 +231,6 @@ importers:
       '@openinf/util-core':
         specifier: workspace:*
         version: link:../util-core
-      '@openinf/util-object':
-        specifier: workspace:*
-        version: link:../util-object
     devDependencies:
       '@types/node':
         specifier: ^26.1.2

@@ -1,9 +1,8 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-import type { Guard } from '@openinf/util-core';
-
-import { _isObjectLike } from '../_internal/_is-object-like';
+import type { Guard } from '../types';
+import { isObjectLike } from './is-object-like';
 
 /**
  * A value that is of a primitive data type.
@@ -48,6 +47,6 @@ export type Primitive =
  * ```
  */
 export function isPrimitive(value: unknown): value is Primitive {
-  return value === null || !_isObjectLike(value) ? true : false;
+  return value === null || !isObjectLike(value) ? true : false;
 }
 (isPrimitive as Guard).expectation = 'be of a primitive data type';
