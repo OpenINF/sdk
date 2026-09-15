@@ -43,8 +43,8 @@ try {
 
 ## Relationship to the other packages
 
-This package re-exports two others in full, so importing from either name gives
-you the same function:
+This package re-exports three others in full, so importing from either name
+gives you the same function:
 
 - [`@openinf/util-core`](https://www.npmjs.com/package/@openinf/util-core) holds
   the shared vocabulary every `@openinf` package builds on: the `Guard` and
@@ -53,6 +53,8 @@ you the same function:
 - [`@openinf/util-number`](https://www.npmjs.com/package/@openinf/util-number)
   holds the number guards: `isInteger`, `isInt32`, `isUint32`, `isLength`,
   `isNaN` and the sign checks.
+- [`@openinf/util-date`](https://www.npmjs.com/package/@openinf/util-date) holds
+  the date guards, `isDate` and `isValidDate`.
 
 Depend on one of those directly if it is all you need; depend on this package
 for the full set of guards, validators, and helpers.

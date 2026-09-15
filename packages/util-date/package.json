@@ -1,7 +1,7 @@
 {
-  "name": "@openinf/util-types",
-  "version": "2.1.3",
-  "description": "A library of pure TypeScript/JavaScript utility functions for common type-related operations",
+  "name": "@openinf/util-date",
+  "version": "0.0.0",
+  "description": "Guards for ECMAScript dates: Date objects and the validity of their time value",
   "main": "./dist/cjs/index.js",
   "types": "./dist/cjs/index.d.ts",
   "exports": {
@@ -37,18 +37,17 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/OpenINF/sdk.git",
-    "directory": "packages/util-types"
+    "directory": "packages/util-date"
   },
   "bugs": {
     "url": "https://github.com/OpenINF/sdk/issues"
   },
   "keywords": [
-    "types",
-    "typechecking",
-    "util",
-    "stdlib",
-    "functional",
-    "utilities"
+    "date",
+    "time",
+    "temporal",
+    "guards",
+    "typescript"
   ],
   "files": [
     "dist",
@@ -63,13 +62,11 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@openinf/util-core": "workspace:*",
-    "@openinf/util-date": "workspace:*",
-    "@openinf/util-number": "workspace:*"
-  },
   "devDependencies": {
     "@types/node": "^26.1.2",
     "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "@openinf/util-core": "workspace:*"
   }
 }

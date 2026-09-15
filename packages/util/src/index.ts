@@ -6,6 +6,7 @@
 // have to depend on all of util. Re-exported here so this package remains a
 // single entry point -- one definition, reachable from either name.
 export * from '@openinf/util-core';
+export * from '@openinf/util-date';
 export * from '@openinf/util-number';
 
 // assertions
@@ -29,11 +30,9 @@ export * from './helpers/is-node';
 
 // guards
 export * from './guards/is-buffer';
-export * from './guards/is-date';
 export * from './guards/is-error';
 export * from './guards/is-falsy';
 export * from './guards/is-iterator';
-export * from './guards/is-valid-date';
 
 // The type-name helpers read `Object.prototype.toString`, and so belong with
 // the rest of the Object operations in @openinf/util-object.

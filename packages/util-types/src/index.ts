@@ -15,7 +15,6 @@ export * from './guards/is-big-uint64-array';
 export * from './guards/is-boolean-object';
 export * from './guards/is-boxed-primitive';
 export * from './guards/is-data-view';
-export * from './guards/is-date';
 export * from './guards/is-external';
 export * from './guards/is-float32-array';
 export * from './guards/is-float64-array';
@@ -55,6 +54,10 @@ export * from './validators/validate-callback';
 export * from './validators/validate-integer';
 export * from './validators/validate-integer-range';
 export * from './validators/validate-one-of';
+
+// Node's util.types checks Dates too. A Date is §21.4, and lives in
+// @openinf/util-date; this package re-exports it so it stays a drop-in.
+export { isDate } from '@openinf/util-date';
 
 // Node's util.types checks the boxed Number and BigInt objects too. They are
 // numbers, and live in @openinf/util-number; this package re-exports them so it

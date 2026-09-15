@@ -22,6 +22,11 @@ describe(isValidDate.name, () => {
     }
   });
 
+  it('should read the time value even when getTime is shadowed', () => {
+    const invalid = Object.assign(new Date(NaN), { getTime: () => 0 });
+    assert.strictEqual(isValidDate(invalid), false);
+  });
+
   it('should reject values that are not Dates at all', () => {
     for (const value of ['Sun February 28 2021', 0, null, undefined, {}, []]) {
       assert.strictEqual(isValidDate(value), false);
