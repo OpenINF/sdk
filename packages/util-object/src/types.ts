@@ -1,11 +1,12 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-import type {
-  AnyFunction,
-  AnyObject,
-  Guard,
-  Primitive,
+import {
+  isObjectLike,
+  type AnyFunction,
+  type AnyObject,
+  type Guard,
+  type Primitive,
 } from '@openinf/util-core';
 
 import { _toString } from './_internal/_to-string';
@@ -239,18 +240,9 @@ export interface Object {
 // Adapted from is
 ////////////////////////////////////////////////////////////////////////////////
 
-// export { Class, TypedArray, ObservableLike, Primitive };
-
-// /**
-//  * Matches a value that is like an [Observable](https://github.com/tc39/proposal-observable).
-//  */
-// export interface ObservableLike {
-//   subscribe(observer: (value: unknown) => void): void;
-//   [Symbol.observable](): ObservableLike;
-// }
-
 /**
- * The names of the typed array constructors.
+ * The names of the typed array constructors, in the order of the TypedArray
+ * constructors table in section 23.2 of the ECMAScript specification.
  * @category Data Types and Values
  */
 export const typedArrayTypeNames = [
@@ -261,10 +253,11 @@ export const typedArrayTypeNames = [
   'Uint16Array',
   'Int32Array',
   'Uint32Array',
-  'Float32Array',
-  'Float64Array',
   'BigInt64Array',
   'BigUint64Array',
+  'Float16Array',
+  'Float32Array',
+  'Float64Array',
 ] as const;
 
 /**
@@ -285,38 +278,79 @@ export function isTypedArrayName(name: unknown): name is TypedArrayTypeName {
 (isTypedArrayName as Guard).expectation = 'be a typed array type name';
 
 /**
- * The built-in type names `getObjectType` can report for an object.
+ * The tags `Object.prototype.toString` reports for the objects the ECMAScript
+ * specification defines, which `getObjectType` recognizes.
+ *
+ * Section 20.1.3.6 gives an object with one of certain internal slots a tag of
+ * its own, `Array` through `RegExp`, and every other object `Object`, unless it
+ * has a `Symbol.toStringTag` property. The rest are the values the
+ * specification gives that property: on the prototypes of its classes, on its
+ * namespace objects such as `Math`, and, with `Temporal`, on the objects that
+ * proposal added for ES2027.
  * @category Data Types and Values
  */
 export const objectTypeNames = [
-  'Function',
-  'Generator',
-  'AsyncGenerator',
-  'GeneratorFunction',
-  'AsyncGeneratorFunction',
-  'AsyncFunction',
-  'Observable',
+  // Section 20.1.3.6, from an object's internal slots.
   'Array',
-  'Buffer',
-  'Object',
-  'RegExp',
-  'Date',
+  'Arguments',
+  'Function',
   'Error',
+  'Boolean',
+  'Number',
+  'String',
+  'Date',
+  'RegExp',
+  'Object',
+
+  // The Symbol.toStringTag values, in the order of the specification.
+  'Symbol',
+  'BigInt',
+  'Math',
+  'String Iterator',
+  'RegExp String Iterator',
+  'Array Iterator',
+  ...typedArrayTypeNames,
   'Map',
+  'Map Iterator',
   'Set',
+  'Set Iterator',
   'WeakMap',
   'WeakSet',
   'ArrayBuffer',
   'SharedArrayBuffer',
   'DataView',
+  'Atomics',
+  'JSON',
+  'WeakRef',
+  'FinalizationRegistry',
+  'Iterator Helper',
+  'Iterator',
+  'DisposableStack',
+  'AsyncDisposableStack',
   'Promise',
-  'URL',
-  'HTMLElement',
-  ...typedArrayTypeNames,
+  'GeneratorFunction',
+  'AsyncGeneratorFunction',
+  'Generator',
+  'AsyncGenerator',
+  'AsyncFunction',
+  'Reflect',
+  'Module',
+
+  // Temporal, finished for ES2027.
+  'Temporal',
+  'Temporal.Now',
+  'Temporal.PlainDate',
+  'Temporal.PlainTime',
+  'Temporal.PlainDateTime',
+  'Temporal.ZonedDateTime',
+  'Temporal.Duration',
+  'Temporal.Instant',
+  'Temporal.PlainYearMonth',
+  'Temporal.PlainMonthDay',
 ] as const;
 
 /**
- * A built-in type name `getObjectType` can report, such as `'Date'`.
+ * A tag `getObjectType` can report, such as `'Date'` or `'Map Iterator'`.
  * @category Data Types and Values
  */
 export type ObjectTypeName = (typeof objectTypeNames)[number];
@@ -371,29 +405,39 @@ export type TypeName = ObjectTypeName | PrimitiveTypeName;
 
 /**
  * Creates a guard that tests whether `typeof value` is `type`.
+ *
+ * `'null'` is not accepted, because no value has it as its `typeof`: `typeof
+ * null` is `'object'`, a quirk the specification keeps for compatibility. Use
+ * `isNull` for `null`.
  * @category Data Types and Values
  * @param type The `typeof` result to test for.
  * @returns A guard for values of that type.
  */
 export function isOfType<T extends Primitive | AnyFunction>(
-  type: PrimitiveTypeName | 'function'
+  type: Exclude<PrimitiveTypeName, 'null'> | 'function'
 ) {
   return (value: unknown): value is T => typeof value === type;
 }
 
 /**
- * Gets the built-in type name in `value`'s `Object.prototype.toString` tag,
- * or `undefined` when it is not one of the `objectTypeNames`.
+ * Gets the tag `Object.prototype.toString` reports for an object, when it is one
+ * of the `objectTypeNames`.
+ *
+ * The tag is what the object says it is, not proof of it. Any object can set
+ * `Symbol.toStringTag`, so `getObjectType({ [Symbol.toStringTag]: 'Date' })` is
+ * `'Date'`. To know that a value really is a `Date` or a `Map`, use a guard that
+ * checks the internal slot instead, such as `isDate` or `isMap`.
  * @category Data Types and Values
  * @param value The value to inspect.
- * @returns The type name, or `undefined`.
+ * @returns The tag, or `undefined` for a value that is not an object or whose tag
+ * is not one of the `objectTypeNames`.
  */
 export const getObjectType = (value: unknown): ObjectTypeName | undefined => {
-  const objectTypeName = String(_toString(value)).slice(8, -1);
+  if (!isObjectLike(value)) {
+    return undefined;
+  }
 
-  // if (/HTML\w+Element/.test(objectTypeName) && is.domElement(value)) {
-  //   return 'HTMLElement';
-  // }
+  const objectTypeName = String(_toString(value)).slice(8, -1);
 
   if (isObjectTypeName(objectTypeName)) {
     return objectTypeName;
