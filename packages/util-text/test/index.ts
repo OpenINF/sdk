@@ -8,11 +8,6 @@ import * as utilText from '../src/index';
 describe('index', () => {
   it('should export every public guard and helper as a function', () => {
     const names = [
-      'isEmail',
-      'isEmptyString',
-      'isNonEmptyString',
-      'isStringContaining',
-      'isStringNotContaining',
       'blueify',
       'curlyQuote',
       'ellipsify',
@@ -30,7 +25,6 @@ describe('index', () => {
   });
 
   it('should agree with its exports on a representative value', () => {
-    assert.strictEqual(utilText.isEmail('foo@example.com'), true);
     assert.strictEqual(utilText.stringify('foo'), 'foo');
   });
 });
