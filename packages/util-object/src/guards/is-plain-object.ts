@@ -3,9 +3,10 @@
 
 // Adapted from jQuery
 
+import { isObjectLike } from '@openinf/util-core';
+
 import { isObjectOfType } from '../types';
 import { hasOwn } from './has-own';
-import { isObjectLike } from './is-object-like';
 
 const objectFunctionString = Function.prototype.toString.call(Object);
 

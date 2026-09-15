@@ -27,11 +27,8 @@ export * from './helpers/generate-argument-error-message';
 export * from './helpers/is-node';
 
 // guards
-export * from './guards/has-interface';
-export * from './guards/is-any';
 export * from './guards/is-buffer';
 export * from './guards/is-date';
-export * from './guards/is-defined';
 export * from './guards/is-error';
 export * from './guards/is-falsy';
 export * from './guards/is-finite-number';
@@ -44,12 +41,25 @@ export * from './guards/is-negative-integer';
 export * from './guards/is-negative';
 export * from './guards/is-positive-integer';
 export * from './guards/is-positive';
-export * from './guards/is-primitive';
 export * from './guards/is-uint32';
-export * from './guards/is-unknown';
 export * from './guards/is-valid-date';
 
-export * from './guards/and';
-export * from './guards/or';
-
-export * from './types';
+// The type-name helpers read `Object.prototype.toString`, and so belong with
+// the rest of the Object operations in @openinf/util-object.
+export {
+  getObjectType,
+  isObjectOfType,
+  isObjectTypeName,
+  isOfType,
+  isPrimitiveTypeName,
+  isTypedArrayName,
+  objectTypeNames,
+  primitiveTypeNames,
+  typedArrayTypeNames,
+} from '@openinf/util-object';
+export type {
+  ObjectTypeName,
+  PrimitiveTypeName,
+  TypeName,
+  TypedArrayTypeName,
+} from '@openinf/util-object';

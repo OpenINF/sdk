@@ -4,9 +4,8 @@
 // Adapted from Node.js
 
 import type { Guard } from '@openinf/util-core';
-
-import { _isObjectLike } from '../_internal/_is-object-like';
-import { isObjectOfType } from '../types';
+import { isObjectLike } from '@openinf/util-core';
+import { isObjectOfType } from '@openinf/util-object';
 
 /**
  * Detects whether `value` is classified as a
@@ -27,6 +26,6 @@ import { isObjectOfType } from '../types';
  * ```
  */
 export function isDate(value: unknown): value is globalThis.Date {
-  return _isObjectLike(value) && isObjectOfType<Date>('Date')(value);
+  return isObjectLike(value) && isObjectOfType<Date>('Date')(value);
 }
 (isDate as Guard).expectation = 'be a Date object';

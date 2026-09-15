@@ -1,31 +1,23 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-import type { Guard } from '@openinf/util-core';
+import type {
+  AnyFunction,
+  AnyObject,
+  Guard,
+  Primitive,
+} from '@openinf/util-core';
 
 import { _toString } from './_internal/_to-string';
 
-// Properties of the Object Prototype Object as per ES5 spec
-// https://github.com/microsoft/TypeScript/blob/38da7c600c83e7b31193a62495239a0fe478cb67/tests/cases/compiler/library_ObjectPrototypeProperties.ts
-
-/**
- * Safer version of `Function` which should not be called.
- * Every function should be assignable to this, but this should not be assignable to every function.
- * @category Data Types and Values
- */
-export type AnyFunction = (...args: never[]) => void;
-
-/**
- * Any constructor, whatever arguments it takes and whatever it constructs.
- * @category Data Types and Values
- */
-export type AnyConstructor = new (...args: unknown[]) => unknown;
-
-/**
- * An object with string keys and values of any type.
- * @category Data Types and Values
- */
-export type AnyObject = Record<string, any>;
+// Defined once, in @openinf/util-core, and re-exported for the consumers of
+// this package that already import them from here.
+export type {
+  AnyConstructor,
+  AnyFunction,
+  AnyObject,
+  Primitive,
+} from '@openinf/util-core';
 
 /**
  * An object indexed by string keys, mapping to values of type `T`.
@@ -36,15 +28,14 @@ export interface MapLike<T> {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Adapted from is
+// Adapted from TypeScript
 ////////////////////////////////////////////////////////////////////////////////
 
-/**
- * Matches any [primitive value](https://developer.mozilla.org/en-US/docs/Glossary/Primitive).
- * @category Data Types and Values
- */
-export type Primitive =
-  null | undefined | string | number | boolean | symbol | bigint;
+// PropertyDescriptor, PropertyDescriptorMap, ObjectConstructor and Object
+// follow the declarations of the same names in TypeScript's standard library.
+// Object lists the properties of the Object prototype object, section 20.1.3
+// of the ECMAScript specification.
+// https://github.com/microsoft/TypeScript/blob/38da7c600c83e7b31193a62495239a0fe478cb67/src/lib/es5.d.ts
 
 /**
  * The attributes of a property, as `Object.getOwnPropertyDescriptor`
@@ -243,10 +234,6 @@ export interface Object {
    */
   propertyIsEnumerable(v: PropertyKey): boolean;
 }
-
-/// <reference lib="es2018"/>
-/// <reference lib="dom"/>
-/// <reference types="node"/>
 
 ////////////////////////////////////////////////////////////////////////////////
 // Adapted from is

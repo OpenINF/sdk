@@ -35,7 +35,6 @@ export * from './guards/is-data-descriptor';
 export * from './guards/is-empty-object';
 export * from './guards/is-named';
 export * from './guards/is-object-coercible';
-export * from './guards/is-object-like';
 export * from './guards/is-plain-object';
 export * from './guards/objects-equal-shallow';
 export * from './guards/property-is-enumerable';

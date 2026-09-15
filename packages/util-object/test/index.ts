@@ -37,7 +37,6 @@ describe('index', () => {
       'isEmptyObject',
       'isNamed',
       'isObjectCoercible',
-      'isObjectLike',
       'isPlainObject',
       'objectsEqualShallow',
       'propertyIsEnumerable',

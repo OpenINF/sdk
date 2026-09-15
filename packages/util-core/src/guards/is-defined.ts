@@ -1,7 +1,7 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-import type { Guard } from '@openinf/util-core';
+import type { Guard } from '../types';
 
 /**
  * Detects whether `value` is _defined_, which passes for all value types

@@ -5,6 +5,8 @@
 // dependency-free foundation this package already depends on. Keeping one
 // definition means the packages cannot drift apart.
 export type {
+  AnyConstructor,
+  AnyFunction,
   HasExpectation,
   Validator,
   Guard,

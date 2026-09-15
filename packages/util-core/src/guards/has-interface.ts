@@ -4,7 +4,8 @@
 // Adapted from TypeShield
 // https://github.com/dtjohnson/typeshield/blob/master/src/guards/has-interface.ts
 
-import type { Guard } from '@openinf/util-core';
+import type { Guard } from '../types';
+import { isObjectLike } from './is-object-like';
 
 /**
  * Collection of interface validators.
@@ -48,7 +49,9 @@ export function hasInterface<T>(
   validators: InterfaceValidators<T> | (() => InterfaceValidators<T>)
 ): Guard<T> {
   const guard: Guard<T> = (value: unknown): value is T => {
-    if (value === null || typeof value !== 'object') {
+    // A function is an object, and can implement an interface as well as any
+    // other object can: a class with static members, for instance.
+    if (!isObjectLike(value)) {
       return false;
     }
 

@@ -3,12 +3,14 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { isNumber } from '@openinf/util-core';
-
 import { and } from '../../src/guards/and';
-import { isPositive } from '../../src/guards/is-positive';
+import { isNumber } from '../../src/guards/is-number';
 
 describe(and.name, () => {
+  const isPositive = Object.assign(
+    (value: unknown): value is number => (value as number) > 0,
+    { expectation: 'be a positive number' }
+  );
   const isPositiveNumber = and(isNumber, isPositive);
 
   it('should return true only when every guard passes', () => {

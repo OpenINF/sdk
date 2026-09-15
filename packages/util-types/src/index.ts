@@ -4,8 +4,6 @@
 // guards
 
 export * from './guards/is-any-array-buffer';
-export * from './guards/is-any-constructor';
-export * from './guards/is-any-function';
 export * from './guards/is-array-buffer-view';
 export * from './guards/is-arguments-object';
 export * from './guards/is-array-buffer';
@@ -24,7 +22,6 @@ export * from './guards/is-float32-array';
 export * from './guards/is-float64-array';
 export * from './guards/is-generator-function';
 export * from './guards/is-generator-object';
-export * from './guards/has-interface';
 export * from './guards/is-int8-array';
 export * from './guards/is-int16-array';
 export * from './guards/is-int32-array';

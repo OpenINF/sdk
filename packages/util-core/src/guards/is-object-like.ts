@@ -1,7 +1,7 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-import type { Guard, Tagged } from '@openinf/util-core';
+import type { Guard, Tagged } from '../types';
 
 /**
  * A value that is object-like.
