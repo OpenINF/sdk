@@ -23,11 +23,9 @@ export * from './guards/is-module-namespace-object';
 export * from './guards/is-native-error';
 export * from './guards/is-promise';
 export * from './guards/is-proxy';
-export * from './guards/is-reg-exp';
 export * from './guards/is-set';
 export * from './guards/is-set-iterator';
 export * from './guards/is-shared-array-buffer';
-export * from './guards/is-string-object';
 export * from './guards/is-symbol-object';
 export * from './guards/is-weak-map';
 export * from './guards/is-weak-set';
@@ -59,6 +57,11 @@ export {
   isUint8Array,
   isUint8ClampedArray,
 } from '@openinf/util-array';
+
+// Node's util.types checks String objects and RegExps too. They are §22, and
+// live in @openinf/util-string; this package re-exports them so it stays a
+// drop-in.
+export { isRegExp, isStringObject } from '@openinf/util-string';
 
 // Node's util.types checks Dates too. A Date is §21.4, and lives in
 // @openinf/util-date; this package re-exports it so it stays a drop-in.

@@ -8,6 +8,7 @@
 export * from '@openinf/util-core';
 export * from '@openinf/util-date';
 export * from '@openinf/util-number';
+export * from '@openinf/util-string';
 
 // assertions
 export * from './assertions/assert-is-defined';

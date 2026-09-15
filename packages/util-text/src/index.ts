@@ -1,13 +1,6 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-// Guards
-export * from './guards/is-email';
-export * from './guards/is-empty-string';
-export * from './guards/is-non-empty-string';
-export * from './guards/is-string-containing';
-export * from './guards/is-string-not-containing';
-
 // Helpers
 export * from './helpers/blueify';
 export * from './helpers/curly-quote';
