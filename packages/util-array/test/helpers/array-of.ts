@@ -13,6 +13,36 @@ describe(arrayOf.name, () => {
     );
   });
 
+  it('should truncate a fractional count rather than write past it', () => {
+    assert.deepStrictEqual(
+      arrayOf(2.5, (i) => i),
+      [0, 1]
+    );
+  });
+
+  it('should not call the factory for a fractional count below one', () => {
+    let calls = 0;
+    assert.deepStrictEqual(
+      arrayOf(0.5, (i) => {
+        calls += 1;
+        return i;
+      }),
+      []
+    );
+    assert.strictEqual(calls, 0);
+  });
+
+  it('should return an empty array for a negative or NaN count', () => {
+    assert.deepStrictEqual(
+      arrayOf(-1, (i) => i),
+      []
+    );
+    assert.deepStrictEqual(
+      arrayOf(Number.NaN, (i) => i),
+      []
+    );
+  });
+
   it('should return an empty array for a count of zero', () => {
     assert.deepStrictEqual(
       arrayOf(0, (i) => i),
