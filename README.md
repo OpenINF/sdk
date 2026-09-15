@@ -53,9 +53,9 @@ Errors are classes, not string codes, so callers can catch by type.
 | [`@openinf/util`](packages/util)                         | Guards, validators, and assertion helpers for every ECMAScript primitive |      61 |
 | [`@openinf/util-types`](packages/util-types)             | Type-related predicates, including exotic and internal-slot detection    |      50 |
 | [`@openinf/util-object`](packages/util-object)           | Object utilities -- merge, clone, mixin, omit                            |      41 |
+| [`@openinf/util-array`](packages/util-array)             | Array utilities, and guards for typed arrays                             |      28 |
 | [`@openinf/assert`](packages/assert)                     | Runtime assertions and comparison guards                                 |      23 |
 | [`@openinf/util-core`](packages/util-core)               | The language types and the guard vocabulary. No dependencies             |      20 |
-| [`@openinf/util-array`](packages/util-array)             | Array utilities                                                          |      16 |
 | [`@openinf/util-text`](packages/util-text)               | Terminal-friendly text: quoting, color, ellipsis, Markdown               |      15 |
 | [`@openinf/util-errors`](packages/util-errors)           | Error classes modeled on Node.js core error codes                        |      13 |
 | [`@openinf/util-number`](packages/util-number)           | Integers, their sign and ranges, and Number and BigInt objects           |      13 |
@@ -99,7 +99,7 @@ dependencies it does not already reach through another, so `util-errors` names
 | `util-date`        | `util-core`                               |
 | `util-number`      | `util-core`                               |
 | `util-object`      | `util-array`                              |
-| `util-types`       | `util-date`, `util-number`                |
+| `util-types`       | `util-array`, `util-date`, `util-number`  |
 | `util-text`        | `util-object`                             |
 | `assert`           | `util-text`                               |
 | `util-errors`      | `assert`                                  |

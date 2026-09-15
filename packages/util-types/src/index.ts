@@ -10,19 +10,12 @@ export * from './guards/is-array-buffer';
 export * from './guards/is-async-function';
 export * from './guards/is-async-generator-function';
 export * from './guards/is-async-generator';
-export * from './guards/is-big-int64-array';
-export * from './guards/is-big-uint64-array';
 export * from './guards/is-boolean-object';
 export * from './guards/is-boxed-primitive';
 export * from './guards/is-data-view';
 export * from './guards/is-external';
-export * from './guards/is-float32-array';
-export * from './guards/is-float64-array';
 export * from './guards/is-generator-function';
 export * from './guards/is-generator-object';
-export * from './guards/is-int8-array';
-export * from './guards/is-int16-array';
-export * from './guards/is-int32-array';
 export * from './guards/is-map-iterator';
 export * from './guards/is-map-like';
 export * from './guards/is-map';
@@ -36,11 +29,6 @@ export * from './guards/is-set-iterator';
 export * from './guards/is-shared-array-buffer';
 export * from './guards/is-string-object';
 export * from './guards/is-symbol-object';
-export * from './guards/is-typed-array';
-export * from './guards/is-uint8-array';
-export * from './guards/is-uint8-clamped-array';
-export * from './guards/is-uint16-array';
-export * from './guards/is-uint32-array';
 export * from './guards/is-weak-map';
 export * from './guards/is-weak-set';
 export * from './guards/is-web-assembly-compiled-module';
@@ -54,6 +42,23 @@ export * from './validators/validate-callback';
 export * from './validators/validate-integer';
 export * from './validators/validate-integer-range';
 export * from './validators/validate-one-of';
+
+// Node's util.types checks the typed arrays too. They are §23.2, and live in
+// @openinf/util-array; this package re-exports them so it stays a drop-in.
+export {
+  isBigInt64Array,
+  isBigUint64Array,
+  isFloat32Array,
+  isFloat64Array,
+  isInt16Array,
+  isInt32Array,
+  isInt8Array,
+  isTypedArray,
+  isUint16Array,
+  isUint32Array,
+  isUint8Array,
+  isUint8ClampedArray,
+} from '@openinf/util-array';
 
 // Node's util.types checks Dates too. A Date is §21.4, and lives in
 // @openinf/util-date; this package re-exports it so it stays a drop-in.
