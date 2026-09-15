@@ -4,10 +4,8 @@
 // Adapted from Node.js
 
 import { isBigIntObject, isNumberObject } from '@openinf/util-number';
+import { isBooleanObject, isSymbolObject } from '@openinf/util-object';
 import { isStringObject } from '@openinf/util-string';
-
-import { isBooleanObject } from './is-boolean-object';
-import { isSymbolObject } from './is-symbol-object';
 
 /**
  * Detects whether `value` is a primitive wrapped by its object equivalent

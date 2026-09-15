@@ -3,9 +3,7 @@
 
 // NOT adapted from Node.js
 
-import { isObjectLike } from '@openinf/util-core';
-
-import type { Guard } from '../types';
+import { isObjectLike, type Guard } from '@openinf/util-core';
 
 /**
  * Detects whether `value` is map-like, i.e. a non-array object whose

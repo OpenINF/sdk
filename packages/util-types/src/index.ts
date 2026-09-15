@@ -5,32 +5,26 @@
 
 export * from './guards/is-any-array-buffer';
 export * from './guards/is-array-buffer-view';
-export * from './guards/is-arguments-object';
 export * from './guards/is-array-buffer';
 export * from './guards/is-async-function';
 export * from './guards/is-async-generator-function';
 export * from './guards/is-async-generator';
-export * from './guards/is-boolean-object';
 export * from './guards/is-boxed-primitive';
 export * from './guards/is-data-view';
 export * from './guards/is-external';
 export * from './guards/is-generator-function';
 export * from './guards/is-generator-object';
 export * from './guards/is-map-iterator';
-export * from './guards/is-map-like';
 export * from './guards/is-map';
 export * from './guards/is-module-namespace-object';
-export * from './guards/is-native-error';
 export * from './guards/is-promise';
 export * from './guards/is-proxy';
 export * from './guards/is-set';
 export * from './guards/is-set-iterator';
 export * from './guards/is-shared-array-buffer';
-export * from './guards/is-symbol-object';
 export * from './guards/is-weak-map';
 export * from './guards/is-weak-set';
 export * from './guards/is-web-assembly-compiled-module';
-export * from './guards/type';
 
 // helpers
 export * from './get-expectation';
@@ -40,6 +34,16 @@ export * from './validators/validate-callback';
 export * from './validators/validate-integer';
 export * from './validators/validate-integer-range';
 export * from './validators/validate-one-of';
+
+// Node's util.types checks these Fundamental Objects, section 20, and the
+// arguments exotic object too. They live in @openinf/util-object; this package
+// re-exports them so it stays a drop-in.
+export {
+  isArgumentsObject,
+  isBooleanObject,
+  isNativeError,
+  isSymbolObject,
+} from '@openinf/util-object';
 
 // Node's util.types checks the typed arrays too. They are §23.2, and live in
 // @openinf/util-array; this package re-exports them so it stays a drop-in.

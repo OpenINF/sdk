@@ -68,6 +68,7 @@
     "@openinf/util-core": "workspace:*",
     "@openinf/util-date": "workspace:*",
     "@openinf/util-number": "workspace:*",
+    "@openinf/util-object": "workspace:*",
     "@openinf/util-string": "workspace:*"
   },
   "devDependencies": {
