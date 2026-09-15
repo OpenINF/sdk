@@ -1,8 +1,11 @@
 # @openinf/util-text
 
 Text helpers for terminal output: color, underline, curly quotes, ellipsis, and
-Markdown code spans, alongside a few string predicates. The styling helpers
-degrade to plain text where the terminal does not support them.
+Markdown code spans. The styling helpers degrade to plain text where the
+terminal does not support them.
+
+The string guards, such as `isEmptyString` and `isEmail`, are in
+[`@openinf/util-string`](https://www.npmjs.com/package/@openinf/util-string).
 
 ## Installation
 

@@ -3,9 +3,7 @@
 
 // Adapted from Node.js
 
-import { _tagTester, isObjectLike } from '@openinf/util-core';
-
-import type { Guard } from '../types';
+import { _tagTester, isObjectLike, type Guard } from '@openinf/util-core';
 
 /**
  * Detects whether `value` is classified as a

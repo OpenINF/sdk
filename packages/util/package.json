@@ -70,7 +70,8 @@
     "@openinf/util-date": "workspace:*",
     "@openinf/util-errors": "workspace:*",
     "@openinf/util-number": "workspace:*",
-    "@openinf/util-object": "workspace:*"
+    "@openinf/util-object": "workspace:*",
+    "@openinf/util-string": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^26.1.2",

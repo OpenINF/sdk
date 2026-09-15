@@ -43,8 +43,8 @@ try {
 
 ## Relationship to the other packages
 
-This package re-exports three others in full, so importing from either name
-gives you the same function:
+This package re-exports four others in full, so importing from either name gives
+you the same function:
 
 - [`@openinf/util-core`](https://www.npmjs.com/package/@openinf/util-core) holds
   the shared vocabulary every `@openinf` package builds on: the `Guard` and
@@ -55,6 +55,9 @@ gives you the same function:
   `isNaN` and the sign checks.
 - [`@openinf/util-date`](https://www.npmjs.com/package/@openinf/util-date) holds
   the date guards, `isDate` and `isValidDate`.
+- [`@openinf/util-string`](https://www.npmjs.com/package/@openinf/util-string)
+  holds the string and regular expression guards, such as `isRegExp` and
+  `isEmptyString`.
 
 Depend on one of those directly if it is all you need; depend on this package
 for the full set of guards, validators, and helpers.
