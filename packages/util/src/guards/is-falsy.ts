@@ -3,8 +3,7 @@
 
 import { isNullish } from '@openinf/util-core';
 import type { Guard } from '@openinf/util-core';
-
-import { isNaN, type NaN as NaNType } from './is-nan';
+import { isNaN, type NaN as NaNType } from '@openinf/util-number';
 
 /**
  * A value that is Falsy.

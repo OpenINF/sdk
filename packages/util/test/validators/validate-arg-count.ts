@@ -3,7 +3,8 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import type { Integer } from '../../src/guards/is-integer';
+import type { Integer } from '@openinf/util-number';
+
 import { validateArgCount } from '../../src/validators/validate-arg-count';
 
 const int = (n: number): Integer => n as Integer;

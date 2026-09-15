@@ -3,7 +3,7 @@
 
 // Adapted from Node.js
 
-import { _tagTester } from '../_internal/_tag-tester';
+import { _tagTester } from '@openinf/util-core';
 
 /**
  * Detects whether `value` is classified as a

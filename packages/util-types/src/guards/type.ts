@@ -3,9 +3,7 @@
 
 // Adapted from jQuery
 
-import { isObject } from '@openinf/util-core';
-
-import { _tagTester } from '../_internal/_tag-tester';
+import { _tagTester, isObject } from '@openinf/util-core';
 
 /**
  * Determines the internal JavaScript [[Class]] of `obj`.

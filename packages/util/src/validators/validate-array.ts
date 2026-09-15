@@ -8,8 +8,8 @@ import {
   InvalidArgTypeError,
   InvalidArgValueError,
 } from '@openinf/util-errors';
+import { isLength } from '@openinf/util-number';
 
-import { isLength } from '../guards/is-length';
 import { assertValue } from '../helpers/assert-value';
 
 /**

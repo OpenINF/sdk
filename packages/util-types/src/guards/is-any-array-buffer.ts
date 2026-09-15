@@ -3,9 +3,7 @@
 
 // Adapted from Node.js
 
-import { isObjectLike } from '@openinf/util-core';
-
-import { _tagTester } from '../_internal/_tag-tester';
+import { _tagTester, isObjectLike } from '@openinf/util-core';
 
 /**
  * Detects whether `value` is classified as one of either
