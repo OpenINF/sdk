@@ -31,14 +31,16 @@ export * from './helpers/is-node';
 
 // guards
 export * from './guards/is-buffer';
-export * from './guards/is-error';
 export * from './guards/is-falsy';
 export * from './guards/is-iterator';
 
-// The type-name helpers read `Object.prototype.toString`, and so belong with
-// the rest of the Object operations in @openinf/util-object.
+// From @openinf/util-object: `isError`, since an Error is a Fundamental Object
+// in section 20.5, and the type-name helpers, which read
+// `Object.prototype.toString` and belong with the rest of the Object
+// operations.
 export {
   getObjectType,
+  isError,
   isObjectOfType,
   isObjectTypeName,
   isOfType,

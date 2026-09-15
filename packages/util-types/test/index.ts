@@ -31,7 +31,6 @@ describe('index', () => {
       'isInt16Array',
       'isInt32Array',
       'isMapIterator',
-      'isMapLike',
       'isMap',
       'isModuleNamespaceObject',
       'isNativeError',

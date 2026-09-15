@@ -26,17 +26,24 @@ export * from './helpers/own-property';
 
 // guards
 export * from './guards/equal-own-properties';
-export * from './guards/has-own';
 export * from './guards/has';
+export * from './guards/has-own';
 export * from './guards/has-properties';
 export * from './guards/is-accessor-descriptor';
+export * from './guards/is-arguments-object';
+export * from './guards/is-boolean-object';
 export * from './guards/is-constructor';
 export * from './guards/is-data-descriptor';
 export * from './guards/is-empty-object';
+export * from './guards/is-error';
+export * from './guards/is-map-like';
 export * from './guards/is-named';
+export * from './guards/is-native-error';
 export * from './guards/is-object-coercible';
 export * from './guards/is-plain-object';
+export * from './guards/is-symbol-object';
 export * from './guards/objects-equal-shallow';
 export * from './guards/property-is-enumerable';
+export * from './guards/type';
 // export * from './guards/is-instance-of';
 export * from './types';
