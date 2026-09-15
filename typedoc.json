@@ -13,6 +13,7 @@
     "packages/util-md-table",
     "packages/util-number",
     "packages/util-object",
+    "packages/util-string",
     "packages/util-text",
     "packages/util-types"
   ],

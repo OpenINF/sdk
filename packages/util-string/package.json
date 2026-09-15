@@ -1,7 +1,7 @@
 {
-  "name": "@openinf/util-types",
-  "version": "2.1.3",
-  "description": "A library of pure TypeScript/JavaScript utility functions for common type-related operations",
+  "name": "@openinf/util-string",
+  "version": "0.0.0",
+  "description": "Guards for ECMAScript strings and regular expressions",
   "main": "./dist/cjs/index.js",
   "types": "./dist/cjs/index.d.ts",
   "exports": {
@@ -37,18 +37,17 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/OpenINF/sdk.git",
-    "directory": "packages/util-types"
+    "directory": "packages/util-string"
   },
   "bugs": {
     "url": "https://github.com/OpenINF/sdk/issues"
   },
   "keywords": [
-    "types",
-    "typechecking",
-    "util",
-    "stdlib",
-    "functional",
-    "utilities"
+    "string",
+    "regexp",
+    "text",
+    "guards",
+    "typescript"
   ],
   "files": [
     "dist",
@@ -63,15 +62,11 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@openinf/util-array": "workspace:*",
-    "@openinf/util-core": "workspace:*",
-    "@openinf/util-date": "workspace:*",
-    "@openinf/util-number": "workspace:*",
-    "@openinf/util-string": "workspace:*"
-  },
   "devDependencies": {
     "@types/node": "^26.1.2",
     "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "@openinf/util-core": "workspace:*"
   }
 }

@@ -1,6 +1,6 @@
 # OpenINF
 
-Twelve small TypeScript packages for the unglamorous parts of Node.js
+Thirteen small TypeScript packages for the unglamorous parts of Node.js
 development: type guards, argument validation, structured errors, and terminal
 text.
 
@@ -50,15 +50,16 @@ Errors are classes, not string codes, so callers can catch by type.
 
 | Package                                                  |                                                                          | Exports |
 | -------------------------------------------------------- | ------------------------------------------------------------------------ | ------: |
-| [`@openinf/util`](packages/util)                         | Guards, validators, and assertion helpers for every ECMAScript primitive |      61 |
+| [`@openinf/util`](packages/util)                         | Guards, validators, and assertion helpers for every ECMAScript primitive |      68 |
 | [`@openinf/util-types`](packages/util-types)             | Type-related predicates, including exotic and internal-slot detection    |      50 |
 | [`@openinf/util-object`](packages/util-object)           | Object utilities -- merge, clone, mixin, omit                            |      41 |
 | [`@openinf/util-array`](packages/util-array)             | Array utilities, and guards for typed arrays                             |      28 |
 | [`@openinf/assert`](packages/assert)                     | Runtime assertions and comparison guards                                 |      23 |
 | [`@openinf/util-core`](packages/util-core)               | The language types and the guard vocabulary. No dependencies             |      20 |
-| [`@openinf/util-text`](packages/util-text)               | Terminal-friendly text: quoting, color, ellipsis, Markdown               |      15 |
 | [`@openinf/util-errors`](packages/util-errors)           | Error classes modeled on Node.js core error codes                        |      13 |
 | [`@openinf/util-number`](packages/util-number)           | Integers, their sign and ranges, and Number and BigInt objects           |      13 |
+| [`@openinf/util-text`](packages/util-text)               | Terminal-friendly text: quoting, color, ellipsis, Markdown               |      10 |
+| [`@openinf/util-string`](packages/util-string)           | Strings and regular expressions: String objects, RegExps, string content |       7 |
 | [`@openinf/gh-file-importer`](packages/gh-file-importer) | Fetches arbitrary files from remote GitHub repositories                  |       2 |
 | [`@openinf/util-date`](packages/util-date)               | `Date` objects and whether their time value is valid                     |       2 |
 | [`@openinf/util-md-table`](packages/util-md-table)       | Markdown table generation                                                |       1 |
@@ -69,14 +70,15 @@ Install only what you need:
 npm install @openinf/util
 ```
 
-`@openinf/util` re-exports all of `@openinf/util-core`, `@openinf/util-number`
-and `@openinf/util-date`, so most consumers want it and nothing else.
+`@openinf/util` re-exports all of `@openinf/util-core`, `@openinf/util-number`,
+`@openinf/util-date` and `@openinf/util-string`, so most consumers want it and
+nothing else.
 
 ## Design
 
-**Eleven of the twelve have no third-party runtime dependencies.** The exception
-is `gh-file-importer`, which needs `@octokit/rest` to talk to GitHub. Several
-packages previously depended on small unmaintained modules; those were
+**Twelve of the thirteen have no third-party runtime dependencies.** The
+exception is `gh-file-importer`, which needs `@octokit/rest` to talk to GitHub.
+Several packages previously depended on small unmaintained modules; those were
 reimplemented in TypeScript and verified against the originals by differential
 testing before removal.
 
@@ -85,26 +87,28 @@ bottom with no dependencies at all. It holds the language types and testing
 operations of ECMAScript sections 6 and 7.2, and the vocabulary everything else
 is written in -- `Guard`, `Validator` and `Tagged`. A package for a chapter of
 the specification builds on it: `util-number` for Number, BigInt and Math, and
-`util-date` for Date. Depend on any of them alone if that is all you need.
+`util-date` for Date, `util-string` for String and RegExp. Depend on any of them
+alone if that is all you need.
 
 Each package builds only on the ones listed above it. A package names only the
 dependencies it does not already reach through another, so `util-errors` names
 `assert`, which brings `util-text` and the rest with it:
 
-| Package            | Builds on                                 |
-| ------------------ | ----------------------------------------- |
-| `util-core`        | nothing                                   |
-| `util-md-table`    | nothing                                   |
-| `util-array`       | `util-core`                               |
-| `util-date`        | `util-core`                               |
-| `util-number`      | `util-core`                               |
-| `util-object`      | `util-array`                              |
-| `util-types`       | `util-array`, `util-date`, `util-number`  |
-| `util-text`        | `util-object`                             |
-| `assert`           | `util-text`                               |
-| `util-errors`      | `assert`                                  |
-| `gh-file-importer` | `util-errors`                             |
-| `util`             | `util-date`, `util-errors`, `util-number` |
+| Package            | Builds on                                                |
+| ------------------ | -------------------------------------------------------- |
+| `util-core`        | nothing                                                  |
+| `util-md-table`    | nothing                                                  |
+| `util-array`       | `util-core`                                              |
+| `util-date`        | `util-core`                                              |
+| `util-number`      | `util-core`                                              |
+| `util-string`      | `util-core`                                              |
+| `util-object`      | `util-array`                                             |
+| `util-types`       | `util-array`, `util-date`, `util-number`, `util-string`  |
+| `util-text`        | `util-object`                                            |
+| `assert`           | `util-text`                                              |
+| `util-errors`      | `assert`                                                 |
+| `gh-file-importer` | `util-errors`                                            |
+| `util`             | `util-date`, `util-errors`, `util-number`, `util-string` |
 
 **Dual CommonJS and ESM, with types for both.** Each package ships a CJS build
 and an ESM build with `.mjs`/`.d.mts` extensions behind an `exports` map. A
@@ -116,7 +120,7 @@ modes against the real packed tarball rather than trusting the config.
 every top-level statement, not by assuming. Bundlers can drop what you do not
 import.
 
-**One version for all twelve.** A breaking change in `util-core` can reach a
+**One version for all thirteen.** A breaking change in `util-core` can reach a
 consumer through re-exports from a package that did not itself change;
 independent versioning would report that as a patch bump and understate it.
 
