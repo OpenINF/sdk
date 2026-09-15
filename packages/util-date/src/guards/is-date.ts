@@ -1,9 +1,7 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-import { _tagTester, isObjectLike } from '@openinf/util-core';
-
-import type { Guard } from '../types';
+import { _tagTester, isObjectLike, type Guard } from '@openinf/util-core';
 
 /**
  * Detects whether `value` is classified as a
@@ -11,10 +9,13 @@ import type { Guard } from '../types';
  *
  * This is a type check, not a validity check: an Invalid Date (one whose
  * time value is `NaN`) is still a `Date`, so it satisfies this guard. That
- * matches `node:util`'s `types.isDate`, which this package mirrors, as well
- * as `lodash.isDate` and `@sindresorhus/is`'s `is.date`. Use
- * `@openinf/util`'s `isValidDate` to additionally require a usable time
- * value.
+ * matches `node:util`'s `types.isDate`, as well as `lodash.isDate` and
+ * `@sindresorhus/is`'s `is.date`. Use `isValidDate` to additionally require a
+ * usable time value.
+ *
+ * The check is for the time value only the `Date` constructor gives an object,
+ * so a look-alike that sets `Symbol.toStringTag` to `'Date'`, or inherits from
+ * `Date.prototype`, is refused.
  * @since 3.0.0
  * @category Numbers and Dates
  * @param value The value to identify.

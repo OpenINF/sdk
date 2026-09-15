@@ -8,6 +8,7 @@
     "packages/util",
     "packages/util-array",
     "packages/util-core",
+    "packages/util-date",
     "packages/util-errors",
     "packages/util-md-table",
     "packages/util-number",

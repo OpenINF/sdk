@@ -5,6 +5,10 @@ import type { Guard } from '@openinf/util-core';
 
 import { isDate } from './is-date';
 
+// oxlint-disable-next-line typescript/unbound-method -- invoked with captured Reflect.apply.
+const getTime = Date.prototype.getTime;
+const { apply } = Reflect;
+
 /**
  * Detects whether `value` is a [`Date`](https://mdn.io/Global_Objects/Date)
  * representing a usable point in time.
@@ -31,7 +35,9 @@ import { isDate } from './is-date';
  * ```
  */
 export function isValidDate(value: unknown): value is Date {
-  return isDate(value) && !Number.isNaN(value.getTime());
+  // The time value is read through the intrinsic, captured at load, rather
+  // than through `value.getTime`, which a Date can shadow with its own.
+  return isDate(value) && !Number.isNaN(apply(getTime, value, []));
 }
 
 (isValidDate as Guard).expectation = 'be a valid Date object';

@@ -130,6 +130,9 @@ importers:
       '@openinf/util-core':
         specifier: workspace:*
         version: link:../util-core
+      '@openinf/util-date':
+        specifier: workspace:*
+        version: link:../util-date
       '@openinf/util-errors':
         specifier: workspace:*
         version: link:../util-errors
@@ -161,6 +164,19 @@ importers:
         version: 7.0.2
 
   packages/util-core:
+    devDependencies:
+      '@types/node':
+        specifier: ^26.1.2
+        version: 26.5.1
+      typescript:
+        specifier: ^7.0.2
+        version: 7.0.2
+
+  packages/util-date:
+    dependencies:
+      '@openinf/util-core':
+        specifier: workspace:*
+        version: link:../util-core
     devDependencies:
       '@types/node':
         specifier: ^26.1.2
@@ -247,6 +263,9 @@ importers:
       '@openinf/util-core':
         specifier: workspace:*
         version: link:../util-core
+      '@openinf/util-date':
+        specifier: workspace:*
+        version: link:../util-date
       '@openinf/util-number':
         specifier: workspace:*
         version: link:../util-number

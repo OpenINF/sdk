@@ -67,6 +67,7 @@
   "dependencies": {
     "@openinf/assert": "workspace:*",
     "@openinf/util-core": "workspace:*",
+    "@openinf/util-date": "workspace:*",
     "@openinf/util-errors": "workspace:*",
     "@openinf/util-number": "workspace:*",
     "@openinf/util-object": "workspace:*"

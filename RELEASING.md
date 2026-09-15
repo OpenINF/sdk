@@ -4,7 +4,7 @@ Maintainer-facing notes for publishing the `@openinf/*` packages to npm.
 
 ## How versioning works here
 
-All eleven packages share **one version number**, always. This is Changesets'
+All twelve packages share **one version number**, always. This is Changesets'
 [`fixed`](https://github.com/changesets/changesets/blob/main/docs/fixed-packages.md)
 mode, configured in [`.changeset/config.json`](.changeset/config.json) as
 `"fixed": [["@openinf/*"]]`.
@@ -17,7 +17,7 @@ Practically, that means:
   that didn't itself change. Independent versioning would signal that as a patch
   bump, which understates the risk.
 - The whole group lands on the highest version any member needs. One `major`
-  changeset anywhere makes it a major release for all eleven.
+  changeset anywhere makes it a major release for all twelve.
 - A package with no changeset naming it still gets bumped, but its generated
   `CHANGELOG.md` entry will be a bare heading with no body. When a release
   genuinely doesn't touch a package, write it a one-line changeset saying so
@@ -158,7 +158,7 @@ alone is not enough. Every package declares the value of `REPO_URL` in
 [`tools/sync-package-metadata.js`](tools/sync-package-metadata.js), which is the
 single place it is defined. Before the first release, confirm that URL is the
 repository the release workflow will run in; if it is not, change it there and
-re-run `pnpm run sync-metadata` so all eleven packages stay in step.
+re-run `pnpm run sync-metadata` so all twelve packages stay in step.
 
 Verify it actually landed, rather than assuming:
 
@@ -168,29 +168,30 @@ npm view @openinf/util --json | grep -A3 attestations
 
 Two constraints make the first release different from every later one:
 
-- **Trusted publishing is configured per package**, not per org. Eleven packages
-  means eleven setups on npmjs.com.
+- **Trusted publishing is configured per package**, not per org. Twelve packages
+  means twelve setups on npmjs.com.
 - **A package must already exist on npm before you can configure it.** There's
   no way to pre-authorize a name that has never been published.
 
 `@openinf/util-core`, `@openinf/util`, `@openinf/assert`, `@openinf/util-array`,
-and `@openinf/util-number` have never been published. So, once:
+`@openinf/util-number`, and `@openinf/util-date` have never been published. So,
+once:
 
-1. Publish those five manually, authenticated locally with an npm account that
+1. Publish those six manually, authenticated locally with an npm account that
    can create packages under the `@openinf` scope:
 
    ```bash
    pnpm run build
    pnpm --filter @openinf/util-core --filter @openinf/util \
         --filter @openinf/assert --filter @openinf/util-array \
-        --filter @openinf/util-number publish
+        --filter @openinf/util-number --filter @openinf/util-date publish
    ```
 
    `publishConfig.access` is set to `public` in each `package.json`, so no
    `--access` flag is needed — without it npm would reject a scoped package as
    private.
 
-2. For **each** of the eleven packages, on npmjs.com → package → Settings → add
+2. For **each** of the twelve packages, on npmjs.com → package → Settings → add
    a trusted publisher:
    - Organization/user: the GitHub owner of this repo
    - Repository: this repo

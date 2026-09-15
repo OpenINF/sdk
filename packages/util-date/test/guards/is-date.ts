@@ -23,5 +23,11 @@ describe(isDate.name, () => {
 
   it('should reject non-object-like values', () => {
     assert.strictEqual(isDate(null), false);
+    assert.strictEqual(isDate({}), false);
+  });
+
+  it('should reject an object that only claims to be a Date', () => {
+    assert.strictEqual(isDate({ [Symbol.toStringTag]: 'Date' }), false);
+    assert.strictEqual(isDate(Object.create(Date.prototype)), false);
   });
 });

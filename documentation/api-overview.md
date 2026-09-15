@@ -1,6 +1,6 @@
 # OpenINF API reference
 
-This reference covers the public API of all eleven OpenINF packages. It is
+This reference covers the public API of all twelve OpenINF packages. It is
 generated from the same TypeScript source and JSDoc comments that ship in each
 release, so a symbol's signature and its documentation always describe the same
 version.
@@ -16,7 +16,7 @@ predicates are all you need.
 
 ## Versioning
 
-All eleven packages share one release version, so a signature found under one
+All twelve packages share one release version, so a signature found under one
 package describes the same release as every other page here. The version is in
 the address of this page, and every release keeps the reference it was published
 with: a link into an older version keeps describing that version rather than
