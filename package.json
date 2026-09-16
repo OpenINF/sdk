@@ -23,8 +23,9 @@
     "lint:types": "tsc -p tsconfig.tools.json",
     "release": "pnpm -r publish --no-git-checks --provenance",
     "sync-metadata": "node tools/sync-package-metadata.js",
-    "test": "pnpm -r run test && pnpm run test:queue && pnpm run test:tools",
+    "test": "pnpm -r run test && pnpm run test:queue && pnpm run test:tools && pnpm run test:esm",
     "test:coverage": "pnpm -r run test:coverage",
+    "test:esm": "node tools/check-esm-entrypoints.mts",
     "test:queue": "node --test build/shared/*.test.mts",
     "test:tools": "node --test tools/*.test.mts",
     "version-packages": "changeset version && pnpm install --lockfile-only && prettier --write --ignore-path=/dev/null \"packages/*/CHANGELOG.md\""
