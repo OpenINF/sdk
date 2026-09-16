@@ -1,6 +1,6 @@
 ---
 '@openinf/util': minor
-'@openinf/util-types': major
+'@openinf/util-types': minor
 ---
 
 The argument validators are all in `@openinf/util` now, where the coded errors
@@ -11,9 +11,9 @@ type, `OutOfRangeError` for one outside a range, and `InvalidArgValueError` for
 one that is not among the values allowed. Their messages now read like the rest,
 with the argument name in curly quotes and the value that arrived.
 
-**BREAKING:** `@openinf/util-types` no longer exports `validateCallback`,
-`validateInteger`, `validateIntegerRange` or `validateOneOf`. None was in a
-published version of it.
+`@openinf/util-types` no longer exports `validateCallback`, `validateInteger`,
+`validateIntegerRange` or `validateOneOf`. None was in a published version of
+it.
 
 - `validateCallback` is `validateFunction` in `@openinf/util`, which asks the
   same question of any argument rather than one named `callback`.
