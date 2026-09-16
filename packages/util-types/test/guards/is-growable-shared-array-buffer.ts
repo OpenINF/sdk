@@ -5,7 +5,12 @@ import { describe, it } from 'node:test';
 
 import { isGrowableSharedArrayBuffer } from '../../src/guards/is-growable-shared-array-buffer';
 
-const has = typeof SharedArrayBuffer !== 'undefined';
+const has =
+  typeof SharedArrayBuffer !== 'undefined' &&
+  typeof Object.getOwnPropertyDescriptor(
+    SharedArrayBuffer.prototype,
+    'growable'
+  )?.get === 'function';
 
 describe(isGrowableSharedArrayBuffer.name, () => {
   it(

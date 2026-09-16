@@ -9,13 +9,22 @@ const detach = (buffer: ArrayBuffer): void => {
   structuredClone(buffer, { transfer: [buffer] });
 };
 
+const has =
+  typeof structuredClone === 'function' &&
+  typeof Object.getOwnPropertyDescriptor(ArrayBuffer.prototype, 'detached')
+    ?.get === 'function';
+
 describe(isDetachedArrayBuffer.name, () => {
-  it('should detect a buffer whose data has been transferred away', () => {
-    const buffer = new ArrayBuffer(8);
-    assert.strictEqual(isDetachedArrayBuffer(buffer), false, 'before');
-    detach(buffer);
-    assert.strictEqual(isDetachedArrayBuffer(buffer), true, 'after');
-  });
+  it(
+    'should detect a buffer whose data has been transferred away',
+    { skip: !has },
+    () => {
+      const buffer = new ArrayBuffer(8);
+      assert.strictEqual(isDetachedArrayBuffer(buffer), false, 'before');
+      detach(buffer);
+      assert.strictEqual(isDetachedArrayBuffer(buffer), true, 'after');
+    }
+  );
 
   it('should reject a live buffer, resizable or not', () => {
     assert.strictEqual(isDetachedArrayBuffer(new ArrayBuffer(8)), false);

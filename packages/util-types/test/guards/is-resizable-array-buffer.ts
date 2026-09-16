@@ -5,13 +5,21 @@ import { describe, it } from 'node:test';
 
 import { isResizableArrayBuffer } from '../../src/guards/is-resizable-array-buffer';
 
+const has =
+  typeof Object.getOwnPropertyDescriptor(ArrayBuffer.prototype, 'resizable')
+    ?.get === 'function';
+
 describe(isResizableArrayBuffer.name, () => {
-  it('should detect a buffer constructed with a maxByteLength', () => {
-    assert.strictEqual(
-      isResizableArrayBuffer(new ArrayBuffer(8, { maxByteLength: 16 })),
-      true
-    );
-  });
+  it(
+    'should detect a buffer constructed with a maxByteLength',
+    { skip: !has },
+    () => {
+      assert.strictEqual(
+        isResizableArrayBuffer(new ArrayBuffer(8, { maxByteLength: 16 })),
+        true
+      );
+    }
+  );
 
   it('should reject a fixed-length buffer', () => {
     assert.strictEqual(isResizableArrayBuffer(new ArrayBuffer(8)), false);
