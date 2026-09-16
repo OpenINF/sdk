@@ -7,8 +7,17 @@
 import type { Guard } from '@openinf/util-core';
 
 /**
- * Detects whether `value` is classified as an
- * [`Error`](https://mdn.io/Global_Objects/Error) object.
+ * Detects whether `value` is Error-like: an object the language, a host, or
+ * another realm treats as an error.
+ *
+ * It accepts anything with `Error.prototype` in its prototype chain, whatever
+ * realm it came from, and anything tagged `Error`, `Exception` or
+ * `DOMException`. So an object made by `Object.create(Error.prototype)`, which
+ * has no error of its own to report, passes.
+ *
+ * For the narrower question of whether a value was created as an error, and
+ * has the `[[ErrorData]]` internal slot to show for it, use `isNativeError`,
+ * which is what `Error.isError` asks.
  * @since 3.0.0
  * @category Fundamental Objects
  * @param value The value to identify.
@@ -20,6 +29,8 @@ import type { Guard } from '@openinf/util-core';
  * util.isError(new Error('foo')); // ↪ true
  *
  * util.isError({ message: 'foo', name: 'bar' }); // ↪ false
+ *
+ * util.isError(Object.create(Error.prototype)); // ↪ true
  * ```
  */
 export function isError(value: unknown): value is globalThis.Error {
