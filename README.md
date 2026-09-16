@@ -52,8 +52,8 @@ Errors are classes, not string codes, so callers can catch by type.
 | -------------------------------------------------------- | ------------------------------------------------------------------------------ | ------: |
 | [`@openinf/util`](packages/util)                         | Guards, validators, and assertion helpers for every ECMAScript primitive       |      70 |
 | [`@openinf/util-object`](packages/util-object)           | Object utilities -- merge, clone, mixin, omit -- and Fundamental Object guards |      48 |
-| [`@openinf/util-types`](packages/util-types)             | Type-related predicates, including exotic and internal-slot detection          |      45 |
-| [`@openinf/util-array`](packages/util-array)             | Array utilities, and guards for typed arrays                                   |      28 |
+| [`@openinf/util-types`](packages/util-types)             | Type-related predicates, including exotic and internal-slot detection          |      46 |
+| [`@openinf/util-array`](packages/util-array)             | Array utilities, and guards for typed arrays                                   |      29 |
 | [`@openinf/assert`](packages/assert)                     | Runtime assertions and comparison guards                                       |      23 |
 | [`@openinf/util-core`](packages/util-core)               | The language types and the guard vocabulary. No dependencies                   |      20 |
 | [`@openinf/util-errors`](packages/util-errors)           | Error classes modeled on Node.js core error codes                              |      13 |

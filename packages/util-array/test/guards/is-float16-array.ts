@@ -6,8 +6,10 @@ import { describe, it } from 'node:test';
 import { isFloat16Array } from '../../src/guards/is-float16-array';
 import { isTypedArray } from '../../src/guards/is-typed-array';
 
+const has = typeof Float16Array !== 'undefined';
+
 describe(isFloat16Array.name, () => {
-  it('should detect a Float16Array', () => {
+  it('should detect a Float16Array', { skip: !has }, () => {
     assert.strictEqual(isFloat16Array(new Float16Array()), true);
   });
 
@@ -27,7 +29,11 @@ describe(isFloat16Array.name, () => {
     assert.strictEqual(isFloat16Array([]), false);
   });
 
-  it('should be one of the typed arrays isTypedArray accepts', () => {
-    assert.strictEqual(isTypedArray(new Float16Array()), true);
-  });
+  it(
+    'should be one of the typed arrays isTypedArray accepts',
+    { skip: !has },
+    () => {
+      assert.strictEqual(isTypedArray(new Float16Array()), true);
+    }
+  );
 });
