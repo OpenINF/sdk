@@ -23,6 +23,7 @@ describe('index', () => {
       'isDataView',
       'isDate',
       'isExternal',
+      'isFloat16Array',
       'isFloat32Array',
       'isFloat64Array',
       'isGeneratorFunction',

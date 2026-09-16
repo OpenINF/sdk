@@ -16,7 +16,7 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * ```ts
  * isInt8Array(new Int8Array()); // ↪ true
  *
- * isInt8Array([]]); // ↪ false
+ * isInt8Array([]); // ↪ false
  * ```
  */
 export function isInt8Array(value: unknown): boolean {

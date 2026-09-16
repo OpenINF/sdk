@@ -45,6 +45,7 @@ export {
 export {
   isBigInt64Array,
   isBigUint64Array,
+  isFloat16Array,
   isFloat32Array,
   isFloat64Array,
   isInt16Array,

@@ -16,7 +16,7 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * ```ts
  * isBigUint64Array(new BigUint64Array()); // ↪ true
  *
- * isBigUint64Array([]]); // ↪ false
+ * isBigUint64Array([]); // ↪ false
  * ```
  */
 export function isBigUint64Array(value: unknown): boolean {

@@ -16,7 +16,7 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * ```ts
  * isInt16Array(new Int16Array()); // ↪ true
  *
- * isInt16Array([]]); // ↪ false
+ * isInt16Array([]); // ↪ false
  * ```
  */
 export function isInt16Array(value: unknown): boolean {

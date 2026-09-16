@@ -6,6 +6,7 @@ export * from './guards/is-array-homogenous';
 export * from './guards/is-array-like';
 export * from './guards/is-big-int64-array';
 export * from './guards/is-big-uint64-array';
+export * from './guards/is-float16-array';
 export * from './guards/is-float32-array';
 export * from './guards/is-float64-array';
 export * from './guards/is-int16-array';

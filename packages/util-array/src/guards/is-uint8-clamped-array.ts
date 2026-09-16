@@ -16,7 +16,7 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * ```ts
  * isUint8ClampedArray(new Uint8ClampedArray()); // ↪ true
  *
- * isUint8ClampedArray([]]); // ↪ false
+ * isUint8ClampedArray([]); // ↪ false
  * ```
  */
 export function isUint8ClampedArray(value: unknown): boolean {
