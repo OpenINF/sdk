@@ -15,7 +15,12 @@ describe(isResizableArrayBuffer.name, () => {
     { skip: !has },
     () => {
       assert.strictEqual(
-        isResizableArrayBuffer(new ArrayBuffer(8, { maxByteLength: 16 })),
+        isResizableArrayBuffer(
+          Reflect.construct(ArrayBuffer, [
+            8,
+            { maxByteLength: 16 },
+          ]) as ArrayBuffer
+        ),
         true
       );
     }

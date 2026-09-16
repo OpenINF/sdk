@@ -29,7 +29,12 @@ describe(isDetachedArrayBuffer.name, () => {
   it('should reject a live buffer, resizable or not', () => {
     assert.strictEqual(isDetachedArrayBuffer(new ArrayBuffer(8)), false);
     assert.strictEqual(
-      isDetachedArrayBuffer(new ArrayBuffer(8, { maxByteLength: 16 })),
+      isDetachedArrayBuffer(
+        Reflect.construct(ArrayBuffer, [
+          8,
+          { maxByteLength: 16 },
+        ]) as ArrayBuffer
+      ),
       false
     );
   });

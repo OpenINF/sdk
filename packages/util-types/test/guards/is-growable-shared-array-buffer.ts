@@ -35,7 +35,12 @@ describe(isGrowableSharedArrayBuffer.name, () => {
 
   it('should reject a resizable ArrayBuffer, which is the other question', () => {
     assert.strictEqual(
-      isGrowableSharedArrayBuffer(new ArrayBuffer(8, { maxByteLength: 16 })),
+      isGrowableSharedArrayBuffer(
+        Reflect.construct(ArrayBuffer, [
+          8,
+          { maxByteLength: 16 },
+        ]) as ArrayBuffer
+      ),
       false
     );
     assert.strictEqual(isGrowableSharedArrayBuffer(new ArrayBuffer(8)), false);
