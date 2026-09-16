@@ -7,8 +7,9 @@ import { _tagTester, isObject } from '@openinf/util-core';
 
 /**
  * Names the kind of value `obj` is, in lower case: a `typeof` result for a
- * primitive, and for an object the built-in it was made by, such as `'array'`,
- * `'date'` or `'error'`, falling back to `'object'`.
+ * non-null primitive, and for an object the built-in it was made by, such as
+ * `'array'`, `'date'` or `'error'`, falling back to `'object'`. Unlike
+ * `typeof null`, which is `'object'`, this function reports null as `'null'`.
  *
  * Older documentation called this the internal `[[Class]]`, a slot the
  * language dropped in ES2015. What it reports comes from the internal slots

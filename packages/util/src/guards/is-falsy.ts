@@ -36,7 +36,7 @@ export type Falsy =
  * util.isFalsy(Number.NaN); // ↪ true
  * ```
  */
-export function isFalsy(value: unknown): value is Falsy {
+export function isFalsy(value: unknown): boolean {
   // ToBoolean, section 7.1.2, is what `!` performs, and it is the whole
   // definition: false, +0, -0, NaN, the empty string, 0n, undefined and null
   // are falsy, and so is an object with an [[IsHTMLDDA]] internal slot, which
