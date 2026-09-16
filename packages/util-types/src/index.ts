@@ -6,12 +6,15 @@
 export * from './guards/is-any-array-buffer';
 export * from './guards/is-array-buffer-view';
 export * from './guards/is-array-buffer';
+export * from './guards/is-async-disposable-stack';
 export * from './guards/is-async-function';
 export * from './guards/is-async-generator-function';
 export * from './guards/is-async-generator';
 export * from './guards/is-boxed-primitive';
 export * from './guards/is-data-view';
+export * from './guards/is-disposable-stack';
 export * from './guards/is-external';
+export * from './guards/is-finalization-registry';
 export * from './guards/is-generator-function';
 export * from './guards/is-generator-object';
 export * from './guards/is-iterator';
@@ -24,6 +27,7 @@ export * from './guards/is-set';
 export * from './guards/is-set-iterator';
 export * from './guards/is-shared-array-buffer';
 export * from './guards/is-weak-map';
+export * from './guards/is-weak-ref';
 export * from './guards/is-weak-set';
 export * from './guards/is-web-assembly-compiled-module';
 
