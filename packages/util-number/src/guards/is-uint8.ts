@@ -15,9 +15,9 @@ export type Uint8 = Tagged<number, '__Uint8__'>;
  * Detects whether `value` is a number ToUint8, section 7.1.13 of the
  * specification, would leave unchanged: an integer from 0 to 255.
  *
- * `-0` passes, being an integer in range. ToUint8 itself accepts any number,
- * converting one outside the range by wrapping it; this asks whether the
- * conversion would have anything to do.
+ * `-0` does not pass because the conversion canonicalizes it to `+0`. ToUint8
+ * itself accepts any number, converting one outside the range by wrapping it;
+ * this asks whether the conversion would have anything to do.
  * @since 3.0.0
  * @category Type Conversion
  * @param value The value to identify.
@@ -30,6 +30,8 @@ export type Uint8 = Tagged<number, '__Uint8__'>;
  * ```
  */
 export function isUint8(value: unknown): value is Uint8 {
-  return isInteger(value) && value >= 0 && value <= 255;
+  return (
+    isInteger(value) && !Object.is(value, -0) && value >= 0 && value <= 255
+  );
 }
 (isUint8 as Guard).expectation = 'be a Uint8';

@@ -6,11 +6,10 @@ import { describe, it } from 'node:test';
 import { isUint8 } from '../../src/guards/is-uint8';
 
 describe(isUint8.name, () => {
-  it('should accept the ends of the range, and zero', () => {
-    assert.strictEqual(isUint8(0), true);
+  it('should accept the ends of the range and +0, but reject -0', () => {
     assert.strictEqual(isUint8(255), true);
     assert.strictEqual(isUint8(0), true);
-    assert.strictEqual(isUint8(-0), true);
+    assert.strictEqual(isUint8(-0), false);
   });
 
   it('should reject a number outside the range', () => {

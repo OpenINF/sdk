@@ -15,9 +15,9 @@ export type Uint16 = Tagged<number, '__Uint16__'>;
  * Detects whether `value` is a number ToUint16, section 7.1.11 of the
  * specification, would leave unchanged: an integer from 0 to 65535.
  *
- * `-0` passes, being an integer in range. ToUint16 itself accepts any number,
- * converting one outside the range by wrapping it; this asks whether the
- * conversion would have anything to do.
+ * `-0` does not pass because the conversion canonicalizes it to `+0`. ToUint16
+ * itself accepts any number, converting one outside the range by wrapping it;
+ * this asks whether the conversion would have anything to do.
  * @since 3.0.0
  * @category Type Conversion
  * @param value The value to identify.
@@ -30,6 +30,8 @@ export type Uint16 = Tagged<number, '__Uint16__'>;
  * ```
  */
 export function isUint16(value: unknown): value is Uint16 {
-  return isInteger(value) && value >= 0 && value <= 65535;
+  return (
+    isInteger(value) && !Object.is(value, -0) && value >= 0 && value <= 65535
+  );
 }
 (isUint16 as Guard).expectation = 'be a Uint16';

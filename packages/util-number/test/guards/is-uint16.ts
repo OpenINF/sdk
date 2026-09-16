@@ -6,11 +6,10 @@ import { describe, it } from 'node:test';
 import { isUint16 } from '../../src/guards/is-uint16';
 
 describe(isUint16.name, () => {
-  it('should accept the ends of the range, and zero', () => {
-    assert.strictEqual(isUint16(0), true);
+  it('should accept the ends of the range and +0, but reject -0', () => {
     assert.strictEqual(isUint16(65535), true);
     assert.strictEqual(isUint16(0), true);
-    assert.strictEqual(isUint16(-0), true);
+    assert.strictEqual(isUint16(-0), false);
   });
 
   it('should reject a number outside the range', () => {

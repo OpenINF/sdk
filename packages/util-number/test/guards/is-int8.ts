@@ -6,11 +6,11 @@ import { describe, it } from 'node:test';
 import { isInt8 } from '../../src/guards/is-int8';
 
 describe(isInt8.name, () => {
-  it('should accept the ends of the range, and zero', () => {
+  it('should accept the ends of the range and +0, but reject -0', () => {
     assert.strictEqual(isInt8(-128), true);
     assert.strictEqual(isInt8(127), true);
     assert.strictEqual(isInt8(0), true);
-    assert.strictEqual(isInt8(-0), true);
+    assert.strictEqual(isInt8(-0), false);
   });
 
   it('should reject a number outside the range', () => {
