@@ -17,4 +17,11 @@ describe(isIterator.name, () => {
     assert.strictEqual(isIterator(null), false);
     assert.strictEqual(isIterator(undefined), false);
   });
+
+  // The guard used to accept any object carrying a truthy __shouldIterator__
+  // property, whatever else it was. Nothing in the language gives that name a
+  // meaning, so an object that merely has it is not an iterator.
+  it('should reject an object that only sets __shouldIterator__', () => {
+    assert.strictEqual(isIterator({ __shouldIterator__: true }), false);
+  });
 });
