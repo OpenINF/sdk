@@ -5,3 +5,4 @@ export * from './guards/is-reg-exp';
 export * from './guards/is-string-containing';
 export * from './guards/is-string-not-containing';
 export * from './guards/is-string-object';
+export * from './guards/is-well-formed-string';
