@@ -14,6 +14,7 @@ export * from './guards/is-data-view';
 export * from './guards/is-external';
 export * from './guards/is-generator-function';
 export * from './guards/is-generator-object';
+export * from './guards/is-iterator';
 export * from './guards/is-map-iterator';
 export * from './guards/is-map';
 export * from './guards/is-module-namespace-object';
@@ -28,12 +29,6 @@ export * from './guards/is-web-assembly-compiled-module';
 
 // helpers
 export * from './get-expectation';
-
-// validators
-export * from './validators/validate-callback';
-export * from './validators/validate-integer';
-export * from './validators/validate-integer-range';
-export * from './validators/validate-one-of';
 
 // Node's util.types checks these Fundamental Objects, section 20, and the
 // arguments exotic object too. They live in @openinf/util-object; this package

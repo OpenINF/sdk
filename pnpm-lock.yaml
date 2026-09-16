@@ -145,6 +145,12 @@ importers:
       '@openinf/util-string':
         specifier: workspace:*
         version: link:../util-string
+      '@openinf/util-text':
+        specifier: workspace:*
+        version: link:../util-text
+      '@openinf/util-types':
+        specifier: workspace:*
+        version: link:../util-types
     devDependencies:
       '@types/node':
         specifier: ^26.1.2

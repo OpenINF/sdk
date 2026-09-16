@@ -20,8 +20,10 @@ export * from './validators/validate-boolean';
 export * from './validators/validate-buffer';
 export * from './validators/validate-function';
 export * from './validators/validate-int32';
+export * from './validators/validate-integer';
 export * from './validators/validate-number';
 export * from './validators/validate-object';
+export * from './validators/validate-one-of';
 export * from './validators/validate-string';
 export * from './validators/validate-uint32';
 
@@ -32,12 +34,13 @@ export * from './helpers/is-node';
 // guards
 export * from './guards/is-buffer';
 export * from './guards/is-falsy';
-export * from './guards/is-iterator';
 
 // From @openinf/util-object: `isError`, since an Error is a Fundamental Object
 // in section 20.5, and the type-name helpers, which read
 // `Object.prototype.toString` and belong with the rest of the Object
 // operations.
+export { isIterator } from '@openinf/util-types';
+
 export {
   getObjectType,
   isError,

@@ -71,7 +71,9 @@
     "@openinf/util-errors": "workspace:*",
     "@openinf/util-number": "workspace:*",
     "@openinf/util-object": "workspace:*",
-    "@openinf/util-string": "workspace:*"
+    "@openinf/util-string": "workspace:*",
+    "@openinf/util-text": "workspace:*",
+    "@openinf/util-types": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^26.1.2",
