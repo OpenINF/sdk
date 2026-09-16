@@ -7,7 +7,10 @@ specification, Number, BigInt and Math, and the numeric conversions of section
 `BigInt` objects.
 
 The number guards narrow to branded types such as `Integer` and `Uint32`, so a
-value checked once carries the check with it.
+value checked once carries the check with it. There is a guard for each range a
+conversion produces, `isInt8` through `isUint32`, one for the safe integers,
+`isSafeInteger`, and one for `-0`, `isNegativeZero`, which the operators cannot
+tell from `0`.
 
 It depends only on
 [`@openinf/util-core`](https://www.npmjs.com/package/@openinf/util-core), which
