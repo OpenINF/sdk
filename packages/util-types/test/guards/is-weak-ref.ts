@@ -6,6 +6,7 @@ import { describe, it } from 'node:test';
 import { isWeakRef } from '../../src/guards/is-weak-ref';
 
 const has = typeof WeakRef !== 'undefined';
+const hasStack = typeof DisposableStack !== 'undefined';
 
 describe(isWeakRef.name, () => {
   it('should detect a WeakRef', { skip: !has }, () => {
@@ -18,11 +19,12 @@ describe(isWeakRef.name, () => {
       false,
       'FinalizationRegistry'
     );
-    assert.strictEqual(
-      isWeakRef(new DisposableStack()),
-      false,
-      'DisposableStack'
-    );
+  });
+
+  // DisposableStack arrived after this package's minimum Node, so it gets
+  // its own gate rather than riding on this guard's.
+  it('should reject a DisposableStack', { skip: !has || !hasStack }, () => {
+    assert.strictEqual(isWeakRef(new DisposableStack()), false);
   });
 
   it('should reject a plain object, and one that only claims the tag', () => {

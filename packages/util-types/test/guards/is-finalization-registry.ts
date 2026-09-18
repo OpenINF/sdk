@@ -6,6 +6,7 @@ import { describe, it } from 'node:test';
 import { isFinalizationRegistry } from '../../src/guards/is-finalization-registry';
 
 const has = typeof FinalizationRegistry !== 'undefined';
+const hasStack = typeof DisposableStack !== 'undefined';
 
 describe(isFinalizationRegistry.name, () => {
   it('should detect a FinalizationRegistry', { skip: !has }, () => {
@@ -21,11 +22,12 @@ describe(isFinalizationRegistry.name, () => {
       false,
       'WeakRef'
     );
-    assert.strictEqual(
-      isFinalizationRegistry(new DisposableStack()),
-      false,
-      'DisposableStack'
-    );
+  });
+
+  // DisposableStack arrived after this package's minimum Node, so it gets
+  // its own gate rather than riding on this guard's.
+  it('should reject a DisposableStack', { skip: !has || !hasStack }, () => {
+    assert.strictEqual(isFinalizationRegistry(new DisposableStack()), false);
   });
 
   it('should reject a plain object, and one that only claims the tag', () => {
