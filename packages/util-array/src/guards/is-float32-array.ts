@@ -16,7 +16,7 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * ```ts
  * isFloat32Array(new Float32Array()); // ↪ true
  *
- * isFloat32Array([]]); // ↪ false
+ * isFloat32Array([]); // ↪ false
  * ```
  */
 export function isFloat32Array(value: unknown): boolean {

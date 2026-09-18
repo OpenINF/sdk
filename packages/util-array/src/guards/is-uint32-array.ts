@@ -16,7 +16,7 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * ```ts
  * isUint32Array(new Uint32Array()); // ↪ true
  *
- * isUint32Array([]]); // ↪ false
+ * isUint32Array([]); // ↪ false
  * ```
  */
 export function isUint32Array(value: unknown): boolean {

@@ -20,6 +20,8 @@ export type TypedArray =
   | Uint16Array
   | Int32Array
   | Uint32Array
+  // oxlint-disable-next-line typescript/no-redundant-type-constituents -- oxlint-tsgolint does not know the ES2025 Float16Array; tsc does, and compiles this union.
+  | Float16Array
   | Float32Array
   | Float64Array
   | BigInt64Array

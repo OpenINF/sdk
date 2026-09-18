@@ -7,18 +7,19 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
 
 /**
  * Detects whether `value` is classified as a
- * [`Uint8Array`](https://mdn.io/Global_Objects/Uint8Array).
+ * [`Float16Array`](https://mdn.io/Global_Objects/Float16Array), the typed
+ * array ES2025 added.
  * @since 3.0.0
  * @category Indexed Collections
  * @param value The value to identify.
- * @returns `true` if `value` is a `Uint8Array`; else, `false`.
+ * @returns `true` if `value` is a `Float16Array`; else, `false`.
  * @example
  * ```ts
- * isUint8Array(new Uint8Array()); // ↪ true
+ * isFloat16Array(new Float16Array()); // ↪ true
  *
- * isUint8Array([]); // ↪ false
+ * isFloat16Array([]); // ↪ false
  * ```
  */
-export function isUint8Array(value: unknown): boolean {
-  return isObjectLike(value) && _tagTester('Uint8Array')(value);
+export function isFloat16Array(value: unknown): boolean {
+  return isObjectLike(value) && _tagTester('Float16Array')(value);
 }
