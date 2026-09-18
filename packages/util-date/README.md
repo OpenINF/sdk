@@ -15,6 +15,11 @@ and `isTemporalDuration`. Each asks for the internal slots of its own type, so
 no other Temporal type passes, and in a runtime without `Temporal` they all say
 `false`.
 
+The probe is captured from the realm's `Temporal` when the module loads, as the
+other brand checks are captured from their intrinsics. A polyfill installed
+before that is the realm's `Temporal`, and these guards answer for its objects:
+there is no way from inside the language to reach a `Temporal` behind one.
+
 It depends only on
 [`@openinf/util-core`](https://www.npmjs.com/package/@openinf/util-core).
 
