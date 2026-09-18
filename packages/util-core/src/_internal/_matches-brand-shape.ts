@@ -160,8 +160,12 @@ export function _matchesBrandShape(name: string, value: object): boolean {
         hasMethod(value, 'return') &&
         hasMethod(value, name === 'Generator' ? iterator : asyncIterator)
       );
+    case 'Array Iterator':
+    case 'Iterator Helper':
     case 'Map Iterator':
+    case 'RegExp String Iterator':
     case 'Set Iterator':
+    case 'String Iterator':
       return (
         typeof value === 'object' &&
         hasMethod(value, 'next') &&

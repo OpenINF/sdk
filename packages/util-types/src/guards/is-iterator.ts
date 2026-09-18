@@ -5,7 +5,13 @@ import type { Guard } from '@openinf/util-core';
 
 /**
  * Detects whether `value` conforms to the
- * [iterator protocol](https://mdn.io/iteration_protocols#the_iterator_protocol).
+ * [iterator protocol](https://mdn.io/iteration_protocols#the_iterator_protocol):
+ * it has a `next` method, and its `Symbol.iterator` method returns itself,
+ * which is what section 27.1.4.1 says an iterator does.
+ *
+ * This asks the value, rather than asking for an internal slot, so it calls
+ * that `Symbol.iterator` method. For a particular kind of iterator, such as an
+ * Array Iterator, there is a guard that reads its tag instead.
  * @since 3.0.0
  * @category Control Abstraction Objects
  * @param value The value to identify.
@@ -27,10 +33,6 @@ export function isIterator(
   }
 
   const candidate = value as Record<PropertyKey, unknown>;
-
-  if (candidate['__shouldIterator__']) {
-    return true;
-  }
 
   return (
     typeof candidate['next'] === 'function' &&

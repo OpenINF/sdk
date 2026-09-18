@@ -51,7 +51,7 @@ Errors are classes, not string codes, so callers can catch by type.
 | Package                                                  |                                                                                | Exports |
 | -------------------------------------------------------- | ------------------------------------------------------------------------------ | ------: |
 | [`@openinf/util`](packages/util)                         | Guards, validators, and assertion helpers for every ECMAScript primitive       |      78 |
-| [`@openinf/util-types`](packages/util-types)             | Type-related predicates, including exotic and internal-slot detection          |      50 |
+| [`@openinf/util-types`](packages/util-types)             | Type-related predicates, including exotic and internal-slot detection          |      56 |
 | [`@openinf/util-object`](packages/util-object)           | Object utilities -- merge, clone, mixin, omit -- and Fundamental Object guards |      48 |
 | [`@openinf/util-array`](packages/util-array)             | Array utilities, and guards for typed arrays                                   |      29 |
 | [`@openinf/assert`](packages/assert)                     | Runtime assertions and comparison guards                                       |      23 |
