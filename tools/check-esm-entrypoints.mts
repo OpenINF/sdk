@@ -75,9 +75,11 @@ for (const directory of directories) {
     continue;
   }
 
-  const fromEsm = new Set(
-    Object.keys(namespace).filter((name) => name !== 'default')
-  );
+  // Not filtering `default`: this imports the package's real ESM entry point,
+  // so Node's synthetic CommonJS default does not apply, and a default export
+  // present in one build and missing from the other is exactly a drift worth
+  // reporting.
+  const fromEsm = new Set(Object.keys(namespace));
   const fromCjs = new Set(
     Object.keys(require(cjsFile) as Record<string, unknown>)
   );
