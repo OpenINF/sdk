@@ -71,6 +71,42 @@ function temporalCheck(name: string, key: string): [string, Predicate] {
   ];
 }
 
+// Section 26, Managing Memory, and the resource management of 27.3 and 27.4.
+// Each probe is chosen for leaving the value alone: deref reports a WeakRef's
+// target without clearing it, unregister with a symbol nothing registered
+// returns false and removes nothing, and the disposed getters dispose nothing.
+const unregister = (
+  globalThis as { FinalizationRegistry?: { prototype: object } }
+).FinalizationRegistry
+  ? (getOwnPropertyDescriptor(FinalizationRegistry.prototype, 'unregister')
+      ?.value as (this: unknown, token: symbol) => boolean)
+  : undefined;
+
+const isFinalizationRegistry: Predicate = (value) => {
+  if (unregister === undefined) return false;
+  try {
+    apply(unregister, value, [Symbol('unregistered')]);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+function optionalCheck(
+  constructor: { prototype: object } | undefined,
+  key: PropertyKey,
+  kind: 'value' | 'get' = 'value'
+): Predicate {
+  return constructor === undefined
+    ? () => false
+    : receiverCheck(constructor.prototype, key, kind);
+}
+
+const globals = globalThis as unknown as Record<
+  string,
+  { prototype: object } | undefined
+>;
+
 /**
  * Non-mutating brand checks available through standard JavaScript intrinsics.
  * Missing entries deliberately use the tag fallback, not a pretend slot test.
@@ -138,6 +174,16 @@ export const _brandChecks: ReadonlyMap<string, Predicate> = new Map([
   temporalCheck('PlainYearMonth', 'monthCode'),
   temporalCheck('PlainMonthDay', 'monthCode'),
   temporalCheck('Duration', 'sign'),
+  ['FinalizationRegistry', isFinalizationRegistry],
+  ['WeakRef', optionalCheck(globals['WeakRef'], 'deref')],
+  [
+    'DisposableStack',
+    optionalCheck(globals['DisposableStack'], 'disposed', 'get'),
+  ],
+  [
+    'AsyncDisposableStack',
+    optionalCheck(globals['AsyncDisposableStack'], 'disposed', 'get'),
+  ],
   ...[
     'BigInt64Array',
     'BigUint64Array',
