@@ -6,7 +6,15 @@
 import { _tagTester, isObject } from '@openinf/util-core';
 
 /**
- * Determines the internal JavaScript [[Class]] of `obj`.
+ * Names the kind of value `obj` is, in lower case: a `typeof` result for a
+ * non-null primitive, and for an object the built-in it was made by, such as
+ * `'array'`, `'date'` or `'error'`, falling back to `'object'`. Unlike
+ * `typeof null`, which is `'object'`, this function reports null as `'null'`.
+ *
+ * Older documentation called this the internal `[[Class]]`, a slot the
+ * language dropped in ES2015. What it reports comes from the internal slots
+ * themselves, through the same checks as the guards, so an object that merely
+ * sets `Symbol.toStringTag` does not change its answer.
  * @category Data Types and Values
  * @param obj The value to query.
  * @returns The lowercased type name of `obj`.

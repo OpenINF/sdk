@@ -17,4 +17,11 @@ describe(isRegExp.name, () => {
   it('should reject a regex-like string', () => {
     assert.strictEqual(isRegExp('/abc/'), false);
   });
+
+  // The specification's IsRegExp, section 7.2.6, asks for Symbol.match first,
+  // and the string methods use it. This guard asks for the internal slot, as
+  // node:util's types.isRegExp does, so the two disagree here.
+  it('should refuse an object carrying Symbol.match', () => {
+    assert.strictEqual(isRegExp({ [Symbol.match]: true }), false);
+  });
 });
