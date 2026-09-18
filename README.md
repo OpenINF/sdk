@@ -50,9 +50,9 @@ Errors are classes, not string codes, so callers can catch by type.
 
 | Package                                                  |                                                                                | Exports |
 | -------------------------------------------------------- | ------------------------------------------------------------------------------ | ------: |
-| [`@openinf/util`](packages/util)                         | Guards, validators, and assertion helpers for every ECMAScript primitive       |      68 |
+| [`@openinf/util`](packages/util)                         | Guards, validators, and assertion helpers for every ECMAScript primitive       |      70 |
 | [`@openinf/util-object`](packages/util-object)           | Object utilities -- merge, clone, mixin, omit -- and Fundamental Object guards |      48 |
-| [`@openinf/util-types`](packages/util-types)             | Type-related predicates, including exotic and internal-slot detection          |      48 |
+| [`@openinf/util-types`](packages/util-types)             | Type-related predicates, including exotic and internal-slot detection          |      45 |
 | [`@openinf/util-array`](packages/util-array)             | Array utilities, and guards for typed arrays                                   |      28 |
 | [`@openinf/assert`](packages/assert)                     | Runtime assertions and comparison guards                                       |      23 |
 | [`@openinf/util-core`](packages/util-core)               | The language types and the guard vocabulary. No dependencies                   |      20 |
@@ -108,7 +108,7 @@ dependencies it does not already reach through another, so `util-errors` names
 | `assert`           | `util-text`                                              |
 | `util-errors`      | `assert`                                                 |
 | `gh-file-importer` | `util-errors`                                            |
-| `util`             | `util-date`, `util-errors`, `util-number`, `util-string` |
+| `util`             | `util-errors`, `util-types`                              |
 
 **Dual CommonJS and ESM, with types for both.** Each package ships a CJS build
 and an ESM build with `.mjs`/`.d.mts` extensions behind an `exports` map. A
