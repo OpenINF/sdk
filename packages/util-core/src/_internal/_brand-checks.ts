@@ -50,6 +50,27 @@ const moduleExports = (
   }
 ).WebAssembly?.Module.exports;
 
+// Temporal, finished for ES2027. Every one of its classes keeps its own
+// internal slots, and every one has a getter on its prototype that throws
+// without them, so one captured getter tells each class from the others and
+// from an impostor. Where the host has no Temporal, each check says false: a
+// value of a type the runtime does not have cannot be one.
+const temporalObject = (
+  globalThis as unknown as {
+    Temporal?: Record<string, { prototype: object } | undefined>;
+  }
+).Temporal;
+
+function temporalCheck(name: string, key: string): [string, Predicate] {
+  const constructor = temporalObject?.[name];
+  return [
+    `Temporal.${name}`,
+    constructor === undefined
+      ? () => false
+      : receiverCheck(constructor.prototype, key, 'get'),
+  ];
+}
+
 /**
  * Non-mutating brand checks available through standard JavaScript intrinsics.
  * Missing entries deliberately use the tag fallback, not a pretend slot test.
@@ -109,6 +130,14 @@ export const _brandChecks: ReadonlyMap<string, Predicate> = new Map([
       }
     },
   ],
+  temporalCheck('Instant', 'epochNanoseconds'),
+  temporalCheck('ZonedDateTime', 'timeZoneId'),
+  temporalCheck('PlainDate', 'day'),
+  temporalCheck('PlainTime', 'hour'),
+  temporalCheck('PlainDateTime', 'day'),
+  temporalCheck('PlainYearMonth', 'monthCode'),
+  temporalCheck('PlainMonthDay', 'monthCode'),
+  temporalCheck('Duration', 'sign'),
   ...[
     'BigInt64Array',
     'BigUint64Array',

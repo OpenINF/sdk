@@ -50,7 +50,7 @@ Errors are classes, not string codes, so callers can catch by type.
 
 | Package                                                  |                                                                                | Exports |
 | -------------------------------------------------------- | ------------------------------------------------------------------------------ | ------: |
-| [`@openinf/util`](packages/util)                         | Guards, validators, and assertion helpers for every ECMAScript primitive       |      70 |
+| [`@openinf/util`](packages/util)                         | Guards, validators, and assertion helpers for every ECMAScript primitive       |      78 |
 | [`@openinf/util-object`](packages/util-object)           | Object utilities -- merge, clone, mixin, omit -- and Fundamental Object guards |      48 |
 | [`@openinf/util-types`](packages/util-types)             | Type-related predicates, including exotic and internal-slot detection          |      46 |
 | [`@openinf/util-array`](packages/util-array)             | Array utilities, and guards for typed arrays                                   |      29 |
@@ -58,10 +58,10 @@ Errors are classes, not string codes, so callers can catch by type.
 | [`@openinf/util-core`](packages/util-core)               | The language types and the guard vocabulary. No dependencies                   |      20 |
 | [`@openinf/util-errors`](packages/util-errors)           | Error classes modeled on Node.js core error codes                              |      13 |
 | [`@openinf/util-number`](packages/util-number)           | Integers, their sign and ranges, and Number and BigInt objects                 |      13 |
+| [`@openinf/util-date`](packages/util-date)               | `Date` objects and whether their time value is valid                           |      10 |
 | [`@openinf/util-text`](packages/util-text)               | Terminal-friendly text: quoting, color, ellipsis, Markdown                     |      10 |
 | [`@openinf/util-string`](packages/util-string)           | Strings and regular expressions: String objects, RegExps, string content       |       7 |
 | [`@openinf/gh-file-importer`](packages/gh-file-importer) | Fetches arbitrary files from remote GitHub repositories                        |       2 |
-| [`@openinf/util-date`](packages/util-date)               | `Date` objects and whether their time value is valid                           |       2 |
 | [`@openinf/util-md-table`](packages/util-md-table)       | Markdown table generation                                                      |       1 |
 
 Install only what you need:
