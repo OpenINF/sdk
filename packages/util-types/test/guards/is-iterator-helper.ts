@@ -5,8 +5,12 @@ import { describe, it } from 'node:test';
 
 import { isIteratorHelper } from '../../src/guards/is-iterator-helper';
 
+// The iterator helper methods are ES2025 and postdate this package's minimum
+// Node, so constructing one has to be gated even though the guard is not.
+const has = typeof [].values().map === 'function';
+
 describe(isIteratorHelper.name, () => {
-  it('should detect an Iterator Helper', () => {
+  it('should detect an Iterator Helper', { skip: !has }, () => {
     assert.strictEqual(isIteratorHelper([1, 2].values().map((n) => n)), true);
   });
 

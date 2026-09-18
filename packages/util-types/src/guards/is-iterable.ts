@@ -7,12 +7,16 @@ import { isObjectLike } from '@openinf/util-core';
 
 /**
  * Detects whether `value` conforms to the
- * [iterable protocol](https://mdn.io/iteration_protocols#the_iterable_protocol): it has a `Symbol.iterator` method, so `for...of` and spreading accept it.
+ * [iterable protocol](https://mdn.io/iteration_protocols#the_iterable_protocol): it has a callable `Symbol.iterator` property, which is what `for...of` and spreading look for.
+ *
+ * This is the shallow question. The method is read but never called, so a
+ * `Symbol.iterator` that returns something other than an iterator still passes
+ * here and still throws in the loop. Nothing short of calling it can tell.
  *
  * A primitive string is iterable, and this says `false` for it, as it does for
  * every primitive: the question it answers is whether an object offers the
- * protocol. Reading the method can run a getter the value defines, and this
- * does not call the method itself.
+ * protocol. Reading the property can run a getter the value defines, and a
+ * getter that throws answers `false` rather than throwing.
  * @since 3.0.0
  * @category Control Abstraction Objects
  * @param value The value to identify.

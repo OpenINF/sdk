@@ -1,5 +1,5 @@
 ---
-'@openinf/util-types': minor
+'@openinf/util-types': major
 '@openinf/util-core': patch
 ---
 
