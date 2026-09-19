@@ -34,19 +34,20 @@ where the language exposes a non-mutating internal-slot check. For example,
 even when the receiver inherits `Map.prototype` or advertises a `Map` tag. The
 predicate catches that exception and returns `false`.
 
-| Types                                                                                            | Implementation                             | Guarantee                                                     |
-| ------------------------------------------------------------------------------------------------ | ------------------------------------------ | ------------------------------------------------------------- |
-| Maps, sets, weak maps, weak sets                                                                 | Captured `has` methods                     | Internal-slot check                                           |
-| Dates, boxed primitives                                                                          | Captured `getTime` or `valueOf`            | Internal-slot check                                           |
-| Regular expressions                                                                              | Captured `source` getter                   | Internal-slot check; does not change `lastIndex`              |
-| Buffers, data views                                                                              | Captured `byteLength` or `buffer` getter   | Internal-slot check; accepts detached and out-of-bounds views |
-| Typed arrays                                                                                     | Captured `%TypedArray%` tag getter         | Reads the internal element type, not the object's tag         |
-| Weak refs, finalization registries, disposable stacks                                            | Captured `deref`, `unregister`, `disposed` | Internal-slot check; leaves the value as it found it          |
-| WebAssembly modules                                                                              | Captured `WebAssembly.Module.exports`      | Host brand check; returns `false` if WebAssembly is absent    |
-| Errors                                                                                           | `Error.isError` when available             | Internal brand check; error-like fallback on older engines    |
-| Arguments, promises, async/generator functions and objects, map/set iterators, module namespaces | Tag, source, and descriptor checks         | Best effort; rejects casual spoofs, not deliberate forgeries  |
-| Proxies                                                                                          | Captured `Array.isArray`                   | Detects revoked proxies only; live proxies remain opaque      |
-| Native external values                                                                           | Compatibility stub                         | Always `false`; detection requires engine support             |
+| Types                                                                                            | Implementation                                                                | Guarantee                                                     |
+| ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| Maps, sets, weak maps, weak sets                                                                 | Captured `has` methods                                                        | Internal-slot check                                           |
+| Dates, boxed primitives                                                                          | Captured `getTime` or `valueOf`                                               | Internal-slot check                                           |
+| Regular expressions                                                                              | Captured `source` getter                                                      | Internal-slot check; does not change `lastIndex`              |
+| Buffers, data views                                                                              | Captured `byteLength` or `buffer` getter                                      | Internal-slot check; accepts detached and out-of-bounds views |
+| Typed arrays                                                                                     | Captured `%TypedArray%` tag getter                                            | Reads the internal element type, not the object's tag         |
+| Weak refs, finalization registries, disposable stacks                                            | Captured `deref`, `unregister`, `disposed`                                    | Internal-slot check; leaves the value as it found it          |
+| WebAssembly modules                                                                              | Captured `WebAssembly.Module.exports`                                         | Host brand check; returns `false` if WebAssembly is absent    |
+| Errors                                                                                           | `Error.isError` when available                                                | Internal brand check; error-like fallback on older engines    |
+| Arguments, promises, async/generator functions and objects, map/set iterators, module namespaces | Tag, source, and descriptor checks                                            | Best effort; rejects casual spoofs, not deliberate forgeries  |
+| Buffer state, raw JSON                                                                           | Captured `detached`, `resizable` and `growable` getters, and `JSON.isRawJSON` | Internal-slot check; reads state without changing it          |
+| Proxies                                                                                          | Captured `Array.isArray`                                                      | Detects revoked proxies only; live proxies remain opaque      |
+| Native external values                                                                           | Compatibility stub                                                            | Always `false`; detection requires engine support             |
 
 The internal-slot checks accept values from other realms, including subclasses
 and genuine objects with custom tags or overridden methods. They reject proxies
