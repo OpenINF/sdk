@@ -123,14 +123,20 @@ published, and it does the three things that step is:
    an artifact it cannot, so the check on that pull request is what confirms the
    reference will render.
 
+Give it a run that actually carries the artifact. Publishing happens before the
+documentation is built and attached, so a run can put the packages on the
+registry and still fail afterwards, leaving no **sdk-api-docs** for step 1 to
+download. The run's own summary is what says whether it is there.
+
 The portal fetches rather than this repository pushing, so nothing here holds a
 credential that can write there -- worth keeping, since the job that would have
 carried it is the one with publishing rights to the registry.
 
 Nothing makes that step happen, and nothing fails when it is missed: the
-packages are published all the same and the portal never hears about them. Its
-**SDK API drift** workflow asks this repository weekly what it has released, and
-files an issue there when a release is missing its reference.
+packages are published all the same, and the portal goes on serving the
+references it already had while the new release has none. Its **SDK API drift**
+workflow asks this repository weekly what it has released, and files an issue
+there when a release is missing its reference.
 
 Nothing in the artifact is edited by hand at any point. It is generated output,
 and the portal validates it as such: it rejects a page it cannot map to a URL,
