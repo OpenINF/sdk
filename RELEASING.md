@@ -111,15 +111,32 @@ the Markdown and navigation data sit inside the directory. The portal reads it
 to decide what it is being given; it will not import a directory whose manifest
 disagrees with its name, nor one whose paths reach outside it.
 
-Handing it over is a separate, deliberate step, the way publishing is:
+Handing it over is a separate, deliberate step, the way publishing is. Start the
+portal's **SDK API sync** workflow with the ID of the Release run that
+published, and it does the three things that step is:
 
-1. Download **sdk-api-docs** from the Release run that published.
-2. Unzip it into `vendor/sdk-api/` in the portal repository, so the release's
-   directory sits beside the ones already there. Nothing is replaced -- a
-   release adds a version rather than superseding one.
-3. Open a pull request there. The portal's build imports what it finds and fails
-   on an artifact it cannot, so the check on that pull request is what confirms
-   the reference will render.
+1. Downloads **sdk-api-docs** from that run.
+2. Places it in `vendor/sdk-api/`, beside the releases already there. Nothing is
+   replaced -- a release adds a version rather than superseding one, and the
+   workflow refuses an artifact that would overwrite one.
+3. Opens a pull request. The portal's build imports what it finds and fails on
+   an artifact it cannot, so the check on that pull request is what confirms the
+   reference will render.
+
+Give it a run that actually carries the artifact. Publishing happens before the
+documentation is built and attached, so a run can put the packages on the
+registry and still fail afterwards, leaving no **sdk-api-docs** for step 1 to
+download. The run's own summary is what says whether it is there.
+
+The portal fetches rather than this repository pushing, so nothing here holds a
+credential that can write there -- worth keeping, since the job that would have
+carried it is the one with publishing rights to the registry.
+
+Nothing makes that step happen, and nothing fails when it is missed: the
+packages are published all the same, and the portal goes on serving the
+references it already had while the new release has none. Its **SDK API drift**
+workflow asks this repository weekly what it has released, and files an issue
+there when a release is missing its reference.
 
 Nothing in the artifact is edited by hand at any point. It is generated output,
 and the portal validates it as such: it rejects a page it cannot map to a URL,
