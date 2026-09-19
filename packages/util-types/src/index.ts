@@ -3,6 +3,7 @@
 
 // guards
 
+export * from './guards/can-be-held-weakly';
 export * from './guards/is-any-array-buffer';
 export * from './guards/is-array-buffer';
 export * from './guards/is-array-buffer-view';

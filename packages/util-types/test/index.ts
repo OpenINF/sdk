@@ -8,6 +8,7 @@ import * as utilTypes from '../src/index';
 describe('index', () => {
   it('should export every public guard and helper as a function', () => {
     const names = [
+      'canBeHeldWeakly',
       'isAnyArrayBuffer',
       'isArgumentsObject',
       'isArrayBuffer',
