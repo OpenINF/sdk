@@ -15,6 +15,7 @@ describe('index', () => {
       'isStringContaining',
       'isStringNotContaining',
       'isStringObject',
+      'isWellFormedString',
     ] as const;
 
     for (const name of names) {
