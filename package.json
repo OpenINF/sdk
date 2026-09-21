@@ -1,6 +1,18 @@
 {
   "name": "root",
   "private": true,
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=24.15.0",
+      "onFail": "error"
+    },
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.4.1",
+      "onFail": "download"
+    }
+  },
   "scripts": {
     "build": "pnpm -r run build",
     "docs:artifact": "node tools/build-api-artifact.js",

@@ -5,15 +5,18 @@ Thanks for taking the time. This is a pnpm workspace containing thirteen
 
 ## Getting set up
 
-Node.js `>=24.15.0` and pnpm 11 are required. `.nvmrc` pins a version that meets
-it, and a version manager that reads it will pick that up.
+Node.js `>=24.15.0` and pnpm 12 are required, both declared in the root
+`devEngines` field. `.nvmrc` pins a Node version that meets it, and a version
+manager that reads it will pick that up; pnpm is set to `onFail: "download"`, so
+a mismatched pnpm fetches the pinned one instead of failing.
 
-That is newer than the `>=20.19.0` the published packages declare, because the
+That is newer than the `>=22.11.0` the published packages declare, because the
 two are for different people. Installing an `@openinf/*` package needs only what
 the built code uses. Working on the repository also runs its tooling: the `.mts`
 tasks and checkers are handed to Node as TypeScript, and the package tests mock
 modules with the `exports` option of `mock.module`, which Node 24.15.0 is the
-first 24.x release to accept.
+first release to accept. That gap is why the test suite cannot yet run across
+the whole supported range, and why CI runs one version rather than a matrix.
 
 ```bash
 pnpm install
