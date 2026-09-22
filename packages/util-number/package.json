@@ -55,7 +55,7 @@
     "CHANGELOG.md"
   ],
   "engines": {
-    "node": ">=22.11.0"
+    "node": ">=22.12.0"
   },
   "author": "The OpenINF Authors",
   "license": "MIT",

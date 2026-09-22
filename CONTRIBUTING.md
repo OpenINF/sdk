@@ -10,13 +10,15 @@ Node.js `>=24.15.0` and pnpm 12 are required, both declared in the root
 manager that reads it will pick that up; pnpm is set to `onFail: "download"`, so
 a mismatched pnpm fetches the pinned one instead of failing.
 
-That is newer than the `>=22.11.0` the published packages declare, because the
+That is newer than the `>=22.12.0` the published packages declare, because the
 two are for different people. Installing an `@openinf/*` package needs only what
-the built code uses. Working on the repository also runs its tooling: the `.mts`
-tasks and checkers are handed to Node as TypeScript, and the package tests mock
-modules with the `exports` option of `mock.module`, which Node 24.15.0 is the
-first release to accept. That gap is why the test suite cannot yet run across
-the whole supported range, and why CI runs one version rather than a matrix.
+the built code uses. Working on the repository also runs its tooling, and the
+`.mts` tasks and checkers are handed to Node as TypeScript. CI builds on the
+toolchain, then runs every package's tests again on the oldest Node 22 release
+the packages admit and on the newest, so the whole supported range is tested
+rather than assumed. A test has to pass on both lines: `mock.module`, for one,
+takes its `exports` option only from Node 24.15.0, and needs `namedExports`
+before that.
 
 ```bash
 pnpm install

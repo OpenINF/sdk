@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
   pull_request:
+  # GitHub's merge queue, if it is ever turned on for main, runs the required
+  # checks again on a branch of its own and waits for them. Without this
+  # trigger they never start there, and every entry stalls.
+  merge_group:
 
 # Least privilege: this job only reads the tree. Without an explicit block the
 # job inherits whatever the repository default is, which may include write
@@ -72,7 +76,10 @@ jobs:
       # Commit messages on this branch, held to the format the commit queue
       # builds a landed message in. Checking here is what keeps a message from
       # being discovered as unlandable at the moment someone asks it to land.
+      # A merge queue's branch carries a commit GitHub wrote in its own format,
+      # not one of ours, and the pull request already checked the real ones.
       - run: pnpm run lint:commits
+        if: github.event_name != 'merge_group'
 
       # Spelling, across prose and the strings that ship: READMEs, changesets,
       # package descriptions, and error messages. American English is enforced
@@ -84,3 +91,44 @@ jobs:
       # ESM consumers -- something the build and tests cannot see, because
       # they never go through the published `exports` map.
       - run: pnpm run lint:packages
+
+  # The build job runs on the repository's toolchain, the newest LTS. The
+  # published packages promise every Node.js line still in an LTS window, so
+  # their tests, and a load of each built entry point, run again on the oldest
+  # release `engines.node` admits and on the newest release of that line.
+  # Installing and building stay on the toolchain, which the repository's own
+  # tooling needs; only the packages are held to the older line.
+  supported-node:
+    name: test (Node.js ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Keep the first entry equal to the floor in
+        # tools/sync-package-metadata.js.
+        node: ['22.12.0', '22']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          version: 12.4.1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ matrix.node }}
+
+      # `devEngines.runtime` rightly refuses this Node.js for working on the
+      # repository. Running the packages' tests on it is the point here.
+      - run: pnpm -r --runtime-on-fail=ignore run test
+
+      # Type stripping is on by default only from Node.js 22.18.0.
+      - run: node --experimental-strip-types tools/check-esm-entrypoints.mts

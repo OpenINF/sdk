@@ -43,7 +43,7 @@ predicate catches that exception and returns `false`.
 | Typed arrays                                                                                     | Captured `%TypedArray%` tag getter                                            | Reads the internal element type, not the object's tag         |
 | Weak refs, finalization registries, disposable stacks                                            | Captured `deref`, `unregister`, `disposed`                                    | Internal-slot check; leaves the value as it found it          |
 | WebAssembly modules                                                                              | Captured `WebAssembly.Module.exports`                                         | Host brand check; returns `false` if WebAssembly is absent    |
-| Errors                                                                                           | `Error.isError` when available                                                | Internal brand check; error-like fallback on older engines    |
+| Errors                                                                                           | `Error.isError`, or Node.js's `types.isNativeError`                           | Internal brand check; tag fallback on other older engines     |
 | Arguments, promises, async/generator functions and objects, map/set iterators, module namespaces | Tag, source, and descriptor checks                                            | Best effort; rejects casual spoofs, not deliberate forgeries  |
 | Buffer state, raw JSON                                                                           | Captured `detached`, `resizable` and `growable` getters, and `JSON.isRawJSON` | Internal-slot check; reads state without changing it          |
 | Proxies                                                                                          | Captured `Array.isArray`                                                      | Detects revoked proxies only; live proxies remain opaque      |
@@ -55,9 +55,13 @@ around built-ins: a proxy does not acquire its target's internal slots. They do
 not invoke input getters or proxy traps. Intrinsics must be intact when the
 package is loaded; this is not a defense against a compromised host environment.
 
-On engines without `Error.isError`, local `Error.prototype` ancestry and the
-legacy cross-realm error tag provide an error-like check. Forged prototypes and
-proxy traps can still fool it.
+On the Node.js 22 line, which has no `Error.isError`, `node:util`'s
+`types.isNativeError` asks V8 the same question, reached through
+`process.getBuiltinModule` rather than an import, so every supported Node.js
+gives the same answer. Other engines without `Error.isError` read the legacy
+cross-realm error tag, which only an object with `[[ErrorData]]` reports, and
+fall back to local `Error.prototype` ancestry when a custom tag hides it. Forged
+prototypes and proxy traps can still fool that fallback.
 
 For opaque types, the Underscore tag fallback now reads property descriptors
 instead of invoking ordinary tag or method getters. It also checks expected

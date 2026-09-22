@@ -220,25 +220,24 @@ describe('portable internal-slot checks', () => {
   it('rejects forged Error tags and accepts cross-realm errors', () => {
     assert.strictEqual(isNativeError({ [Symbol.toStringTag]: 'Error' }), false);
     assert.strictEqual(isNativeError(runInNewContext('new TypeError()')), true);
+    assert.strictEqual(isNativeError(Object.create(Error.prototype)), false);
+    assert.strictEqual(isNativeError(new Proxy(new Error(), {})), false);
     assert.strictEqual(
-      isNativeError(Object.create(Error.prototype)),
-      typeof Error.isError === 'function' ? false : true
+      isNativeError(Object.setPrototypeOf(new Error(), Object.prototype)),
+      true
     );
   });
 
-  it(
-    'ignores custom error tags when Error.isError is available',
-    {
-      skip: typeof Error.isError !== 'function',
-    },
-    () => {
-      const error = new Error('example');
-      Object.defineProperty(error, Symbol.toStringTag, {
-        get() {
-          throw new Error('must not read the tag');
-        },
-      });
-      assert.strictEqual(isNativeError(error), true);
-    }
-  );
+  it('ignores custom error tags on every supported Node.js line', () => {
+    const error = new Error('example');
+    Object.defineProperty(error, Symbol.toStringTag, {
+      get() {
+        throw new Error('must not read the tag');
+      },
+    });
+    assert.strictEqual(isNativeError(error), true);
+    const foreign = runInNewContext('new RangeError()') as object;
+    Object.defineProperty(foreign, Symbol.toStringTag, { value: 'Custom' });
+    assert.strictEqual(isNativeError(foreign), true);
+  });
 });

@@ -20,14 +20,15 @@ const AUTHOR = 'The OpenINF Authors';
 const LICENSE = 'MIT';
 // The oldest Node.js release line still inside an LTS window. OpenINF supports
 // LTS lines only: once a line reaches end of life it leaves this range, rather
-// than lingering as best-effort. 22.11.0 is where the Jod line actually entered
-// LTS, so it is the first 22.x a consumer can be on and still be supported;
-// Iron (20.x) reached end of life on 2026-04-30 and the previous `>=20.19.0`
-// floor has admitted an unsupported line since.
+// than lingering as best-effort. Jod entered LTS at 22.11.0, but 22.12.0 is the
+// first 22.x whose require() loads an ES module, which the CommonJS build of
+// @openinf/gh-file-importer needs for the ESM-only @octokit/rest; CI tests this
+// floor exactly. Iron (20.x) reached end of life on 2026-04-30 and the previous
+// `>=20.19.0` floor has admitted an unsupported line since.
 //
 // Moves next on 2027-04-30, when Jod reaches end of life and the floor becomes
 // 24.11.0. See <https://nodejs.org/en/about/previous-releases>.
-const ENGINES = { node: '>=22.11.0' };
+const ENGINES = { node: '>=22.12.0' };
 
 // Field order every synced package.json is rewritten to follow.
 const FIELD_ORDER = [

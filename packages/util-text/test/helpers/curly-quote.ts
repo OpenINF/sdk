@@ -3,10 +3,12 @@
 import assert from 'node:assert/strict';
 import { afterEach, describe, it, mock } from 'node:test';
 
-function freshRequire(id: string) {
-  delete require.cache[require.resolve(id)];
-  return require(id);
-}
+import * as unicode from '../../src/_internal/has-unicode';
+import { curlyQuote } from '../../src/helpers/curly-quote';
+
+// The compiled helper reads `hasUnicode` from this module's exports on
+// every call, so replacing it there works on every Node.js line, without a
+// module mock.
 
 describe('curlyQuote', () => {
   afterEach(() => {
@@ -14,18 +16,12 @@ describe('curlyQuote', () => {
   });
 
   it('should curly quote the string when Unicode is supported', () => {
-    mock.module('../../src/_internal/has-unicode.js', {
-      exports: { hasUnicode: () => true },
-    });
-    const { curlyQuote } = freshRequire('../../src/helpers/curly-quote');
+    mock.method(unicode, 'hasUnicode', () => true);
     assert.strictEqual(curlyQuote('foo'), '“foo”');
   });
 
   it('should straight quote the string when Unicode is unsupported', () => {
-    mock.module('../../src/_internal/has-unicode.js', {
-      exports: { hasUnicode: () => false },
-    });
-    const { curlyQuote } = freshRequire('../../src/helpers/curly-quote');
+    mock.method(unicode, 'hasUnicode', () => false);
     assert.strictEqual(curlyQuote('foo'), '"foo"');
   });
 });
