@@ -279,16 +279,26 @@ as in `Assisted-by: Claude-Code:claude-opus-5`.
 
 Every commit carries a `Signed-off-by:` naming its own author. That is the
 Developer Certificate of Origin, reproduced in full in the pull request
-template, and only the author can certify it -- an assistant discloses itself
-with `Assisted-by:` and signs nothing. `git commit -s` writes the line for you.
+template, and only a person can certify it -- an assistant discloses itself with
+`Assisted-by:` and signs nothing. `git commit -s` writes the line for you.
 
-`Co-authored-by:` is for people, and the check refuses one naming an assistant
-or a bot account. Authorship is a claim only a person can make, and an agent
-writing its own commit message reaches for that trailer by habit. It refuses on
-the `[bot]` suffix, which GitHub reserves so that no person can hold it, on the
-addresses the agents commit under, and on a handful of product names. Only the
-last can reach a person. If it ever refuses a real co-author, narrow the pattern
-in the same pull request rather than dropping the credit.
+The author of a commit has to be a person too. An agent running under its own
+git identity is the author of what it commits, and `-s` copies that identity
+into the sign-off, so the trailer names a tool and agrees with the author while
+doing it. Both halves are refused: a `Signed-off-by:` naming an assistant or a
+bot account, whoever the author is, and one that does not name the author. An
+agent committing on somebody's behalf commits as them, signs off as them, and
+names itself in `Assisted-by:`. The person in those trailers is answerable for
+every line, whatever wrote it.
+
+`Co-authored-by:` is for people on the same terms, and the check refuses one
+naming an assistant or a bot account. Authorship is a claim only a person can
+make, and an agent writing its own commit message reaches for that trailer by
+habit. Both trailers are refused on the same three things: the `[bot]` suffix,
+which GitHub reserves so that no person can hold it, the addresses the agents
+commit under, and a handful of product names. Only the last can reach a person.
+If it ever refuses a real contributor, narrow the pattern in the same pull
+request rather than dropping the trailer.
 
 `pnpm run lint:commits` holds every commit on your branch to all of this, and
 cross-checks its own reading of the trailers against `git interpret-trailers`,
