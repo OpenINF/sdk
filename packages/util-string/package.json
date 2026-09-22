@@ -55,18 +55,18 @@
     "CHANGELOG.md"
   ],
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=22.11.0"
   },
   "author": "The OpenINF Authors",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "@openinf/util-core": "workspace:*"
+  },
   "devDependencies": {
     "@types/node": "^26.1.2",
     "typescript": "^7.0.2"
-  },
-  "dependencies": {
-    "@openinf/util-core": "workspace:*"
   }
 }

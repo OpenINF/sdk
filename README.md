@@ -145,9 +145,13 @@ to commit SHAs.
 
 ## Requirements
 
-Node.js `>=20.19.0`. TypeScript consumers want `moduleResolution` set to
-`node16`, `nodenext`, or `bundler` -- the older `node` mode cannot read an
-`exports` map.
+Node.js `>=22.11.0`. OpenINF supports the release lines still inside an LTS
+window and drops a line when it reaches end of life, so the floor tracks the
+[Node.js release schedule](https://nodejs.org/en/about/previous-releases) rather
+than the oldest runtime the code happens to work on.
+
+TypeScript consumers want `moduleResolution` set to `node16`, `nodenext`, or
+`bundler` -- the older `node` mode cannot read an `exports` map.
 
 ## Documentation
 
