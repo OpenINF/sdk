@@ -127,6 +127,14 @@ describe('host-independent brand checker', () => {
       false
     );
     assert.strictEqual(tagTester('Error')(localError), true);
+    assert.strictEqual(tagTester('Error')(new TypeError()), true);
+    assert.strictEqual(
+      tagTester('Error')(
+        runInContext('Object.create(Error.prototype)', context)
+      ),
+      false
+    );
+    assert.strictEqual(tagTester('Error')(new Proxy(localError, {})), false);
     assert.strictEqual(
       tagTester('Error')({ [Symbol.toStringTag]: 'Error' }),
       false

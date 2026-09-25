@@ -21,10 +21,10 @@ const objectFunctionString: unknown = apply(functionToString, Object, []);
 // Symbol.toStringTag hides the classification Object.prototype.toString would
 // otherwise report. Two of them have no probe in every runtime: nothing in the
 // language reveals [[ParameterMap]] but that same classification, and
-// [[ErrorData]] is revealed only by Error.isError, from ES2026. So an arguments
-// object, or an Error where Error.isError is missing, that has been given both
-// another prototype and a tag of its own cannot be recognized, and passes as
-// plain.
+// [[ErrorData]] is revealed only by Error.isError, from ES2026, or by a host's
+// own check such as Node.js's. So an arguments object, or an Error where
+// neither is available, that has been given both another prototype and a tag
+// of its own cannot be recognized, and passes as plain.
 const hasClassifyingSlot = [
   'Arguments',
   'Error',

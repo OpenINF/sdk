@@ -3,10 +3,12 @@
 import assert from 'node:assert/strict';
 import { afterEach, describe, it, mock } from 'node:test';
 
-function freshRequire(id: string) {
-  delete require.cache[require.resolve(id)];
-  return require(id);
-}
+import * as unicode from '../../src/_internal/has-unicode';
+import { ellipsify } from '../../src/helpers/ellipsify';
+
+// The compiled helper reads `hasUnicode` from this module's exports on
+// every call, so replacing it there works on every Node.js line, without a
+// module mock.
 
 describe('ellipsify', () => {
   afterEach(() => {
@@ -14,18 +16,12 @@ describe('ellipsify', () => {
   });
 
   it('should append a Unicode ellipsis when Unicode is supported', () => {
-    mock.module('../../src/_internal/has-unicode.js', {
-      exports: { hasUnicode: () => true },
-    });
-    const { ellipsify } = freshRequire('../../src/helpers/ellipsify');
+    mock.method(unicode, 'hasUnicode', () => true);
     assert.strictEqual(ellipsify('foo'), 'foo…');
   });
 
   it('should append three dots when Unicode is unsupported', () => {
-    mock.module('../../src/_internal/has-unicode.js', {
-      exports: { hasUnicode: () => false },
-    });
-    const { ellipsify } = freshRequire('../../src/helpers/ellipsify');
+    mock.method(unicode, 'hasUnicode', () => false);
     assert.strictEqual(ellipsify('foo'), 'foo...');
   });
 });

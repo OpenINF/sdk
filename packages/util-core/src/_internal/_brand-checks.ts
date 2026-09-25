@@ -44,6 +44,25 @@ const objectToString = Object.prototype.toString;
 const isPrototypeOf = Object.prototype.isPrototypeOf;
 const errorIsError = (Error as ErrorConstructor & { isError?: Predicate })
   .isError;
+
+// The Node.js 22 line has no Error.isError, but its util.types.isNativeError
+// asks V8 the same question about [[ErrorData]], so a supported Node.js answers
+// alike on every line. process.getBuiltinModule reaches it without importing a
+// host module, and anywhere else, this is undefined.
+const hostIsNativeError = ((): Predicate | undefined => {
+  try {
+    const host = globalThis as unknown as {
+      process?: {
+        getBuiltinModule?(
+          id: string
+        ): { types?: { isNativeError?: Predicate } } | undefined;
+      };
+    };
+    return host.process?.getBuiltinModule?.('node:util')?.types?.isNativeError;
+  } catch {
+    return undefined;
+  }
+})();
 const moduleExports = (
   globalThis as unknown as {
     WebAssembly?: { Module: { exports(this: void, value: unknown): unknown } };
@@ -137,18 +156,19 @@ export const _brandChecks: ReadonlyMap<string, Predicate> = new Map([
   [
     'Error',
     errorIsError ??
+      hostIsNativeError ??
       ((value) => {
         try {
-          // Like SES's error-like check, recognize local error ancestry even
-          // with a custom tag. The legacy tag covers other realms. Neither
-          // branch is proof against forged prototypes or proxy traps.
-          return (
-            value !== null &&
-            typeof value === 'object' &&
-            (apply(isPrototypeOf, errorPrototype, [value]) ||
-              (!(toStringTag in value) &&
-                apply(objectToString, value, []) === '[object Error]'))
-          );
+          if (value === null || typeof value !== 'object') return false;
+          // With no tag in the way, section 20.1.3.6 reports Error only for an
+          // object with [[ErrorData]], across realms, which is Error.isError's
+          // question. Only a proxy trap can forge it.
+          if (!(toStringTag in value)) {
+            return apply(objectToString, value, []) === '[object Error]';
+          }
+          // A tag hides that classification. Like SES's error-like check, fall
+          // back to local error ancestry, which a forged prototype can fool.
+          return apply(isPrototypeOf, errorPrototype, [value]);
         } catch {
           return false;
         }

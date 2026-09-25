@@ -18,6 +18,16 @@ function freshRequire(id: string) {
   return require(id);
 }
 
+// Node.js 24.15 renamed mock.module's `namedExports` option to `exports`, and
+// warns about the old name. The Node.js 22 line only accepts the old one.
+const [nodeMajor = 0, nodeMinor = 0] = process.versions.node
+  .split('.')
+  .map(Number);
+const exportsOption =
+  nodeMajor > 24 || (nodeMajor === 24 && nodeMinor >= 15)
+    ? 'exports'
+    : 'namedExports';
+
 function mockOctokit(getContentImpl: (opts: unknown) => unknown) {
   const getContent = mock.fn(getContentImpl);
   const constructorCalls: unknown[] = [];
@@ -28,7 +38,7 @@ function mockOctokit(getContentImpl: (opts: unknown) => unknown) {
     }
   }
   mock.module('@octokit/rest', {
-    exports: { Octokit: FakeOctokit },
+    [exportsOption]: { Octokit: FakeOctokit },
   });
   return { getContent, constructorCalls };
 }

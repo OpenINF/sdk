@@ -16,10 +16,13 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * - [`AggregateError `](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
  * - [`InternalError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError)
  *
- * Uses `Error.isError` where available. On older engines, local error ancestry
- * and the legacy cross-realm tag provide a best-effort fallback that can be
- * fooled by forged prototypes or proxy traps. Do not use it as a security
- * boundary.
+ * Asks whether the value has the `[[ErrorData]]` internal slot, as
+ * `Error.isError` does, and uses it where available. On the Node.js 22 line,
+ * which lacks it, `node:util`'s `types.isNativeError` asks the same question,
+ * so every supported Node.js gives the same answer. Other engines without
+ * either fall back to the legacy cross-realm tag, and to local error ancestry
+ * when a custom tag hides it; forged prototypes and proxy traps can fool that
+ * fallback. Do not use it as a security boundary.
  * @category Fundamental Objects
  * @param value The value to be checked.
  * @returns `true` if the value is a native error; otherwise, `false`.

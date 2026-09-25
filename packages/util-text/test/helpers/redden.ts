@@ -3,10 +3,12 @@
 import assert from 'node:assert/strict';
 import { afterEach, describe, it, mock } from 'node:test';
 
-function freshRequire(id: string) {
-  delete require.cache[require.resolve(id)];
-  return require(id);
-}
+import * as ansi from '../../src/_internal/supports-ansi';
+import { redden } from '../../src/helpers/redden';
+
+// The compiled helper reads `supportsAnsi` from this module's exports on
+// every call, so replacing it there works on every Node.js line, without a
+// module mock.
 
 describe('redden', () => {
   afterEach(() => {
@@ -14,20 +16,14 @@ describe('redden', () => {
   });
 
   it('should colorize the string red when ANSI is supported', () => {
-    mock.module('../../src/_internal/supports-ansi.js', {
-      exports: { supportsAnsi: () => true },
-    });
-    const { redden } = freshRequire('../../src/helpers/redden');
+    mock.method(ansi, 'supportsAnsi', () => true);
     const result: string = redden('foo');
     assert.notStrictEqual(result, 'foo');
     assert.ok(result.includes('foo'));
   });
 
   it('should return the string unchanged when ANSI is unsupported', () => {
-    mock.module('../../src/_internal/supports-ansi.js', {
-      exports: { supportsAnsi: () => false },
-    });
-    const { redden } = freshRequire('../../src/helpers/redden');
+    mock.method(ansi, 'supportsAnsi', () => false);
     assert.strictEqual(redden('foo'), 'foo');
   });
 });
