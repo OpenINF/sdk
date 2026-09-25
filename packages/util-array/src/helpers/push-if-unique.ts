@@ -1,6 +1,8 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
+// Adapted from TypeScript
+
 import type { EqualityComparer } from '../types';
 import { contains } from './contains';
 

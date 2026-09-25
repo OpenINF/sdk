@@ -1,6 +1,7 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
+// Adapted from TypeScript
 // https://github.com/microsoft/TypeScript/blob/38da7c600c83e7b31193a62495239a0fe478cb67/src/compiler/debug.ts#L169
 
 import type { AnyFunction } from '@openinf/util-core';

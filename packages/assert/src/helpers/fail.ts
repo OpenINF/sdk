@@ -1,8 +1,6 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-// Adapted from Node.js. Copyright Joyent, Inc. and other Node contributors.
-
 import type { AnyFunction } from '@openinf/util-core';
 
 import { AssertionError } from '../errors/assertion-error';

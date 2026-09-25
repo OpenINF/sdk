@@ -5,9 +5,9 @@ import { _brandChecks } from './_brand-checks';
 import { _getPropertyDescriptor } from './_get-property-descriptor';
 import { _matchesBrandShape } from './_matches-brand-shape';
 
-// Adapted from Underscore; use internal-slot checks where the language exposes
-// a non-mutating probe. The remaining tag checks are classification heuristics,
-// not proof of a brand. See the package README for the boundary.
+// Uses internal-slot checks where the language exposes a non-mutating probe.
+// The remaining tag checks are classification heuristics, not proof of a
+// brand. See the package README for the boundary.
 
 const { apply } = Reflect;
 const { hasOwn } = Object;

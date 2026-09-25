@@ -1,9 +1,6 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-// Adapted from Jest.
-// https://github.com/facebook/jest/blob/bc50e7f360ab1845abbaa0b3ad788caead0d3174/packages/jest-jasmine2/src/isError.ts
-
 import type { Guard } from '@openinf/util-core';
 
 /**

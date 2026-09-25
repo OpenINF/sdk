@@ -1,6 +1,8 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
+// Adapted from TypeShield
+
 import type { Guard, Tagged } from '@openinf/util-core';
 
 import { isInteger } from './is-integer';
