@@ -1,8 +1,6 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-// Adapted from Node.js
-
 import { isBigIntObject, isNumberObject } from '@openinf/util-number';
 import { isBooleanObject, isSymbolObject } from '@openinf/util-object';
 import { isStringObject } from '@openinf/util-string';

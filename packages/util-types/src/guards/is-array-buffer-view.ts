@@ -1,8 +1,6 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-// Adapted from Node.js
-
 /**
  * Detects whether `value` is classified as an
  * [`ArrayBufferView`](https://developer.mozilla.org/en-US/docs/Web/API/ArrayBufferView),

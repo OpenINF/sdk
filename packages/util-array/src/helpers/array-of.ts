@@ -1,6 +1,8 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
+// Adapted from TypeScript
+
 /**
  * Creates an array of `count` elements, each the result of calling `f` with
  * its index.

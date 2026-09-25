@@ -1,8 +1,6 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-// Adapted from Node.js
-
 // https://nodejs.org/dist/latest-v16.x/docs/api/util.html#util_util_types_iswebassemblycompiledmodule_value
 
 import { _tagTester, isObjectLike } from '@openinf/util-core';

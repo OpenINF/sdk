@@ -1,8 +1,6 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-// Adapted from Node.js. Copyright Joyent, Inc. and other Node contributors.
-
 import { getMessage } from '../helpers/get-message';
 
 /**

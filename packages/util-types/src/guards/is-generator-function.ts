@@ -1,8 +1,6 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-// Adapted from Node.js
-
 import { _tagTester, isObjectLike } from '@openinf/util-core';
 
 /**
@@ -28,15 +26,3 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
 export function isGeneratorFunction(value: unknown): boolean {
   return isObjectLike(value) && _tagTester('GeneratorFunction')(value);
 }
-
-// https://stackoverflow.com/a/37865170
-// export function isGenerator(obj: unknown): boolean {
-//   const constructor = obj?.constructor;
-//   if (!constructor) return false;
-//   if (
-//     'GeneratorFunction' === constructor.name ||
-//     'GeneratorFunction' === constructor.displayName
-//   )
-//     return true;
-//   return false;
-// }
