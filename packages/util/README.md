@@ -61,3 +61,8 @@ you the same function:
 
 Depend on one of those directly if it is all you need; depend on this package
 for the full set of guards, validators, and helpers.
+
+## Documentation
+
+The API reference for `@openinf/util` and the other OpenINF packages is on the
+[OpenINF portal](https://open.inf.is/docs/sdk/), one version per release.

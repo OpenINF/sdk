@@ -29,3 +29,8 @@ if (hasOwn(value, 'id')) {
   value.id; // ↪ narrowed to `unknown`, no cast needed
 }
 ```
+
+## Documentation
+
+The API reference for `@openinf/util-object` and the other OpenINF packages is
+on the [OpenINF portal](https://open.inf.is/docs/sdk/), one version per release.

@@ -39,3 +39,8 @@ isValidDate(new Date('nope')); // ↪ false
 isDate({ [Symbol.toStringTag]: 'Date' }); // ↪ false
 isTemporalInstant(new Date()); // ↪ false
 ```
+
+## Documentation
+
+The API reference for `@openinf/util-date` and the other OpenINF packages is on
+the [OpenINF portal](https://open.inf.is/docs/sdk/), one version per release.

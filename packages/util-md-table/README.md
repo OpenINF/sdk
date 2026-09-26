@@ -30,3 +30,8 @@ console.log(mdTbl2json(table, (value) => value.toLowerCase()));
   { col1: 'fee', col2: 'fie', col3: 'foe', col4: 'fum' }
 ]
 ```
+
+## Documentation
+
+The API reference for `@openinf/util-md-table` and the other OpenINF packages is
+on the [OpenINF portal](https://open.inf.is/docs/sdk/), one version per release.

@@ -5,6 +5,8 @@ development: type guards, argument validation, structured errors, and terminal
 text.
 
 They are published separately, versioned together, and depend on almost nothing.
+The API reference for all of them is on the
+[OpenINF portal](https://open.inf.is/docs/sdk/).
 
 ## Why another utility suite
 
@@ -155,7 +157,11 @@ TypeScript consumers want `moduleResolution` set to `node16`, `nodenext`, or
 
 ## Documentation
 
-API documentation is generated with [TypeDoc](https://typedoc.org):
+The API reference for every package is published on the
+[OpenINF portal](https://open.inf.is/docs/sdk/), with one reference per release,
+so the pages match the version you installed.
+
+It is generated here with [TypeDoc](https://typedoc.org):
 
 ```console
 pnpm install
