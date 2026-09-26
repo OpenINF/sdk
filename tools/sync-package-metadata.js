@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// Normalizes the package-invariant metadata (repository, bugs, files,
+// Normalizes the package-invariant metadata (homepage, repository, bugs, files,
 // engines, author, license, types, exports) that every publishable
 // workspace package under packages/* should share, rewriting each
 // package.json from a single canonical definition instead of by
@@ -16,6 +16,7 @@ const path = require('path');
 const PACKAGES_DIR = path.join(__dirname, '..', 'packages');
 const REPO_URL = 'https://github.com/OpenINF/sdk.git';
 const ISSUES_URL = 'https://github.com/OpenINF/sdk/issues';
+const TREE_URL = 'https://github.com/OpenINF/sdk/tree/main';
 const AUTHOR = 'The OpenINF Authors';
 const LICENSE = 'MIT';
 // The oldest Node.js release line still inside an LTS window. OpenINF supports
@@ -40,6 +41,7 @@ const FIELD_ORDER = [
   'exports',
   'sideEffects',
   'scripts',
+  'homepage',
   'repository',
   'bugs',
   'keywords',
@@ -101,6 +103,9 @@ function syncOne(dirName) {
   // here instead of letting this flatten it to false.
   pkg.sideEffects = false;
 
+  // Without a homepage, npm links the package page to the repository root, so
+  // every package would open on the monorepo's README instead of its own.
+  pkg.homepage = `${TREE_URL}/packages/${dirName}#readme`;
   pkg.repository = {
     type: 'git',
     url: REPO_URL,

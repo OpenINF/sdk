@@ -190,35 +190,57 @@ Two constraints make the first release different from every later one:
 - **A package must already exist on npm before you can configure it.** There's
   no way to pre-authorize a name that has never been published.
 
-`@openinf/util-core`, `@openinf/util`, `@openinf/assert`, `@openinf/util-array`,
-`@openinf/util-number`, `@openinf/util-date`, and `@openinf/util-string` have
-never been published. So, once:
+So a package that has never been published goes through one release by hand, and
+it has to be the release itself rather than whatever version `main` currently
+carries. Published from `main` before the "Version packages" PR has merged, a
+new package would go out at the version `main` carries for it, with its
+`workspace:*` dependencies pinned to the versions `main` carries for them, which
+for an already-published dependency is an old release that predates this code.
 
-1. Publish those seven manually, authenticated locally with an npm account that
-   can create packages under the `@openinf` scope:
+Once, for the release that first includes a new package:
+
+1. For each package that **is** already on npm, add a trusted publisher now (see
+   step 4 for the settings). These can be set up before anything else.
+
+2. Run **Release** and merge the "Version packages" PR it opens, as usual.
+
+3. From an up-to-date `main`, publish only the new packages, authenticated
+   locally with an npm account that can create packages under the `@openinf`
+   scope. Name each one with `--filter`; pnpm publishes them in dependency
+   order:
 
    ```bash
+   git pull
+   pnpm install --frozen-lockfile
    pnpm run build
-   pnpm --filter @openinf/util-core --filter @openinf/util \
-        --filter @openinf/assert --filter @openinf/util-array \
-        --filter @openinf/util-number --filter @openinf/util-date \
-        --filter @openinf/util-string publish
+   pnpm --filter @openinf/<new-package> --filter @openinf/<another> \
+        publish --no-git-checks
    ```
 
+   Leave out `--provenance`: it needs the CI's OIDC token and fails on a laptop,
+   so these first versions are the only ones without an attestation.
    `publishConfig.access` is set to `public` in each `package.json`, so no
-   `--access` flag is needed — without it npm would reject a scoped package as
+   `--access` flag is needed; without it npm would reject a scoped package as
    private.
 
-2. For **each** of the thirteen packages, on npmjs.com → package → Settings →
-   add a trusted publisher:
-   - Organization/user: the GitHub owner of this repo
-   - Repository: this repo
-   - Workflow filename: `release.yml` — just the filename, **not** the full
+4. For each package you just published, on npmjs.com → package → Settings → add
+   a trusted publisher:
+   - Publisher: GitHub Actions
+   - Organization or user: `OpenINF`
+   - Repository: `sdk`
+   - Workflow filename: `release.yml`, just the filename and **not** the full
      `.github/workflows/release.yml` path, which is a common cause of an E404
      that looks like a missing package rather than an auth failure
+   - Environment name: leave it empty; the release job does not run in a GitHub
+     environment, and a name the job does not declare makes the token exchange
+     fail
 
-3. Confirm no `NPM_TOKEN` secret remains configured for the repo. If one exists,
+5. Confirm no `NPM_TOKEN` secret remains configured for the repo. If one exists,
    it may take precedence over OIDC and defeat the point.
+
+6. Run **Release** again. With no changesets pending, it publishes the packages
+   whose new version is not on the registry yet, which is every package except
+   the ones from step 3.
 
 After that, both steps run from the Actions tab and no npm credentials live in
 CI.
@@ -262,6 +284,7 @@ to `src/` at runtime — `main`, `types`, and `exports` all point into `dist/`.
 - **Prerelease mode** (`changeset pre enter next`) exists for shipping a
   `3.1.0-next.0` line, but it's easy to get wrong — do it on a dedicated branch,
   never on `main`, or it blocks every other merge until you exit.
-- **pnpm's version is pinned** to 11.7.0 in both workflows. If you bump it, bump
-  it in both, and note that pnpm had an OIDC publishing regression in the 11.0.x
-  line — verify a publish still works after upgrading.
+- **pnpm's version is pinned** in both workflows and in the root
+  `package.json`'s `devEngines`. If you bump it, bump all three, and note that
+  pnpm had an OIDC publishing regression in the 11.0.x line — verify a publish
+  still works after upgrading.
