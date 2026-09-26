@@ -34,6 +34,7 @@
     "test:coverage": "node --experimental-test-module-mocks --experimental-test-coverage --test-coverage-include='test-dist/src/**' --test 'test-dist/test/**/*.js'",
     "prepublishOnly": "npm run clean && npm run build"
   },
+  "homepage": "https://github.com/OpenINF/sdk/tree/main/packages/util-object#readme",
   "repository": {
     "type": "git",
     "url": "https://github.com/OpenINF/sdk.git",
