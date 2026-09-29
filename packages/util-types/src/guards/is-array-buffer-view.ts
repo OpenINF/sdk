@@ -4,8 +4,8 @@
 /**
  * Detects whether `value` is classified as an
  * [`ArrayBufferView`](https://developer.mozilla.org/en-US/docs/Web/API/ArrayBufferView),
- * which is a helper type representing any of the following JavaScript
- * [**TypedArray**](https://mdn.io/Global_Objects/TypedArray) types:
+ * which is a helper type representing `DataView` or any of the following
+ * JavaScript [**TypedArray**](https://mdn.io/Global_Objects/TypedArray) types:
  *
  * - [`Int8Array`](https://mdn.io/Global_Objects/Int8Array)
  * - [`Uint8Array`](https://mdn.io/Global_Objects/Uint8Array)
@@ -14,9 +14,11 @@
  * - [`Uint16Array`](https://mdn.io/Global_Objects/Uint16Array)
  * - [`Int32Array`](https://mdn.io/Global_Objects/Int32Array)
  * - [`Uint32Array`](https://mdn.io/Global_Objects/Uint32Array)
+ * - [`BigInt64Array`](https://mdn.io/Global_Objects/BigInt64Array)
+ * - [`BigUint64Array`](https://mdn.io/Global_Objects/BigUint64Array)
+ * - [`Float16Array`](https://mdn.io/Global_Objects/Float16Array)
  * - [`Float32Array`](https://mdn.io/Global_Objects/Float32Array)
  * - [`Float64Array`](https://mdn.io/Global_Objects/Float64Array)
- * - [`DataView`](https://mdn.io/Global_Objects/DataView)
  * @since 3.0.0
  * @category Structured Data
  * @param value The value to identify.
@@ -25,7 +27,7 @@
  * ```ts
  * isArrayBufferView(new DataView(new ArrayBuffer(16))); // ↪ true
  *
- * isArrayBufferView(new BigUint64Array()); // ↪ false
+ * isArrayBufferView(new BigUint64Array()); // ↪ true
  * ```
  */
 export function isArrayBufferView(value: unknown): boolean {

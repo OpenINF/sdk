@@ -5,11 +5,11 @@ import type { Guard } from '../types';
 
 /**
  * Detects whether `value` is classified as a
- * [`Boolean`](https://mdn.io/Global_Objects/Boolean) primitive or object.
+ * [`Boolean`](https://mdn.io/Global_Objects/Boolean) primitive.
  * @since 3.0.0
  * @category Data Types and Values
  * @param value The value to identify.
- * @returns `true` if `value` is a `Function`; else, `false`.
+ * @returns `true` if `value` is a boolean; else, `false`.
  * @example
  * ```ts
  * import util from '@openinf/util';
@@ -18,10 +18,12 @@ import type { Guard } from '../types';
  *
  * util.isBoolean(false); // ↪ true
  *
+ * util.isBoolean(new Boolean(false)); // ↪ false
+ *
  * util.isBoolean(null); // ↪ false
  * ```
  */
 export function isBoolean(value: unknown): value is boolean {
   return typeof value === 'boolean';
 }
-(isBoolean as Guard).expectation = 'be a Boolean primitive or object';
+(isBoolean as Guard).expectation = 'be a Boolean primitive';

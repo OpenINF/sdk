@@ -14,5 +14,6 @@ describe(isSymbol.name, () => {
   it('should reject non-symbols', () => {
     assert.strictEqual(isSymbol('@#$%&!'), false);
     assert.strictEqual(isSymbol(0), false);
+    assert.strictEqual(isSymbol(Object(Symbol('foo'))), false);
   });
 });

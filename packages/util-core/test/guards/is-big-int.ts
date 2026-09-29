@@ -15,5 +15,6 @@ describe(isBigInt.name, () => {
     assert.strictEqual(isBigInt(3), false);
     assert.strictEqual(isBigInt(4.4), false);
     assert.strictEqual(isBigInt('3'), false);
+    assert.strictEqual(isBigInt(Object(5n)), false);
   });
 });

@@ -16,7 +16,7 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * ```ts
  * isBigIntObject(); // ↪ false
  *
- * isBigIntObject(); // ↪ true
+ * isBigIntObject(Object(1n)); // ↪ true
  * ```
  */
 export function isBigIntObject(value: unknown): boolean {

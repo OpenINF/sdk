@@ -14,7 +14,7 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * ```ts
  * isNumberObject(3); // ↪ false
  *
- * isNumberObject(Number('123')); // ↪ true
+ * isNumberObject(Object(123)); // ↪ true
  * ```
  */
 export function isNumberObject(value: unknown): boolean {

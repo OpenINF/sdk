@@ -4,7 +4,7 @@
 import type { Guard } from '../types';
 
 /**
- * Detects whether `value` is classified as a `Symbol` primitive or object.
+ * Detects whether `value` is classified as a `Symbol` primitive.
  * @since 3.0.0
  * @category Data Types and Values
  * @param value The value to be identified.
@@ -18,9 +18,11 @@ import type { Guard } from '../types';
  * util.isSymbol(Symbol('foo')); // ↪ true
  *
  * util.isSymbol(Symbol.iterator); // ↪ true
+ *
+ * util.isSymbol(Object(Symbol('foo'))); // ↪ false
  * ```
  */
 export function isSymbol(value: unknown): value is symbol {
   return typeof value === 'symbol';
 }
-(isSymbol as Guard).expectation = 'be a `Symbol` primitive or object';
+(isSymbol as Guard).expectation = 'be a Symbol primitive';

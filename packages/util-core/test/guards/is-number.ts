@@ -16,5 +16,6 @@ describe(isNumber.name, () => {
   it('should reject non-numbers', () => {
     assert.strictEqual(isNumber('0'), false);
     assert.strictEqual(isNumber(null), false);
+    assert.strictEqual(isNumber(Object(0)), false);
   });
 });
