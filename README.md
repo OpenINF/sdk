@@ -152,8 +152,18 @@ window and drops a line when it reaches end of life, so the floor tracks the
 [Node.js release schedule](https://nodejs.org/en/about/previous-releases) rather
 than the oldest runtime the code happens to work on.
 
-TypeScript consumers want `moduleResolution` set to `node16`, `nodenext`, or
-`bundler` -- the older `node` mode cannot read an `exports` map.
+TypeScript 6 or newer. That is the version every package is built and tested
+with, and three of them cannot be consumed with less: `@openinf/util-date`
+declares `Temporal`, which no earlier release knows, and `@openinf/util-types`
+and `@openinf/util` re-export it. TypeScript 5.9 reads the other ten today, but
+nothing holds them to it.
+
+`module` and `moduleResolution` have to be set as a pair, and to one that reads
+an `exports` map -- the older `node` resolution mode does not:
+
+- `node16` with `node16`
+- `nodenext` with `nodenext`
+- `commonjs`, `esnext`, or `preserve` with `bundler`
 
 ## Documentation
 

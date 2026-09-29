@@ -20,6 +20,15 @@ toArray(1); // ↪ [1]
 arraysEqual([1, 2], [1, 2]); // ↪ true
 ```
 
+## Requirements
+
+TypeScript 6 or newer, which is what these packages are built and tested with,
+and a `module` and `moduleResolution` pair that reads an `exports` map:
+
+- `node16` with `node16`
+- `nodenext` with `nodenext`
+- `commonjs`, `esnext`, or `preserve` with `bundler`
+
 ## Documentation
 
 The API reference for `@openinf/util-array` and the other OpenINF packages is on

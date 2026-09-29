@@ -40,6 +40,15 @@ isDate({ [Symbol.toStringTag]: 'Date' }); // ↪ false
 isTemporalInstant(new Date()); // ↪ false
 ```
 
+## Requirements
+
+TypeScript 6 or newer, which is what these packages are built and tested with,
+and a `module` and `moduleResolution` pair that reads an `exports` map:
+
+- `node16` with `node16`
+- `nodenext` with `nodenext`
+- `commonjs`, `esnext`, or `preserve` with `bundler`
+
 ## Documentation
 
 The API reference for `@openinf/util-date` and the other OpenINF packages is on

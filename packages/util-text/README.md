@@ -21,6 +21,15 @@ import { blueify, ellipsify } from '@openinf/util-text';
 console.log(blueify(ellipsify('Deserializing database tables')));
 ```
 
+## Requirements
+
+TypeScript 6 or newer, which is what these packages are built and tested with,
+and a `module` and `moduleResolution` pair that reads an `exports` map:
+
+- `node16` with `node16`
+- `nodenext` with `nodenext`
+- `commonjs`, `esnext`, or `preserve` with `bundler`
+
 ## Documentation
 
 The API reference for `@openinf/util-text` and the other OpenINF packages is on
