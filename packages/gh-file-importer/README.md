@@ -63,3 +63,9 @@ const log: Logger = {
 
 const ghFileImporter = new GhFileImporter({ destDir: './tmp', log });
 ```
+
+## Documentation
+
+The API reference for `@openinf/gh-file-importer` and the other OpenINF packages
+is on the [OpenINF portal](https://open.inf.is/docs/sdk/), one version per
+release.

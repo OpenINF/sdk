@@ -110,3 +110,8 @@ WebAssembly does not supply the missing reflection privilege:
 Passing a JavaScript object through `externref` does not expose its engine
 slots. A WebAssembly wrapper would still need a host-provided brand-check
 function.
+
+## Documentation
+
+The API reference for `@openinf/util-types` and the other OpenINF packages is on
+the [OpenINF portal](https://open.inf.is/docs/sdk/), one version per release.

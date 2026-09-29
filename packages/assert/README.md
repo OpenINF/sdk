@@ -23,3 +23,8 @@ assert(port > 0, 'PORT must be positive');
 // Both narrow, so `port` is a number from here on.
 port.toFixed();
 ```
+
+## Documentation
+
+The API reference for `@openinf/assert` and the other OpenINF packages is on the
+[OpenINF portal](https://open.inf.is/docs/sdk/), one version per release.

@@ -29,3 +29,8 @@ isRegExp({ [Symbol.toStringTag]: 'RegExp' }); // ↪ false
 const mentionsNode = isStringContaining('Node');
 mentionsNode('Node.js'); // ↪ true
 ```
+
+## Documentation
+
+The API reference for `@openinf/util-string` and the other OpenINF packages is
+on the [OpenINF portal](https://open.inf.is/docs/sdk/), one version per release.

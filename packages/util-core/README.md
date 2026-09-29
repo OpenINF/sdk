@@ -49,3 +49,8 @@ free of dependencies: nothing here needs anything more specific than itself.
 Most consumers should reach for
 [`@openinf/util`](https://www.npmjs.com/package/@openinf/util), which re-exports
 everything here alongside its full set of type guards.
+
+## Documentation
+
+The API reference for `@openinf/util-core` and the other OpenINF packages is on
+the [OpenINF portal](https://open.inf.is/docs/sdk/), one version per release.

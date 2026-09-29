@@ -20,3 +20,8 @@ import { blueify, ellipsify } from '@openinf/util-text';
 
 console.log(blueify(ellipsify('Deserializing database tables')));
 ```
+
+## Documentation
+
+The API reference for `@openinf/util-text` and the other OpenINF packages is on
+the [OpenINF portal](https://open.inf.is/docs/sdk/), one version per release.

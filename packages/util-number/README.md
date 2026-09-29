@@ -31,3 +31,8 @@ isInteger(4); // ↪ true
 isInteger(4.5); // ↪ false
 isUint32(-1); // ↪ false
 ```
+
+## Documentation
+
+The API reference for `@openinf/util-number` and the other OpenINF packages is
+on the [OpenINF portal](https://open.inf.is/docs/sdk/), one version per release.

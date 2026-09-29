@@ -19,3 +19,8 @@ import { arraysEqual, toArray } from '@openinf/util-array';
 toArray(1); // ↪ [1]
 arraysEqual([1, 2], [1, 2]); // ↪ true
 ```
+
+## Documentation
+
+The API reference for `@openinf/util-array` and the other OpenINF packages is on
+the [OpenINF portal](https://open.inf.is/docs/sdk/), one version per release.

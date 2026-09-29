@@ -29,3 +29,8 @@ try {
   (error as MissingOptionError).code; // ↪ 'ERR_MISSING_OPTION'
 }
 ```
+
+## Documentation
+
+The API reference for `@openinf/util-errors` and the other OpenINF packages is
+on the [OpenINF portal](https://open.inf.is/docs/sdk/), one version per release.
