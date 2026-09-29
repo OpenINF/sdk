@@ -1,16 +1,18 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-import type { Guard } from '@openinf/util-core';
+import type { Validator } from '@openinf/util-core';
 
+import { _compareRelational } from '../_internal/_compare-relational';
 import { isComparable } from './is-comparable';
 
 /**
- * Creates a guard that tests if a value is greater than or equal to
+ * Creates a validator that tests if a value is greater than or equal to
  * `expected`. If the value implements {@link @openinf/util!Comparable}, its `compareTo`
- * method is used; otherwise, values are compared with `>=`.
+ * method is used; otherwise, strings, numbers, or bigints of the same type are
+ * compared.
  * @param expected The value to compare against.
- * @returns The guard.
+ * @returns The validator.
  * @example
  * ```ts
  * const isAtLeastOne = isGreaterThanOrEqualTo(1);
@@ -20,14 +22,14 @@ import { isComparable } from './is-comparable';
  * isAtLeastOne(0); // ↪ false
  * ```
  */
-export function isGreaterThanOrEqualTo<T>(expected: T): Guard<T> {
-  const guard: Guard<T> = (value: unknown): value is T => {
-    if (isComparable(value)) {
-      const result = value.compareTo(expected);
-      return result === 0 || result === 1;
-    }
-    return (value as number) >= (expected as unknown as number);
+export function isGreaterThanOrEqualTo(expected: unknown): Validator {
+  const validator: Validator = (value: unknown): boolean => {
+    const result = isComparable(value)
+      ? value.compareTo(expected)
+      : _compareRelational(value, expected);
+    return result === 0 || result === 1;
   };
-  guard.expectation = () => `be greater than or equal to ${String(expected)}`;
-  return guard;
+  validator.expectation = () =>
+    `be greater than or equal to ${String(expected)}`;
+  return validator;
 }

@@ -3,6 +3,8 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
+import type { Guard } from '@openinf/util-core';
+
 import { isGreaterThan } from '../../src/guards/is-greater-than';
 
 function comparableReturning(result: -1 | 0 | 1): { compareTo(): -1 | 0 | 1 } {
@@ -15,6 +17,18 @@ describe(isGreaterThan.name, () => {
     assert.strictEqual(guard(6), true);
     assert.strictEqual(guard(5), false);
     assert.strictEqual(guard(4), false);
+  });
+
+  it('should reject values that relational comparison would coerce', () => {
+    const validator = isGreaterThan(1);
+    assert.strictEqual(validator('2'), false);
+    assert.strictEqual(validator(true), false);
+  });
+
+  it('should be a validator rather than an unsound type guard', () => {
+    // @ts-expect-error -- comparison alone cannot establish a value's type.
+    const guard: Guard<number> = isGreaterThan(1);
+    assert.strictEqual(guard(2), true);
   });
 
   it("should use a Comparable's compareTo method", () => {
