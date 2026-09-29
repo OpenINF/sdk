@@ -1,129 +1,85 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-// Adapted from TypeShield
-
-import { isFunction } from '@openinf/util-core';
 import type { Validator } from '@openinf/util-core';
 
 import { assertValue } from './assert-value';
 
-/**
- * Validation info from the decorator
- * @ignore
- */
-interface ValidatorInfo {
-  /**
-   * The validator
-   */
-  validator: Validator | (() => Validator);
+function decoratedName<This, Value>(
+  receiver: This,
+  context: ClassAccessorDecoratorContext<This, Value>
+): string {
+  const propertyName = context.name.toString();
+  const owner = context.static
+    ? (receiver as { name?: unknown }).name
+    : (receiver as { constructor?: { name?: unknown } }).constructor?.name;
 
-  /**
-   * The name to use in the error
-   */
-  name: string;
-
-  /**
-   * The expectation to use in the error
-   */
-  expectation?: string | undefined;
-}
-
-interface NamedTarget {
-  name: string;
-  constructor: { name: string };
-}
-
-interface DecoratedProperty {
-  validators: ValidatorInfo[];
-  values: WeakMap<object, unknown>;
-}
-
-const decoratedProperties = new WeakMap<
-  object,
-  Map<PropertyKey, DecoratedProperty>
->();
-
-function inheritedValidators(
-  target: object,
-  propertyKey: PropertyKey
-): readonly ValidatorInfo[] {
-  let ancestor = Object.getPrototypeOf(target) as object | null;
-  while (ancestor !== null) {
-    const property = decoratedProperties.get(ancestor)?.get(propertyKey);
-    if (property !== undefined) {
-      return property.validators;
-    }
-    ancestor = Object.getPrototypeOf(ancestor) as object | null;
-  }
-  return [];
+  return typeof owner === 'string' && owner.length > 0
+    ? `${owner}${context.static ? '.' : '#'}${propertyName}`
+    : propertyName;
 }
 
 /**
- * A decorator factory that returns a decorator that turns a property into a
- * getter/setter with a setter that asserts the value set matches the validator.
- * @param validator The guard/validator to assert
- * @param name The name to use for the value. Defaults to the class+method name
- * @param expectation An expectation message to override the guard/validator
- * expectation.
- * @returns The decorator.
+ * Creates a standard decorator for an auto-accessor. Its initializer and every
+ * later assignment must satisfy the provided validator.
+ *
+ * TypeScript consumers use standard decorators (`experimentalDecorators` is
+ * `false`) and apply this to an `accessor` declaration. A field decorator
+ * cannot intercept later assignments, while a legacy property decorator is
+ * shadowed by class fields emitted with define semantics. Compile with a
+ * `target` of `es2022` or lower, or to a runtime that can parse an `accessor`
+ * field, which no released Node.js can.
+ *
+ * The initializer is validated along with every assignment, and an accessor
+ * with no initializer is initialized to `undefined`, which is a value like any
+ * other here. Either give it one the validator accepts, or let the validator
+ * accept `undefined` and assert elsewhere that it was set -- a constructor
+ * that assigns the accessor does not run early enough to stand in for an
+ * initializer.
+ * @param validator The guard or validator to assert.
+ * @param name The name to use for the value. Defaults to the class and accessor
+ * name.
+ * @param expectation An expectation message to override the one attached to
+ * the guard or validator.
+ * @returns An auto-accessor decorator.
+ * @example
+ * ```ts
+ * class Counter {
+ *   @Assert((value) => typeof value === 'number')
+ *   accessor value: unknown = 0;
+ * }
+ * ```
  */
 export function Assert(
   validator: Validator | (() => Validator),
   name?: string,
   expectation?: string
-): PropertyDecorator {
-  // oxlint-disable-next-line typescript/no-wrapper-object-types -- PropertyDecorator's ambient signature requires `Object` here.
-  return (target: Object, propertyKey: string | symbol) => {
-    const objectTarget = target as object;
+): <This, Value>(
+  target: ClassAccessorDecoratorTarget<This, Value>,
+  context: ClassAccessorDecoratorContext<This, Value>
+) => ClassAccessorDecoratorResult<This, Value> {
+  return <This, Value>(
+    target: ClassAccessorDecoratorTarget<This, Value>,
+    context: ClassAccessorDecoratorContext<This, Value>
+  ): ClassAccessorDecoratorResult<This, Value> => {
+    const validate = (receiver: This, value: Value): void => {
+      assertValue(
+        validator,
+        value,
+        name ?? decoratedName(receiver, context),
+        expectation
+      );
+    };
 
-    // If no name is provided, use the class name combined with the property
-    // key. If the target is a function, this is a static property; otherwise,
-    // it is an instance property.
-    // https://mathiasbynens.be/notes/javascript-prototype-notation
-    const resolvedName =
-      name ??
-      (isFunction(target)
-        ? `${(target as unknown as NamedTarget).name}.${propertyKey.toString()}`
-        : `${
-            (target as unknown as NamedTarget).constructor.name
-          }#${propertyKey.toString()}`);
-
-    let properties = decoratedProperties.get(objectTarget);
-    if (properties === undefined) {
-      properties = new Map<PropertyKey, DecoratedProperty>();
-      decoratedProperties.set(objectTarget, properties);
-    }
-
-    let property = properties.get(propertyKey);
-
-    // If this is the first decorator for the property, we need to create the
-    // validators array and the new getter/setter.
-    if (property === undefined) {
-      const newProperty: DecoratedProperty = {
-        validators: [...inheritedValidators(objectTarget, propertyKey)],
-        values: new WeakMap<object, unknown>(),
-      };
-      property = newProperty;
-      properties.set(propertyKey, newProperty);
-      Object.defineProperty(target, propertyKey, {
-        get(this: object) {
-          return newProperty.values.get(this);
-        },
-        set(this: object, value: unknown) {
-          for (const info of newProperty.validators) {
-            assertValue(info.validator, value, info.name, info.expectation);
-          }
-          newProperty.values.set(this, value);
-        },
-      });
-    }
-
-    // Push the validator defined.
-    property.validators.push({
-      validator,
-      name: resolvedName,
-      expectation,
-    });
+    return {
+      init(this: This, value: Value): Value {
+        validate(this, value);
+        return value;
+      },
+      set(this: This, value: Value): void {
+        validate(this, value);
+        target.set.call(this, value);
+      },
+    };
   };
 }

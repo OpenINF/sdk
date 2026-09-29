@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
 import { assertValue } from '../../src/assertions/assert-value';
+import { AssertionError } from '../../src/errors/assertion-error';
 
 /** Defined locally so these tests do not reach into another package. */
 const isNumber = (value: unknown): value is number => typeof value === 'number';
@@ -49,5 +50,40 @@ describe(assertValue.name, () => {
 
   it('should JSON.stringify plain objects', () => {
     assert.throws(() => assertValue(isNumber, { a: 1 }), /received: \{"a":1\}/);
+  });
+
+  it('should report circular objects with an AssertionError', () => {
+    const circular: Record<string, unknown> = {};
+    circular['self'] = circular;
+
+    assert.throws(
+      () => assertValue(isNumber, circular),
+      (error: unknown) =>
+        error instanceof AssertionError && /Circular/.test(error.message)
+    );
+  });
+
+  it('should report objects containing bigints with an AssertionError', () => {
+    assert.throws(
+      () => assertValue(isNumber, { value: 1n }),
+      (error: unknown) =>
+        error instanceof AssertionError && /1n/.test(error.message)
+    );
+  });
+
+  it('should survive hostile value conversion', () => {
+    const hostile = {
+      [Symbol.toPrimitive](): never {
+        throw new Error('conversion failed');
+      },
+      toJSON(): never {
+        throw new Error('serialization failed');
+      },
+    };
+
+    assert.throws(
+      () => assertValue(isNumber, hostile),
+      (error: unknown) => error instanceof AssertionError
+    );
   });
 });
