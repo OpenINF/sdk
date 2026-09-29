@@ -41,6 +41,34 @@ describe(copyArray.name, () => {
     assert.strictEqual(copy, instance);
   });
 
+  it('should preserve a circular array', () => {
+    const original: unknown[] = [];
+    original.push(original);
+
+    const copy = copyArray(original);
+
+    assert.notStrictEqual(copy, original);
+    assert.strictEqual(copy[0], copy);
+  });
+
+  it('should preserve shared references within the copied graph', () => {
+    const shared = { nested: { value: 1 } };
+    const copy = copyArray([shared, shared]);
+
+    assert.notStrictEqual(copy[0], shared);
+    assert.strictEqual(copy[0], copy[1]);
+  });
+
+  it('should preserve a cycle through a plain object', () => {
+    const original: unknown[] = [];
+    const object = { array: original };
+    original.push(object);
+
+    const copy = copyArray(original);
+
+    assert.strictEqual((copy[0] as { array: unknown[] }).array, copy);
+  });
+
   it('should only copy own properties by default', () => {
     Object.defineProperty(Object.prototype, '__testInherited__', {
       value: 'inherited',
