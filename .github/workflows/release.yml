@@ -10,11 +10,17 @@ on:
 permissions: {}
 
 # Never let two releases run at once: both would try to push the version
-# branch and publish the same versions.
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+# branch and publish the same versions. Each run waits its turn instead of
+# replacing the one already pending, so a dispatch from another ref cannot
+# cancel a main release that is waiting.
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+  queue: max
 
 jobs:
   release:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: write # push the version-bump branch and its tags
