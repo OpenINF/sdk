@@ -32,6 +32,11 @@ function sourcePathIncludes(
 
 /**
  * Deep merges source into target.
+ *
+ * Only nested objects are merged. A primitive or an array on the source
+ * replaces whatever the target holds at that key, and an array is assigned as
+ * it stands rather than copied, so the target and the source share it
+ * afterwards.
  * @category Fundamental Objects
  * @param target The object to merge properties into.
  * @param source The object to merge properties from.
@@ -39,7 +44,6 @@ function sourcePathIncludes(
  * without recursively merging them.
  * @returns The modified `target` object.
  * @throws {Error} If source contains a circular reference.
- * Note: Only nested objects are deep-merged, primitives and arrays are not.
  */
 export function deepMerge(
   target: Record<string, unknown>,
@@ -79,7 +83,12 @@ export function deepMerge(
       // whose corresponding values are objects.
       if (hasOwn(t, key)) {
         const oldValue = t[key];
-        if (isObjectLike(newValue) && isObjectLike(oldValue)) {
+        if (
+          !Array.isArray(newValue) &&
+          !Array.isArray(oldValue) &&
+          isObjectLike(newValue) &&
+          isObjectLike(oldValue)
+        ) {
           queue.push({
             t: oldValue,
             s: newValue,

@@ -16,6 +16,21 @@ describe(deepMerge.name, () => {
     assert.strictEqual(deepMerge(target, { b: 2 }), target);
   });
 
+  it('should replace arrays rather than merging their indexes', () => {
+    const sourceArray = [9];
+    const result = deepMerge({ values: [1, 2, 3] }, { values: sourceArray });
+
+    assert.strictEqual(result['values'], sourceArray);
+    assert.deepStrictEqual(result, { values: [9] });
+  });
+
+  it('should replace an array with an object rather than merging it', () => {
+    const sourceObject = { value: 'source' };
+    const result = deepMerge({ item: ['target'] }, { item: sourceObject });
+
+    assert.strictEqual(result['item'], sourceObject);
+  });
+
   it('should shallowly assign beyond the max depth', () => {
     const result = deepMerge(
       { a: { b: { c: 1 } } },
