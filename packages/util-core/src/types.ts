@@ -19,7 +19,7 @@ export type AnyFunction = (...args: never[]) => void;
  * Any constructor, whatever arguments it takes and whatever it constructs.
  * @category Data Types and Values
  */
-export type AnyConstructor = new (...args: unknown[]) => unknown;
+export type AnyConstructor = new (...args: any[]) => unknown;
 
 /**
  * An object with string keys and values of any type.

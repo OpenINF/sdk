@@ -50,6 +50,15 @@ Most consumers should reach for
 [`@openinf/util`](https://www.npmjs.com/package/@openinf/util), which re-exports
 everything here alongside its full set of type guards.
 
+## Requirements
+
+TypeScript 6 or newer, which is what these packages are built and tested with,
+and a `module` and `moduleResolution` pair that reads an `exports` map:
+
+- `node16` with `node16`
+- `nodenext` with `nodenext`
+- `commonjs`, `esnext`, or `preserve` with `bundler`
+
 ## Documentation
 
 The API reference for `@openinf/util-core` and the other OpenINF packages is on
