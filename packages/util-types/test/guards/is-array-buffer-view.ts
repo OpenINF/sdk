@@ -15,6 +15,7 @@ describe(isArrayBufferView.name, () => {
 
   it('should detect a typed array', () => {
     assert.strictEqual(isArrayBufferView(new Uint8Array()), true);
+    assert.strictEqual(isArrayBufferView(new BigUint64Array()), true);
   });
 
   it('should reject a plain ArrayBuffer', () => {

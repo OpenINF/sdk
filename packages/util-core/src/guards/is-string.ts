@@ -5,7 +5,7 @@ import type { Guard } from '../types';
 
 /**
  * Detects whether `value` is classified as a
- * [`String`](https://mdn.io/Global_Objects/String) primitive or object.
+ * [`String`](https://mdn.io/Global_Objects/String) primitive.
  * @since 3.0.0
  * @category Data Types and Values
  * @param value The value to identify.
@@ -18,7 +18,7 @@ import type { Guard } from '../types';
  *
  * util.isString('foo'); // ↪ true
  *
- * util.isString(String('bar')); // ↪ true
+ * util.isString(new String('bar')); // ↪ false
  *
  * util.isString(/baz/); // ↪ false
  * ```
@@ -26,4 +26,4 @@ import type { Guard } from '../types';
 export function isString(value: unknown): value is string {
   return typeof value === 'string';
 }
-(isString as Guard).expectation = 'be a String primitive or object';
+(isString as Guard).expectation = 'be a String primitive';

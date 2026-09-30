@@ -5,7 +5,7 @@ import type { Guard } from '../types';
 
 /**
  * Detects whether `value` is classified as a
- * [`Number`](https://mdn.io/Global_Objects/Number) primitive or object.
+ * [`Number`](https://mdn.io/Global_Objects/Number) primitive.
  *
  * **Note:** To exclude `Infinity`, `-Infinity`, and `NaN`, which are
  * also classified as numbers, use `isNumeric` instead.
@@ -21,6 +21,8 @@ import type { Guard } from '../types';
  * util.isNumber('0'); // ↪ false
  *
  * util.isNumber(0); // ↪ true
+ *
+ * util.isNumber(new Number(0)); // ↪ false
  *
  * util.isNumber(Number.MIN_VALUE); // ↪ true
  *

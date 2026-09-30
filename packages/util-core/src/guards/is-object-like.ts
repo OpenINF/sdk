@@ -10,10 +10,10 @@ import type { Guard, Tagged } from '../types';
 export type ObjectLike = Tagged<Record<string, unknown>, '__ObjectLike__'>;
 
 /**
- * Detects whether `value` is an object. A value is object-like if it has
- * a `typeof` result of "object" and is not `null`. Because `null` unexpectedly
- * has a `typeof` result of "object", its exclusion is special-cased to avoid
- * false-positives.
+ * Detects whether `value` is an object or function. A value is object-like if
+ * it has a `typeof` result of "object" or "function" and is not `null`.
+ * Because `null` unexpectedly has a `typeof` result of "object", its exclusion
+ * is special-cased to avoid false-positives.
  * @since 3.0.0
  * @category Data Types and Values
  * @param value The value to identify.
@@ -24,7 +24,7 @@ export type ObjectLike = Tagged<Record<string, unknown>, '__ObjectLike__'>;
  *
  * isObjectLike([1, 2, 3]); // ↪ true
  *
- * isObjectLike(noop); // ↪ true
+ * isObjectLike(() => {}); // ↪ true
  *
  * isObjectLike(null); // ↪ false
  * ```

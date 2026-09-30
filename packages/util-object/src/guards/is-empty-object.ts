@@ -7,7 +7,8 @@
  * Check to see if an object is empty (contains no enumerable properties).
  * @category Fundamental Objects
  * @param obj The object to check.
- * @returns `true` if no own property keys exist on the object; else, `false`.
+ * @returns `true` if a `for...in` loop over the object visits no property,
+ * own or inherited; else, `false`.
  */
 export function isEmptyObject<P extends PropertyKey>(
   obj: Record<P, unknown>

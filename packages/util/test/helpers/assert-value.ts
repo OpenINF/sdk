@@ -15,14 +15,14 @@ describe(assertValue.name, () => {
   it('should throw an AssertionError when the value fails the guard', () => {
     assert.throws(
       () => assertValue(isString, 1),
-      /Expected value to be a String primitive or object but received: 1/
+      /Expected value to be a String primitive but received: 1/
     );
   });
 
   it('should use the provided name in the error message', () => {
     assert.throws(
       () => assertValue(isString, 1, 'argName'),
-      /Expected .argName. to be a String primitive or object but received: 1/
+      /Expected .argName. to be a String primitive but received: 1/
     );
   });
 });

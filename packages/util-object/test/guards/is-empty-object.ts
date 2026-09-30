@@ -13,4 +13,23 @@ describe(isEmptyObject.name, () => {
   it('should return false for an object with an enumerable property', () => {
     assert.strictEqual(isEmptyObject({ a: 1 }), false);
   });
+
+  it('should include inherited enumerable properties', () => {
+    assert.strictEqual(
+      isEmptyObject(Object.create({ inherited: true })),
+      false
+    );
+  });
+
+  it('should ignore symbol-keyed and non-enumerable properties', () => {
+    const object = Object.defineProperty(
+      { [Symbol('value')]: true },
+      'hidden',
+      {
+        value: true,
+      }
+    );
+
+    assert.strictEqual(isEmptyObject(object), true);
+  });
 });

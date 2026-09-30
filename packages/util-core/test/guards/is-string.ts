@@ -15,5 +15,6 @@ describe(isString.name, () => {
   it('should reject non-strings', () => {
     assert.strictEqual(isString(/baz/), false);
     assert.strictEqual(isString(0), false);
+    assert.strictEqual(isString(Object('bar')), false);
   });
 });

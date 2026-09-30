@@ -15,5 +15,6 @@ describe(isBoolean.name, () => {
     assert.strictEqual(isBoolean(1), false);
     assert.strictEqual(isBoolean(null), false);
     assert.strictEqual(isBoolean('true'), false);
+    assert.strictEqual(isBoolean(Object(false)), false);
   });
 });
