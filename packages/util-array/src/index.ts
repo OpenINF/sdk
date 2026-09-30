@@ -33,4 +33,9 @@ export * from './helpers/push-if-unique';
 export * from './helpers/splice-one';
 export * from './helpers/to-array';
 
+// The recursive copy that `copyArray` is made from. It is shared with the
+// other @openinf packages rather than published for general use, which is why
+// its declaration is marked private and left out of the API reference.
+export { _copyDeep } from './_internal/_copy-deep';
+
 export * from './types';

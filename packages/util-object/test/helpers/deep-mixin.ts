@@ -20,4 +20,38 @@ describe(deepMixin.name, () => {
     const result = deepMixin({ a: { x: 1 } }, { a: { y: 2 } });
     assert.deepStrictEqual(result, { a: { x: 1, y: 2 } });
   });
+
+  it('should copy every path to a shared object', () => {
+    const shared = { child: { value: 1 } };
+    const result = deepMixin({}, { first: shared, second: shared });
+
+    assert.deepStrictEqual(result, {
+      first: { child: { value: 1 } },
+      second: { child: { value: 1 } },
+    });
+    assert.strictEqual(result.first, result.second);
+  });
+
+  it('should preserve a circular object', () => {
+    const source: Record<string, unknown> = {};
+    source['self'] = source;
+
+    const result = deepMixin({}, source);
+
+    assert.strictEqual(result['self'], result);
+  });
+
+  it('should merge a shared source into each object the target holds', () => {
+    const shared = { added: 1 };
+    const result = deepMixin(
+      { first: { keepFirst: 1 }, second: { keepSecond: 2 } },
+      { first: shared, second: shared }
+    );
+
+    assert.deepStrictEqual(result, {
+      first: { keepFirst: 1, added: 1 },
+      second: { keepSecond: 2, added: 1 },
+    });
+    assert.notStrictEqual(result.first, result.second);
+  });
 });
