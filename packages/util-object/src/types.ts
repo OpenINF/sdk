@@ -6,7 +6,6 @@ import {
   type AnyFunction,
   type AnyObject,
   type Guard,
-  type Primitive,
 } from '@openinf/util-core';
 
 import { _toString } from './_internal/_to-string';
@@ -403,6 +402,18 @@ export function isPrimitiveTypeName(name: unknown): name is PrimitiveTypeName {
  */
 export type TypeName = ObjectTypeName | PrimitiveTypeName;
 
+interface TypeOfNameMap {
+  bigint: bigint;
+  boolean: boolean;
+  function: AnyFunction;
+  number: number;
+  string: string;
+  symbol: symbol;
+  undefined: undefined;
+}
+
+type TypeOfName = keyof TypeOfNameMap;
+
 /**
  * Creates a guard that tests whether `typeof value` is `type`.
  *
@@ -413,10 +424,8 @@ export type TypeName = ObjectTypeName | PrimitiveTypeName;
  * @param type The `typeof` result to test for.
  * @returns A guard for values of that type.
  */
-export function isOfType<T extends Primitive | AnyFunction>(
-  type: Exclude<PrimitiveTypeName, 'null'> | 'function'
-) {
-  return (value: unknown): value is T => typeof value === type;
+export function isOfType<T extends TypeOfName>(type: T) {
+  return (value: unknown): value is TypeOfNameMap[T] => typeof value === type;
 }
 
 /**
@@ -454,6 +463,6 @@ export const getObjectType = (value: unknown): ObjectTypeName | undefined => {
  * @returns A guard for values of that type.
  */
 export const isObjectOfType =
-  <T>(type: ObjectTypeName) =>
-  (value: unknown): value is T =>
+  (type: ObjectTypeName) =>
+  (value: unknown): value is object =>
     getObjectType(value) === type;

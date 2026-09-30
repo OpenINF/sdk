@@ -17,6 +17,12 @@ describe(isLessThan.name, () => {
     assert.strictEqual(guard(6), false);
   });
 
+  it('should reject values that relational comparison would coerce', () => {
+    const validator = isLessThan(1);
+    assert.strictEqual(validator('0'), false);
+    assert.strictEqual(validator(false), false);
+  });
+
   it("should use a Comparable's compareTo method", () => {
     const guard = isLessThan(0);
     assert.strictEqual(guard(comparableReturning(-1)), true);

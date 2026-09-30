@@ -70,14 +70,23 @@ describe('isPrimitiveTypeName', () => {
 
 describe('isOfType', () => {
   it('should create a guard for a typeof type', () => {
-    const isStringPrimitive = isOfType<any>('string');
+    const isStringPrimitive = isOfType('string');
     assert.strictEqual(isStringPrimitive('foo'), true);
     assert.strictEqual(isStringPrimitive(1), false);
+
+    const value: unknown = 'narrowed';
+    if (isStringPrimitive(value)) {
+      const narrowed: string = value;
+      assert.strictEqual(narrowed, 'narrowed');
+    }
+
+    // @ts-expect-error -- the result type follows the name, not a caller-selected type.
+    isOfType<number>('string');
   });
 
   it('should not accept null, which no value has as its typeof', () => {
     // @ts-expect-error -- typeof null is 'object', so this guard could never pass.
-    const isNullType = isOfType<any>('null');
+    const isNullType = isOfType('null');
     assert.strictEqual(isNullType(null), false);
   });
 });
@@ -180,8 +189,11 @@ describe('getObjectType', () => {
 
 describe('isObjectOfType', () => {
   it('should create a guard for a specific object type', () => {
-    const isArrayType = isObjectOfType<unknown[]>('Array');
+    const isArrayType = isObjectOfType('Array');
     assert.strictEqual(isArrayType([]), true);
     assert.strictEqual(isArrayType({}), false);
+
+    // @ts-expect-error -- a tag can be forged, so it cannot establish this type.
+    isObjectOfType<Date>('Array');
   });
 });
