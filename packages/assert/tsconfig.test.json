@@ -2,6 +2,9 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "module": "commonjs",
+    // At the base config's `esnext`, an `accessor` field is emitted as one,
+    // which no released Node.js can parse. The decorator tests declare them.
+    "target": "es2022",
     "rootDir": ".",
     "outDir": "test-dist",
     "resolveJsonModule": true,

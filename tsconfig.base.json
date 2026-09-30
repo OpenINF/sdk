@@ -7,7 +7,9 @@
     "declarationMap": true,
     "esModuleInterop": true,
     "exactOptionalPropertyTypes": true,
-    "experimentalDecorators": true,
+    // Standard decorators. The `Assert` decorator @openinf/assert ships is an
+    // auto-accessor decorator, which the legacy implementation has no form of.
+    "experimentalDecorators": false,
     "forceConsistentCasingInFileNames": true,
     "lib": ["esnext"],
     "module": "commonjs",

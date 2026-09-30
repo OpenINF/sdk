@@ -3,13 +3,6 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-// Invokes the decorator factory's returned PropertyDecorator function
-// directly on plain objects, exactly as TypeScript's own `__decorate` helper
-// (or a native decorator) would -- this sidesteps a compiler-emission
-// footgun where, with useDefineForClassFields + target: esnext, a decorated
-// instance field's own initializer shadows the decorator's prototype
-// accessor on every `new` call.
-
 import { Assert } from '../../src/assertions/assert-decorator';
 
 /** Defined locally so these tests do not reach into another package. */
@@ -17,96 +10,107 @@ const isNumber = (value: unknown): value is number => typeof value === 'number';
 // assertValue reads `.expectation` to build its message, as real guards carry.
 (isNumber as unknown as { expectation: string }).expectation = 'be a number';
 
-type AnyRecord = Record<PropertyKey, any>;
-
 describe(Assert.name, () => {
-  it('should install a getter/setter that validates on assignment', () => {
-    const target: AnyRecord = {};
-    Assert(isNumber)(target, 'value');
+  it('should validate an auto-accessor initializer', () => {
+    assert.throws(() => {
+      class Invalid {
+        @Assert(isNumber)
+        accessor value: unknown = 'nope';
+      }
 
-    assert.doesNotThrow(() => (target['value'] = 5));
-    assert.strictEqual(target['value'], 5);
+      return new Invalid();
+    }, /Invalid#value/);
   });
 
-  it('should throw when the assigned value fails the validator', () => {
-    const target: AnyRecord = {};
-    Assert(isNumber)(target, 'value');
-
-    assert.throws(() => (target['value'] = 'nope'));
-  });
-
-  it("should derive the name from the target's constructor and property key by default", () => {
-    class Foo {}
-    Assert(isNumber)(Foo.prototype as AnyRecord, 'value');
-    const instance = new Foo() as AnyRecord;
-
-    assert.throws(() => (instance['value'] = 'nope'), /.Foo#value./);
-  });
-
-  it('should use a custom name when provided', () => {
-    const target: AnyRecord = {};
-    Assert(isNumber, 'custom name')(target, 'value');
-
-    assert.throws(() => (target['value'] = 'nope'), /.custom name./);
-  });
-
-  it('should derive the name from a function target for static properties', () => {
-    function Foo(): void {
-      /* no-op */
+  it('should validate every later assignment', () => {
+    class Counter {
+      @Assert(isNumber)
+      accessor value: unknown = 0;
     }
-    Assert(isNumber)(Foo as unknown as AnyRecord, 'staticValue');
 
+    const counter = new Counter();
+    assert.doesNotThrow(() => (counter.value = 5));
+    assert.strictEqual(counter.value, 5);
+    assert.throws(() => (counter.value = 'nope'));
+    assert.strictEqual(counter.value, 5);
+  });
+
+  it('should use a custom name and expectation', () => {
+    class Counter {
+      @Assert(isNumber, 'count', 'contain a numeric count')
+      accessor value: unknown = 0;
+    }
+
+    const counter = new Counter();
     assert.throws(
-      () => ((Foo as unknown as AnyRecord)['staticValue'] = 'nope'),
-      /.Foo\.staticValue./
+      () => (counter.value = 'nope'),
+      /Expected .count. to contain a numeric count/
     );
   });
 
-  it('should stack multiple validators on the same property', () => {
-    const target: AnyRecord = {};
-    const isPositive = (value: unknown): boolean => (value as number) > 0;
-    Assert(isNumber)(target, 'value');
-    Assert(isPositive)(target, 'value');
+  it('should validate static auto-accessors', () => {
+    class Counter {
+      @Assert(isNumber)
+      static accessor value: unknown = 0;
+    }
 
-    assert.throws(() => (target['value'] = -1));
-    assert.doesNotThrow(() => (target['value'] = 5));
-    assert.strictEqual(target['value'], 5);
+    assert.throws(() => (Counter.value = 'nope'), /Counter\.value/);
   });
 
-  it('should isolate a subclass validator from its base class', () => {
+  it('should stack multiple decorators on the same accessor', () => {
     const isPositive = (value: unknown): boolean => (value as number) > 0;
-    class Base {}
+    class Counter {
+      @Assert(isNumber)
+      @Assert(isPositive)
+      accessor value: unknown = 1;
+    }
+
+    const counter = new Counter();
+    assert.throws(() => (counter.value = -1));
+    assert.throws(() => (counter.value = 'nope'));
+    assert.doesNotThrow(() => (counter.value = 5));
+  });
+
+  it('should keep validation on an inherited accessor', () => {
+    class Base {
+      @Assert(isNumber)
+      accessor value: unknown = 0;
+    }
     class Child extends Base {}
-    Assert(isNumber)(Base.prototype, 'value');
-    Assert(isPositive)(Child.prototype, 'value');
 
-    const base = new Base() as AnyRecord;
-    const child = new Child() as AnyRecord;
-    assert.doesNotThrow(() => (base['value'] = -1));
-    assert.throws(() => (child['value'] = -1));
-    assert.throws(() => (child['value'] = 'not a number'));
-    assert.doesNotThrow(() => (child['value'] = 1));
+    const child = new Child();
+    assert.throws(() => (child.value = 'nope'), /Child#value/);
   });
 
-  it('should distinguish symbols with the same description', () => {
+  it('should reject an accessor left without an initializer', () => {
+    class Uninitialized {
+      @Assert(isNumber)
+      accessor value!: unknown;
+
+      constructor(value: unknown) {
+        this.value = value;
+      }
+    }
+
+    // The initializer runs before the constructor body, so assigning a valid
+    // value there does not save an accessor whose implied `undefined` is
+    // rejected. The documented way out is a validator that accepts it.
+    assert.throws(() => new Uninitialized(1), /Uninitialized#value/);
+  });
+
+  it('should distinguish symbol-named accessors', () => {
     const first = Symbol('value');
     const second = Symbol('value');
-    const target: AnyRecord = {};
-    Assert(isNumber)(target, first);
-    Assert((value) => typeof value === 'string')(target, second);
+    class Pair {
+      @Assert(isNumber)
+      accessor [first]: unknown = 1;
 
-    assert.doesNotThrow(() => (target[first] = 1));
-    assert.doesNotThrow(() => (target[second] = 'two'));
-    assert.strictEqual(target[first], 1);
-    assert.strictEqual(target[second], 'two');
-  });
+      @Assert((value) => typeof value === 'string')
+      accessor [second]: unknown = 'two';
+    }
 
-  it('should not overwrite a string-derived backing property', () => {
-    const target: AnyRecord = { _value: 'untouched' };
-    Assert(isNumber)(target, 'value');
-    target['value'] = 5;
-
-    assert.strictEqual(target['value'], 5);
-    assert.strictEqual(target['_value'], 'untouched');
+    const pair = new Pair();
+    assert.throws(() => (pair[first] = 'nope'));
+    assert.throws(() => (pair[second] = 2));
   });
 });
