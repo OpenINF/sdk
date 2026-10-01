@@ -135,4 +135,32 @@ describe(deepAssign.name, () => {
     assert.strictEqual(result['self'], target);
     assert.strictEqual(result['added'], 1);
   });
+
+  it('should assign a function, a Date, a Map and a class instance by reference', () => {
+    class Point {
+      x = 1;
+    }
+    const source = {
+      fn: (): number => 1,
+      when: new Date(0),
+      map: new Map([[1, 2]]),
+      pattern: /x/g,
+      point: new Point(),
+    };
+
+    const result = deepAssign({}, source);
+
+    assert.strictEqual(result.fn, source.fn);
+    assert.strictEqual(result.when, source.when);
+    assert.strictEqual(result.map, source.map);
+    assert.strictEqual(result.pattern, source.pattern);
+    assert.strictEqual(result.point, source.point);
+  });
+
+  it('should replace a Date the target holds rather than merge into it', () => {
+    const when = new Date(5);
+    const result = deepAssign({ when: new Date(0) }, { when });
+
+    assert.strictEqual(result.when, when);
+  });
 });
