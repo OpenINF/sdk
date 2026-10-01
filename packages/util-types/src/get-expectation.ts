@@ -12,10 +12,15 @@ import type { Validator } from './types';
  * @returns The message.
  */
 export function getExpectation(validator: Validator): string {
-  if (typeof validator.expectation === 'function')
-    validator.expectation = validator.expectation();
+  // Read, not cached: writing the result back would throw for a frozen
+  // validator, and would fix a lazy expectation at whatever it said the first
+  // time it was asked.
+  const expectation =
+    typeof validator.expectation === 'function'
+      ? validator.expectation()
+      : validator.expectation;
   return (
-    validator.expectation ??
+    expectation ??
     `match ${validator.name ? `'${validator.name}'` : 'assertion'}`
   );
 }

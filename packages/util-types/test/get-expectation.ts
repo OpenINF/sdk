@@ -25,4 +25,17 @@ describe(getExpectation.name, () => {
     (guard as Validator).expectation = 'be something';
     assert.strictEqual(getExpectation(guard), 'be something');
   });
+
+  it('should call a lazy expectation each time without replacing it', () => {
+    let target = 1;
+    const guard = (): boolean => true;
+    const lazy = (): string => `equal ${target}`;
+    (guard as Validator).expectation = lazy;
+    Object.freeze(guard);
+
+    assert.strictEqual(getExpectation(guard), 'equal 1');
+    target = 2;
+    assert.strictEqual(getExpectation(guard), 'equal 2');
+    assert.strictEqual((guard as Validator).expectation, lazy);
+  });
 });
