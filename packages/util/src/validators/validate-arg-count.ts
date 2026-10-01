@@ -28,7 +28,7 @@ export function validateArgCount(
   assertValue(isString, fnName, 'fnName');
   assertValue(isInteger, minCount, 'minCount');
   assertValue(isInteger, maxCount, 'maxCount');
-  assertValue(isInteger, argCount, 'maxCount');
+  assertValue(isInteger, argCount, 'argCount');
   // Report whichever bound was actually violated as the expected count.
   let expected: number | undefined;
   if (Number(argCount) < Number(minCount)) {

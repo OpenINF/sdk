@@ -29,4 +29,9 @@ describe(objectsEqualShallow.name, () => {
   it('should treat undefined as only equal to undefined', () => {
     assert.strictEqual(objectsEqualShallow(undefined, undefined), true);
   });
+
+  it('should return false when only one side has a key holding undefined', () => {
+    assert.strictEqual(objectsEqualShallow({ a: undefined }, {}), false);
+    assert.strictEqual(objectsEqualShallow({}, { a: undefined }), false);
+  });
 });
