@@ -33,4 +33,25 @@ describe(getFunctionName.name, () => {
   it('should return an empty string for non-functions', () => {
     assert.strictEqual(getFunctionName('not a function' as any), '');
   });
+
+  it('should accept a function that takes parameters', () => {
+    function add(a: number, b: number): number {
+      return a + b;
+    }
+    assert.strictEqual(getFunctionName(add), 'add');
+  });
+
+  it('should read the name of an async or generator function from its source', () => {
+    async function load(): Promise<void> {
+      /* no-op */
+    }
+    function* count(): Generator<number> {
+      yield 1;
+    }
+    for (const fn of [load, count]) {
+      const name = fn.name;
+      Object.defineProperty(fn, 'name', { value: '' });
+      assert.strictEqual(getFunctionName(fn), name);
+    }
+  });
 });

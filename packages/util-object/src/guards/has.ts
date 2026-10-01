@@ -8,15 +8,17 @@
  * @param obj The object to query.
  * @param key A property name.
  * @returns `true` if `key` exists in `obj`; else, `false`.
- * @see hasIn, hasPath, hasPathIn
+ * @see hasOwn
  * @example
  * ```ts
  * const obj = { 'a': { 'b': 2 } }
- * const other = create({ 'a': create({ 'b': 2 }) })
+ * const other = create(obj)
  *
- * has(object, 'a') // ↪ true
+ * has(obj, 'a') // ↪ true
  *
- * has(other, 'a') // ↪ false
+ * has(other, 'a') // ↪ true, inherited from `obj`
+ *
+ * has(other, 'b') // ↪ false
  * ```
  */
 export function has<P extends PropertyKey>(

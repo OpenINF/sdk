@@ -12,11 +12,12 @@ export interface Named {
 }
 
 /**
- * Detects whether `value` has a `name` property of type `string`.
+ * Detects whether `value` is an object, other than a function, with a `name`
+ * property of type `string`, its own or inherited.
  * @since 3.0.0
  * @category Fundamental Objects
  * @param value The value to identify.
- * @returns `true` if `value` is an `Array`; else, `false`.
+ * @returns `true` if `value` is a named object; else, `false`.
  * @example
  * isNamed({ name: 'Derek' }); // ↪ true
  *

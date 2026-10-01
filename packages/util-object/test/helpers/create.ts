@@ -23,4 +23,10 @@ describe(create.name, () => {
     assert.deepStrictEqual({ ...result }, { b: 2 });
     assert.strictEqual(Object.getPrototypeOf(result), null);
   });
+
+  it('should accept the prototype alone, as properties is optional', () => {
+    const proto = { a: 1 };
+    const result = create(proto);
+    assert.strictEqual(Object.getPrototypeOf(result), proto);
+  });
 });

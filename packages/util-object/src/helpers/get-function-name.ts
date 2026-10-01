@@ -3,6 +3,8 @@
 
 // Adapted from TypeScript Compiler
 
+import type { AnyFunction } from '@openinf/util-core';
+
 import { _isFunctionLike } from '../_internal/_is-function-like';
 
 // https://github.com/sindresorhus/fn-name
@@ -16,7 +18,7 @@ import { _isFunctionLike } from '../_internal/_is-function-like';
  * @param fn The function to name.
  * @returns The function's name, or `''` when none can be found.
  */
-export function getFunctionName(fn: () => unknown): string {
+export function getFunctionName(fn: AnyFunction): string {
   if (!_isFunctionLike(fn)) {
     return '';
   }
@@ -31,7 +33,9 @@ export function getFunctionName(fn: () => unknown): string {
   }
 
   const text = Function.prototype.toString.call(fn);
-  const match = /^function\s+([\w]+)\s*\(/.exec(text);
+  const match = /^(?:async\s+)?function(?:\s*\*\s*|\s+)([\w$]+)\s*\(/.exec(
+    text
+  );
   // Group 1 is not optional in the pattern, so it is present whenever match is.
   // oxlint-disable-next-line typescript/no-unnecessary-type-assertion -- oxlint-tsgolint doesn't currently honor noUncheckedIndexedAccess; tsc does require this.
   return match ? match[1]! : '';
