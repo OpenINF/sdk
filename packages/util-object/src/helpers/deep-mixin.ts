@@ -62,7 +62,8 @@ export function deepMixin<
 /**
  * Copies the values of all enumerable (own or inherited) properties of one or
  * more source objects to the target object, recursively copying all nested
- * objects and arrays as well.
+ * plain objects and arrays as well. Any other object (a function, a `Date`, a
+ * `Map`, a class instance) is assigned by reference.
  * @category Fundamental Objects
  * @param target The target object to receive values from source objects
  * @param sources Any number of objects whose enumerable properties will be copied to the target object

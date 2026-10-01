@@ -70,4 +70,16 @@ describe(deepMerge.name, () => {
       /Source object has a circular reference\./
     );
   });
+
+  it('should replace a Date or a Map the target holds rather than merge into it', () => {
+    const when = new Date(5);
+    const map = new Map([[2, 2]]);
+    const result = deepMerge(
+      { when: new Date(0), map: new Map([[1, 1]]) },
+      { when, map }
+    );
+
+    assert.strictEqual(result['when'], when);
+    assert.strictEqual(result['map'], map);
+  });
 });

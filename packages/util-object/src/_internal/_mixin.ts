@@ -7,6 +7,7 @@ import { _copyDeep } from '@openinf/util-array';
 
 import { hasOwn } from '../guards/has-own';
 import { isObjectCoercible } from '../guards/is-object-coercible';
+import { isPlainObject } from '../guards/is-plain-object';
 import { _isUnsafeKey } from './_is-unsafe-key';
 
 interface MixinArgs<
@@ -76,7 +77,11 @@ export function _mixin<
             // it, so whatever was recorded for this one can always be reused;
             // `_copyDeep` reads the map itself.
             value = _copyDeep(value, isInherited, copies);
-          } else if (isObjectCoercible(value)) {
+          } else if (isPlainObject(value)) {
+            // Only a plain object is copied property by property. Anything
+            // else (a function, a `Date`, a `Map`, a class instance) keeps
+            // what its own properties cannot carry, so it is assigned by
+            // reference, as `_copyDeep` does inside an array.
             const sourceObject = value as Record<string, unknown>;
             const targetValue = target[key];
             if (isObjectCoercible(targetValue)) {

@@ -5,6 +5,7 @@ import { isObjectLike } from '@openinf/util-core';
 
 import { _isUnsafeKey } from '../_internal/_is-unsafe-key';
 import { hasOwn } from '../guards/has-own';
+import { isPlainObject } from '../guards/is-plain-object';
 
 interface TargetSourceDepth {
   t: Record<string, unknown>;
@@ -33,10 +34,10 @@ function sourcePathIncludes(
 /**
  * Deep merges source into target.
  *
- * Only nested objects are merged. A primitive or an array on the source
- * replaces whatever the target holds at that key, and an array is assigned as
- * it stands rather than copied, so the target and the source share it
- * afterwards.
+ * Only nested plain objects are merged. Anything else on the source (a
+ * primitive, an array, a function, a `Date`, a `Map`, a class instance)
+ * replaces whatever the target holds at that key, and is assigned as it stands
+ * rather than copied, so the target and the source share it afterwards.
  * @category Fundamental Objects
  * @param target The object to merge properties into.
  * @param source The object to merge properties from.
@@ -79,19 +80,18 @@ export function deepMerge(
         return;
       }
       const newValue = s[key];
-      // Perform a deep merge IFF both target and source have the same key
-      // whose corresponding values are objects.
+      // Perform a deep merge IFF both target and source have the same key,
+      // the source's value is a plain object and the target's is an object.
       if (hasOwn(t, key)) {
         const oldValue = t[key];
         if (
-          !Array.isArray(newValue) &&
+          isPlainObject(newValue) &&
           !Array.isArray(oldValue) &&
-          isObjectLike(newValue) &&
           isObjectLike(oldValue)
         ) {
           queue.push({
             t: oldValue,
-            s: newValue,
+            s: newValue as Record<string, unknown>,
             d: d + 1,
             p: path,
           });
