@@ -17,7 +17,7 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @since 3.0.0
  * @category Control Abstraction Objects
  * @param value The value to identify.
- * @returns `true` if `value` is an `AsyncFunction`; else, `false`.
+ * @returns `true` if `value` is an `AsyncGeneratorFunction`; else, `false`.
  * @example
  * ```ts
  * isAsyncGeneratorFunction(function foo() {}); // ↪ false

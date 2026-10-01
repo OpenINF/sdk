@@ -8,12 +8,13 @@ import type { Guard } from '../types';
  * [`Number`](https://mdn.io/Global_Objects/Number) primitive.
  *
  * **Note:** To exclude `Infinity`, `-Infinity`, and `NaN`, which are
- * also classified as numbers, use `isNumeric` instead.
+ * also classified as numbers, use `isFiniteNumber` from
+ * `@openinf/util-number` instead.
  * @since 3.0.0
  * @category Data Types and Values
  * @param value The value to identify.
  * @returns `true` if `value` is a number; else, `false`.
- * @see isNumberObject, isNumeric, isInteger, toInteger, toNumber
+ * @see isNumberObject, isFiniteNumber, isInteger
  * @example
  * ```ts
  * import util from '@openinf/util';

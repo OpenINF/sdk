@@ -18,7 +18,7 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @since 3.0.0
  * @category Control Abstraction Objects
  * @param value The value to identify.
- * @returns `true` if `value` is an `RegExp String Iterator`; else, `false`.
+ * @returns `true` if `value` is a `RegExp String Iterator`; else, `false`.
  * @example
  * ```ts
  * isRegExpStringIterator("aa".matchAll(/a/g)); // ↪ true

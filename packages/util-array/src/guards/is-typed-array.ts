@@ -16,6 +16,7 @@ import type { TypedArray } from '../types';
  * - [`Uint16Array`](https://mdn.io/Global_Objects/Uint16Array)
  * - [`Int32Array`](https://mdn.io/Global_Objects/Int32Array)
  * - [`Uint32Array`](https://mdn.io/Global_Objects/Uint32Array)
+ * - [`Float16Array`](https://mdn.io/Global_Objects/Float16Array)
  * - [`Float32Array`](https://mdn.io/Global_Objects/Float32Array)
  * - [`Float64Array`](https://mdn.io/Global_Objects/Float64Array)
  * - [`BigInt64Array`](https://mdn.io/Global_Objects/BigInt64Array)

@@ -16,7 +16,7 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @since 3.0.0
  * @category Control Abstraction Objects
  * @param value The value to identify.
- * @returns `true` if `value` is a `AsyncDisposableStack`; else, `false`.
+ * @returns `true` if `value` is an `AsyncDisposableStack`; else, `false`.
  * @example
  * ```ts
  * isAsyncDisposableStack(new AsyncDisposableStack()); // ↪ true

@@ -4,10 +4,14 @@
 // Adapted from TypeScript Compiler. Copyright Microsoft. All right reserved.
 
 /**
- * Returns a list containing the names of all of the object's own property keys.
+ * Returns the names of every string-keyed property of an object, its own and
+ * those it inherits, enumerable or not, each named once. The walk goes up the
+ * whole prototype chain, so for an ordinary object the names
+ * `Object.prototype` defines, such as `constructor` and `toString`, are
+ * included.
  * @category Fundamental Objects
- * @param obj An object from which to get keys from.
- * @returns A list of the names of all of the object's own property keys.
+ * @param obj An object from which to get keys.
+ * @returns The names, own ones first, then each prototype's in turn.
  */
 export function getAllKeys(obj: Record<string, unknown>): string[] {
   const result: string[] = [];
