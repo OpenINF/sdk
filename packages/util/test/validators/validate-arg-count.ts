@@ -27,4 +27,11 @@ describe(validateArgCount.name, () => {
       /expected by the .foo. function is 2, but 3 were passed/
     );
   });
+
+  it('should name argCount when argCount is not an integer', () => {
+    assert.throws(
+      () => validateArgCount('foo', int(1), int(2), int(1.5)),
+      /[“"]argCount[”"]/
+    );
+  });
 });
