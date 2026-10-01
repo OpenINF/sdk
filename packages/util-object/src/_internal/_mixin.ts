@@ -20,6 +20,7 @@ interface MixinArgs<
   target: T;
   copies?: WeakMap<object, unknown>;
   merged?: WeakMap<object, WeakSet<object>>;
+  activeCopies?: Map<object, unknown>;
 }
 
 /**
@@ -39,10 +40,11 @@ export function _mixin<
   // object rather than two. Shared with `_copyDeep` so that an object reached
   // through an array and through a property is still one object.
   const copies = kwArgs.copies ?? new WeakMap<object, unknown>();
-  // Which targets each source has already been merged into. A source that
+  // Which targets each source is actively being merged into. A source that
   // reaches itself would otherwise recurse forever whenever the target holds
   // an object of its own at the same path.
   const merged = kwArgs.merged ?? new WeakMap<object, WeakSet<object>>();
+  const activeCopies = kwArgs.activeCopies ?? new Map<object, unknown>();
 
   for (const source of kwArgs.sources) {
     if (source === null || source === undefined) {
@@ -60,6 +62,9 @@ export function _mixin<
     mergedInto.add(target);
 
     if (!copies.has(source)) copies.set(source, target);
+    const wasActive = activeCopies.has(source);
+    const previousActive = activeCopies.get(source);
+    activeCopies.set(source, target);
 
     for (const key in source) {
       // Skipped silently: reading `target[key]` below would otherwise resolve
@@ -83,7 +88,7 @@ export function _mixin<
             // what its own properties cannot carry, so it is assigned by
             // reference, as `_copyDeep` does inside an array.
             const sourceObject = value as Record<string, unknown>;
-            const targetValue = target[key];
+            const targetValue = hasOwn(target, key) ? target[key] : undefined;
             if (isObjectCoercible(targetValue)) {
               const existingTarget = targetValue as Record<string, unknown>;
               // What the target already holds here is merged into, whatever
@@ -93,23 +98,24 @@ export function _mixin<
               // For as long as that merge runs, this source stands for the
               // object it is being merged into, so a cycle within it closes on
               // that object rather than on the one another path produced.
-              // Afterwards the earlier stand-in goes back, so a later path
-              // with nothing of its own to keep still arrives at it; where
-              // there was none, this object becomes it and the write below is
-              // the one that records it.
-              const standIn = copies.has(sourceObject)
-                ? copies.get(sourceObject)
-                : existingTarget;
-              copies.set(sourceObject, existingTarget);
+              // A different existing destination needs its own copy cache:
+              // cached arrays can otherwise close cycles onto the first one.
+              // Keep the active ancestors so back-references still close.
+              const branchCopies =
+                copies.has(sourceObject) &&
+                copies.get(sourceObject) !== existingTarget
+                  ? new WeakMap<object, unknown>(activeCopies)
+                  : copies;
+              branchCopies.set(sourceObject, existingTarget);
               value = _mixin<Record<string, unknown>, Record<string, unknown>>({
                 deep: true,
                 inherited: isInherited,
                 sources: [sourceObject],
                 target: existingTarget,
-                copies,
+                copies: branchCopies,
                 merged,
+                activeCopies,
               });
-              copies.set(sourceObject, standIn);
             } else if (copies.has(sourceObject)) {
               // Nothing here to keep, so the source's own shape is kept
               // instead: a second path to one object arrives at one object,
@@ -125,6 +131,7 @@ export function _mixin<
                 target: nestedTarget,
                 copies,
                 merged,
+                activeCopies,
               });
             }
           }
@@ -132,6 +139,11 @@ export function _mixin<
         target[key] = value;
       }
     }
+    // Only active source/target pairs break cycles. A later source argument
+    // must run again so that its values regain their normal precedence.
+    mergedInto.delete(target);
+    if (wasActive) activeCopies.set(source, previousActive);
+    else activeCopies.delete(source);
   }
 
   return target as T & U;

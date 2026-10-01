@@ -1,15 +1,9 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-import { _isUnsafeKey } from './_is-unsafe-key';
+import { _isPlainObject } from '@openinf/util-core';
 
-function isPlainObject(value: unknown): value is Record<PropertyKey, unknown> {
-  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
-    return false;
-  }
-  const proto: unknown = Object.getPrototypeOf(value);
-  return proto === Object.prototype || proto === null;
-}
+import { _isUnsafeKey } from './_is-unsafe-key';
 
 function keysOf(value: Record<string, unknown>, inherited: boolean): string[] {
   if (!inherited) {
@@ -61,7 +55,7 @@ export function _copyDeep<T>(
     return copy as T;
   }
 
-  if (!isPlainObject(value)) {
+  if (!_isPlainObject(value)) {
     return value;
   }
 

@@ -28,6 +28,7 @@ export * from './guards/or';
 // use, which is why its declarations are marked private and left out of the
 // API reference.
 export { _tagTester } from './_internal/_tag-tester';
+export { _isPlainObject } from './_internal/_is-plain-object';
 export { _typedArrayName } from './_internal/_typed-array-name';
 
 export * from './types';
