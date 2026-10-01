@@ -3,6 +3,7 @@
 
 import type { Guard } from '@openinf/util-core';
 
+import { _stringifyValue } from '../_internal/_stringify-value';
 import { isEquatable } from './is-equatable';
 
 /**
@@ -23,6 +24,6 @@ import { isEquatable } from './is-equatable';
 export function isEqualTo<T>(expected: T): Guard<T> {
   const guard: Guard<T> = (value: unknown): value is T =>
     isEquatable(expected) ? expected.equals(value) : value === expected;
-  guard.expectation = () => `equal ${String(expected)}`;
+  guard.expectation = () => `equal ${_stringifyValue(expected)}`;
   return guard;
 }

@@ -4,6 +4,7 @@
 import type { Validator } from '@openinf/util-core';
 
 import { _compareRelational } from '../_internal/_compare-relational';
+import { _stringifyValue } from '../_internal/_stringify-value';
 import { isComparable } from './is-comparable';
 
 /**
@@ -28,6 +29,7 @@ export function isLessThanOrEqualTo(expected: unknown): Validator {
       : _compareRelational(value, expected);
     return result === 0 || result === -1;
   };
-  validator.expectation = () => `be less than or equal to ${String(expected)}`;
+  validator.expectation = () =>
+    `be less than or equal to ${_stringifyValue(expected)}`;
   return validator;
 }

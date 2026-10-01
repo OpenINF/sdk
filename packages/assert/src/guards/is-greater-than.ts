@@ -4,6 +4,7 @@
 import type { Validator } from '@openinf/util-core';
 
 import { _compareRelational } from '../_internal/_compare-relational';
+import { _stringifyValue } from '../_internal/_stringify-value';
 import { isComparable } from './is-comparable';
 
 /**
@@ -26,6 +27,6 @@ export function isGreaterThan(expected: unknown): Validator {
     isComparable(value)
       ? value.compareTo(expected) === 1
       : _compareRelational(value, expected) === 1;
-  validator.expectation = () => `be greater than ${String(expected)}`;
+  validator.expectation = () => `be greater than ${_stringifyValue(expected)}`;
   return validator;
 }

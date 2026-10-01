@@ -5,6 +5,7 @@
 
 import type { AnyFunction } from '@openinf/util-core';
 
+import { _stringifyValue } from '../_internal/_stringify-value';
 import { fail } from '../helpers/fail';
 
 /**
@@ -26,7 +27,7 @@ export function assertEqual<T>(
   if (a !== b) {
     const message = msg ? (msg2 ? `${msg} ${msg2}` : msg) : '';
     fail(
-      `Expected ${String(a)} === ${String(b)}. ${message}`,
+      `Expected ${_stringifyValue(a)} === ${_stringifyValue(b)}. ${message}`,
       stackCrawlMark || assertEqual
     );
   }

@@ -29,4 +29,12 @@ describe(isLessThan.name, () => {
     assert.strictEqual(guard(comparableReturning(0)), false);
     assert.strictEqual(guard(comparableReturning(1)), false);
   });
+
+  it('should describe an expected value String cannot convert', () => {
+    const { expectation } = isLessThan(Object.create(null));
+    assert.strictEqual(typeof expectation, 'function');
+    if (typeof expectation === 'function') {
+      assert.doesNotThrow(expectation);
+    }
+  });
 });

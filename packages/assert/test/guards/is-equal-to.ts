@@ -18,4 +18,12 @@ describe(isEqualTo.name, () => {
     assert.strictEqual(guard('x'), true);
     assert.strictEqual(guard('y'), false);
   });
+
+  it('should describe an expected value String cannot convert', () => {
+    const { expectation } = isEqualTo(Object.create(null));
+    assert.strictEqual(typeof expectation, 'function');
+    if (typeof expectation === 'function') {
+      assert.doesNotThrow(expectation);
+    }
+  });
 });
