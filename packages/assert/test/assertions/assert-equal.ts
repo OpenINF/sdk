@@ -17,4 +17,12 @@ describe(assertEqual.name, () => {
   it('should append the provided messages', () => {
     assert.throws(() => assertEqual(1, 2, 'first', 'second'), /first second/);
   });
+
+  it('should throw an AssertionError for a value String cannot convert', () => {
+    const bare = Object.create(null) as object;
+    assert.throws(() => assertEqual<unknown>(bare, 1), {
+      name: 'AssertionError',
+      message: /Expected .* === 1/,
+    });
+  });
 });

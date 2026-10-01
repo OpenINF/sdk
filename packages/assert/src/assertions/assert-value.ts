@@ -7,8 +7,8 @@ import { isFunction } from '@openinf/util-core';
 import type { Guard, Validator } from '@openinf/util-core';
 import { curlyQuote } from '@openinf/util-text';
 
+import { _stringifyValue } from '../_internal/_stringify-value';
 import { AssertionError } from '../errors/assertion-error';
-import { inspectValue } from '../helpers/inspect-value';
 
 /**
  * The maximum length to show of the stringified value
@@ -20,22 +20,6 @@ function expectationOf(validator: Validator): string {
   return typeof validator.expectation === 'function'
     ? validator.expectation()
     : (validator.expectation ?? 'be valid');
-}
-
-function stringifyValue(value: unknown): string {
-  try {
-    const stringValue = String(value);
-    if (stringValue !== '[object Object]') return stringValue;
-
-    const jsonValue = JSON.stringify(value);
-    return typeof jsonValue === 'string' ? jsonValue : stringValue;
-  } catch {
-    try {
-      return inspectValue(value);
-    } catch {
-      return '<unavailable value>';
-    }
-  }
 }
 
 /**
@@ -82,7 +66,7 @@ export function assertValue(
   }
 
   if (!result) {
-    let valueStr = stringifyValue(value);
+    let valueStr = _stringifyValue(value);
     if (valueStr.length > maxValueStrLength) {
       valueStr = `${valueStr.slice(0, maxValueStrLength)}...`;
     }

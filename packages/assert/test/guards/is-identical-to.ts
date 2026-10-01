@@ -27,4 +27,12 @@ describe(isIdenticalTo.name, () => {
     assert.strictEqual(guard({ equals: () => true }), false);
     assert.strictEqual(guard(equatable), true);
   });
+
+  it('should describe an expected value String cannot convert', () => {
+    const { expectation } = isIdenticalTo(Object.create(null));
+    assert.strictEqual(typeof expectation, 'function');
+    if (typeof expectation === 'function') {
+      assert.doesNotThrow(expectation);
+    }
+  });
 });

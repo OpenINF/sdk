@@ -3,6 +3,8 @@
 
 import type { Guard } from '@openinf/util-core';
 
+import { _stringifyValue } from '../_internal/_stringify-value';
+
 /**
  * Creates a guard that tests if a value is identical to `expected`, using
  * [`SameValueZero`](https://mdn.io/Equality_comparisons_and_sameness#same-value-zero_equality)
@@ -22,6 +24,6 @@ import type { Guard } from '@openinf/util-core';
 export function isIdenticalTo<T>(expected: T): Guard<T> {
   const guard: Guard<T> = (value: unknown): value is T =>
     value === expected || (value !== value && expected !== expected);
-  guard.expectation = () => `be identical to ${String(expected)}`;
+  guard.expectation = () => `be identical to ${_stringifyValue(expected)}`;
   return guard;
 }
