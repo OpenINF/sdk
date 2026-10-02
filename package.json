@@ -33,7 +33,7 @@
     "lint:packages": "node tools/check-package-quality.js",
     "lint:spelling": "cspell --no-progress",
     "lint:types": "tsc -p tsconfig.tools.json",
-    "release": "pnpm -r publish --no-git-checks --provenance",
+    "release": "pnpm -r publish --no-git-checks --provenance && changeset git-tag",
     "sync-metadata": "node tools/sync-package-metadata.js",
     "test": "pnpm -r run test && pnpm run test:queue && pnpm run test:tools && pnpm run test:esm",
     "test:coverage": "pnpm -r run test:coverage",

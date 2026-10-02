@@ -59,8 +59,8 @@ The release workflow is **manual only** — it has no push trigger, so merging t
 **Release** workflow from the Actions tab:
 
 1. Merge work with changesets into `main`. Only CI runs.
-2. Run **Release**. With changesets pending, it opens a **"Version packages"**
-   PR: `changeset version` consumes the changeset files, bumps every
+2. Run **Release**. With changesets pending, it opens a **"📦：version
+   packages"** PR: `changeset version` consumes the changeset files, bumps every
    `package.json`, and writes the `CHANGELOG.md`s. Nothing is published.
 3. Review that PR — it is the last checkpoint before anything is public. Check
    the version numbers and that each changelog entry reads sensibly.
@@ -77,13 +77,26 @@ To do it by hand instead:
 pnpm run version-packages   # changeset version + lockfile refresh
 # review the diff, then:
 pnpm run build
-pnpm run release            # pnpm -r publish --no-git-checks
+pnpm run release            # pnpm publish, then changeset git-tag
 ```
 
 Always `pnpm -r publish`, never `changeset publish` or `npm publish`: internal
 dependencies use the `workspace:*` protocol, and only pnpm rewrites that into a
 real version range when packing. Publishing with npm would ship a literal
 `"workspace:*"` dependency that no consumer can install.
+
+After pnpm succeeds, `changeset git-tag` creates missing annotated tags and
+writes the `CHANGESETS_OUTPUT` report that the release action reads. That report
+is how the action knows to push tags, create GitHub releases, and build the API
+artifact; pnpm's console output alone does not tell it anything. A failed
+publish must not tag packages, so the commands are joined with `&&`.
+
+On a retry, pnpm skips versions already on the registry, and Changesets skips
+tags already present. If publishing succeeded but tagging failed, re-running the
+workflow can finish tagging those versions without publishing them again. The
+workflow also reconciles a tag whose GitHub release is missing, and every
+publish-mode run rebuilds the API artifact. Those idempotent steps cover a
+failure after tags were pushed or after packages and releases were complete.
 
 ## Publishing the API reference
 

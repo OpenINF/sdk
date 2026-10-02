@@ -63,8 +63,17 @@ jobs:
         with:
           version-script: pnpm run version-packages
           publish-script: pnpm run release
-          commit-message: 'Version packages'
-          pr-title: 'Version packages'
+          commit-message: '📦：version packages'
+          pr-title: '📦：version packages'
+
+      # The action creates releases only for tags its current run created. If
+      # tag pushing succeeded but release creation failed, a retry sees the tag
+      # as old and cannot repair the missing release. Reconcile every publish-
+      # mode run so that the operation is safely resumable.
+      - if: steps.changesets.outputs.has-changesets == 'false'
+        run: node tools/reconcile-github-releases.mts
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
       # The portal renders this release's API reference from a versioned
       # Markdown artifact, which it keeps one directory of per release. Only a
@@ -73,15 +82,18 @@ jobs:
       #
       # Building it here rather than earlier ties it to the versions that
       # actually shipped, and to the commit they were published from.
-      - if: steps.changesets.outputs.published == 'true'
+      # Run these on every publish-mode invocation. This lets a retry recreate
+      # an artifact when publication and releases succeeded but documentation
+      # generation or upload failed afterward.
+      - if: steps.changesets.outputs.has-changesets == 'false'
         run: pnpm run docs:build
 
-      - if: steps.changesets.outputs.published == 'true'
+      - if: steps.changesets.outputs.has-changesets == 'false'
         run: pnpm run docs:artifact
 
       # Handing this to the portal is a deliberate step, the way publishing is:
       # see "Publishing the API reference" in RELEASING.md.
-      - if: steps.changesets.outputs.published == 'true'
+      - if: steps.changesets.outputs.has-changesets == 'false'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: sdk-api-docs
