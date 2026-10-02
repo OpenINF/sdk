@@ -15,7 +15,9 @@ const functionToString = Function.prototype.toString;
 const regExpExec = RegExp.prototype.exec;
 // oxlint-disable-next-line typescript/unbound-method -- invoked with captured Reflect.apply.
 const stringStartsWith = String.prototype.startsWith;
-const comment = String.raw`\/\*[\s\S]*?\*\/`;
+const blockComment = String.raw`\/\*[\s\S]*?\*\/`;
+const lineComment = String.raw`\/\/[^\r\n\u2028\u2029]*(?:\r\n?|\n|\u2028|\u2029)`;
+const comment = String.raw`(?:${blockComment}|${lineComment})`;
 const gap = String.raw`(?:\s|${comment})+`;
 const optionalGap = String.raw`(?:\s|${comment})*`;
 const asyncGeneratorFunctionSource = new RegExp(

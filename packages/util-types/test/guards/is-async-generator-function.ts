@@ -11,6 +11,14 @@ describe(isAsyncGeneratorFunction.name, () => {
     assert.strictEqual(isAsyncGeneratorFunction(gen), true);
   });
 
+  it('should detect an async generator with a retained line comment', () => {
+    const generator = new Function(
+      'return async function // retained comment\n* generate() {}'
+    )() as AsyncGeneratorFunction;
+
+    assert.strictEqual(isAsyncGeneratorFunction(generator), true);
+  });
+
   it('should reject a plain function', () => {
     assert.strictEqual(
       isAsyncGeneratorFunction(function foo(): void {}),
