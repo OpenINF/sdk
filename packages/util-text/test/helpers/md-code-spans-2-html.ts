@@ -47,9 +47,62 @@ describe(mdCodeSpans2html.name, () => {
       'no code spans here'
     );
   });
+
+  it('should leave escaped opening backticks literal', () => {
+    for (const count of [1, 3]) {
+      const input = `${'\\'.repeat(count)}\`foo\``;
+      assert.strictEqual(mdCodeSpans2html(input), input);
+    }
+  });
+
+  it('should open code spans after escaped backslash pairs', () => {
+    for (const count of [2, 4]) {
+      const prefix = '\\'.repeat(count);
+      assert.strictEqual(
+        mdCodeSpans2html(`${prefix}\`foo\``),
+        `${prefix}<code>foo</code>`
+      );
+    }
+  });
+
+  it('should allow the rest of a run to open after an escaped backtick', () => {
+    assert.strictEqual(mdCodeSpans2html('\\``foo`'), '\\`<code>foo</code>');
+    assert.strictEqual(mdCodeSpans2html('\\```foo``'), '\\`<code>foo</code>');
+    assert.strictEqual(mdCodeSpans2html('\\``foo``'), '\\``foo``');
+  });
+
+  it('should treat backslashes before closing runs as code text', () => {
+    assert.strictEqual(
+      mdCodeSpans2html('`foo\\`bar`'),
+      '<code>foo\\</code>bar`'
+    );
+    assert.strictEqual(
+      mdCodeSpans2html('`foo\\``bar`'),
+      '<code>foo\\``bar</code>'
+    );
+    assert.strictEqual(mdCodeSpans2html('``foo\\``'), '<code>foo\\</code>');
+  });
+
+  it('should keep looking for code spans after escaped opening runs', () => {
+    assert.strictEqual(
+      mdCodeSpans2html('\\`foo` and `bar`'),
+      '\\`foo<code>and</code>bar`'
+    );
+  });
 });
 
 describe('mdCodeSpans2html performance', () => {
+  it('should stay linear across escaped runs', () => {
+    const adversarial = '\\`x'.repeat(100_000);
+    const start = Date.now();
+    assert.strictEqual(mdCodeSpans2html(adversarial), adversarial);
+    const elapsed = Date.now() - start;
+    assert.ok(
+      elapsed < 2000,
+      `expected under 2s for escaped runs, took ${elapsed}ms`
+    );
+  });
+
   it('should stay linear on adversarial backtick input', () => {
     // The previous regex backtracked quadratically here: 80 KB took ~20s.
     const adversarial = '`'.repeat(200_000) + 'x'.repeat(200_000);
