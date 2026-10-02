@@ -92,12 +92,22 @@ export function hasInterface<T extends object>(
 
     // Validator maps can be class instances, whose declarations live on the
     // prototype as non-enumerable accessors. Walk those declarations without
-    // accidentally treating Object.prototype itself as part of the map.
+    // accidentally treating Object.prototype itself as part of the map, or a
+    // prototype's own `constructor` back-reference as a declared validator.
     while (current !== null && current !== Object.prototype) {
-      for (const key of Reflect.ownKeys(current)) {
-        if (key !== 'constructor') keys.add(key);
+      const proto = current;
+      for (const key of Reflect.ownKeys(proto)) {
+        if (
+          key !== 'constructor' ||
+          (
+            Object.getOwnPropertyDescriptor(proto, key)?.value as
+              { prototype?: unknown } | undefined
+          )?.prototype !== proto
+        ) {
+          keys.add(key);
+        }
       }
-      current = Object.getPrototypeOf(current) as object | null;
+      current = Object.getPrototypeOf(proto) as object | null;
     }
 
     return [...keys].every(
