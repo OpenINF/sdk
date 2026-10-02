@@ -4,6 +4,7 @@
 interface BacktickRun {
   start: number;
   length: number;
+  escaped: boolean;
 }
 
 function normalizeCodeSpan(value: string): string {
@@ -40,12 +41,15 @@ function backtickRunLength(text: string, index: number): number {
 
 function findBacktickRuns(text: string): BacktickRun[] {
   const runs: BacktickRun[] = [];
+  let backslashes = 0;
   for (let i = 0; i < text.length;) {
     const length = backtickRunLength(text, i);
     if (length === 0) {
+      backslashes = text.charAt(i) === '\\' ? backslashes + 1 : 0;
       i++;
     } else {
-      runs.push({ start: i, length });
+      runs.push({ start: i, length, escaped: backslashes % 2 !== 0 });
+      backslashes = 0;
       i += length;
     }
   }
@@ -61,7 +65,10 @@ function findMatchingRuns(runs: readonly BacktickRun[]): number[] {
     if (run === undefined) {
       continue;
     }
-    const next = nextByLength.get(run.length);
+    // An escaped first backtick stays literal outside a span. Any remaining
+    // backticks can open one, but a closing run always uses its full length:
+    // backslashes inside code spans are ordinary code text.
+    const next = nextByLength.get(run.length - Number(run.escaped));
     if (next !== undefined) {
       matches[i] = next;
     }
@@ -74,6 +81,9 @@ function findMatchingRuns(runs: readonly BacktickRun[]): number[] {
  * Processes the supplied string by transforming any Markdown backtick code
  * spans (beginning and ending with a matching run of backticks) into HTML
  * code elements.
+ *
+ * Opening delimiters respect backslash escapes. Text outside the spans is
+ * preserved, including the escape backslashes themselves.
  *
  * Backtick runs and their next equal-length run are indexed before rendering,
  * keeping unmatched fence patterns linear instead of repeatedly scanning the
@@ -103,7 +113,7 @@ export function mdCodeSpans2html(text: string): string {
     }
     const content = text.slice(open.start + open.length, close.start);
 
-    out += text.slice(cursor, open.start);
+    out += text.slice(cursor, open.start + Number(open.escaped));
     out += `<code>${escapeHtml(normalizeCodeSpan(content))}</code>`;
     cursor = close.start + close.length;
     runIndex = closeIndex + 1;
