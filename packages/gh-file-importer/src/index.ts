@@ -440,10 +440,34 @@ export class GhFileImporter {
   public async fetchFileText(
     location: RepoLocation & { path: string }
   ): Promise<string> {
-    validateRequiredPath(location.path);
-    const data = await this.fetchContent(location);
+    const { owner, repo, path, ref } = location;
+    validateRequiredPath(path);
+    const requestedLocation = {
+      owner,
+      repo,
+      path,
+      ...(ref === undefined ? {} : { ref }),
+    };
+    const data = await this.fetchContent(requestedLocation);
     if (!isContentFile(data)) {
-      throw new Error(`${curlyQuote(location.path)} did not resolve to a file`);
+      throw new Error(`${curlyQuote(path)} did not resolve to a file`);
+    }
+    if (data.encoding === 'none') {
+      // GitHub omits the encoded body for files between 1 and 100 MB.
+      // Fetch raw contents through the same client to retain authentication
+      // and the caller's ref, including when the repository is private.
+      const response = await this.#octokit.repos.getContent({
+        ...requestedLocation,
+        headers: { accept: 'application/vnd.github.raw+json' },
+        request: { parseSuccessResponseBody: false },
+      });
+      // Octokit's endpoint type describes JSON metadata even when parsing
+      // is disabled and data is the response's byte stream. Decode it like
+      // the base64 path, preserving a leading UTF-8 byte-order mark too.
+      const body = response.data as unknown as ReadableStream<Uint8Array>;
+      return Buffer.from(await new Response(body).arrayBuffer()).toString(
+        'utf-8'
+      );
     }
     return Buffer.from(data.content, data.encoding as BufferEncoding).toString(
       'utf-8'
