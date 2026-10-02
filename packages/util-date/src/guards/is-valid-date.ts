@@ -1,13 +1,19 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-import type { Guard } from '@openinf/util-core';
+import type { Guard, Tagged } from '@openinf/util-core';
 
 import { isDate } from './is-date';
 
 // oxlint-disable-next-line typescript/unbound-method -- invoked with captured Reflect.apply.
 const getTime = Date.prototype.getTime;
 const { apply } = Reflect;
+
+/**
+ * A Date whose time value was valid when checked.
+ * @category Numbers and Dates
+ */
+export type ValidDate = Tagged<Date, '__ValidDate__'>;
 
 /**
  * Detects whether `value` is a [`Date`](https://mdn.io/Global_Objects/Date)
@@ -17,6 +23,8 @@ const { apply } = Reflect;
  * `Date` object. This additionally requires the time value not be `NaN`,
  * which is the distinction `@sindresorhus/is` draws between `is.date` and
  * `is.validDate`.
+ * A failed check can still be a Date, so the guard refines to {@link ValidDate}
+ * rather than excluding every Date from its false branch.
  * @since 3.0.0
  * @category Numbers and Dates
  * @param value The value to identify.
@@ -34,7 +42,7 @@ const { apply } = Reflect;
  * isValidDate('Sun February 28 2021'); // ↪ false
  * ```
  */
-export function isValidDate(value: unknown): value is Date {
+export function isValidDate(value: unknown): value is ValidDate {
   // The time value is read through the intrinsic, captured at load, rather
   // than through `value.getTime`, which a Date can shadow with its own.
   return isDate(value) && !Number.isNaN(apply(getTime, value, []));

@@ -8,6 +8,8 @@ import type { Guard } from '@openinf/util-core';
  * [iterator protocol](https://mdn.io/iteration_protocols#the_iterator_protocol):
  * it has a `next` method. An iterator does not have to be iterable; use
  * {@link isIterable} when a `Symbol.iterator` method is also required.
+ * This shallow check does not call `next`, inspect its result, or validate
+ * optional methods, so it returns a boolean without narrowing to `Iterator`.
  * @since 3.0.0
  * @category Control Abstraction Objects
  * @param value The value to identify.
@@ -21,9 +23,7 @@ import type { Guard } from '@openinf/util-core';
  * util.isIterator([]); // ↪ false
  * ```
  */
-export function isIterator(
-  value: unknown
-): value is globalThis.Iterator<unknown> {
+export function isIterator(value: unknown): boolean {
   if (
     value === null ||
     (typeof value !== 'object' && typeof value !== 'function')

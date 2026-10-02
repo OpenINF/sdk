@@ -3,11 +3,16 @@
 
 // Missing from Node.js
 
-import type { Guard } from '@openinf/util-core';
+import type { Guard, Tagged } from '@openinf/util-core';
 
 const { apply } = Reflect;
-// oxlint-disable-next-line typescript/unbound-method -- invoked with captured Reflect.apply.
 const isWellFormed = String.prototype.isWellFormed;
+
+/**
+ * A string with no lone surrogates.
+ * @category Text Processing
+ */
+export type WellFormedString = Tagged<string, '__WellFormedString__'>;
 
 /**
  * Detects whether `value` is a well-formed string: one that contains no lone
@@ -20,7 +25,8 @@ const isWellFormed = String.prototype.isWellFormed;
  * character. Asking first is how to find out before that happens.
  *
  * A `String` object is refused, as it is by the other guards here; only a
- * primitive passes.
+ * primitive passes. A failed check can still be a string, so the guard refines
+ * to {@link WellFormedString} rather than excluding all strings.
  * @since 3.0.0
  * @category Text Processing
  * @param value The value to identify.
@@ -34,7 +40,7 @@ const isWellFormed = String.prototype.isWellFormed;
  * isWellFormedString(''); // ↪ true
  * ```
  */
-export function isWellFormedString(value: unknown): value is string {
+export function isWellFormedString(value: unknown): value is WellFormedString {
   return typeof value === 'string' && apply(isWellFormed, value, []);
 }
 (isWellFormedString as Guard).expectation = 'be a well-formed string';

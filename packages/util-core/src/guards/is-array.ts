@@ -7,6 +7,7 @@ import { Guard } from '../types';
  * Alias for [`Array.isArray()`](https://mdn.io/Array/isArray).
  * Detects whether `value` is classified as an
  * [`Array`](https://mdn.io/Global_Objects/Array).
+ * The elements remain unknown; this checks the container, not its contents.
  * @since 3.0.0
  * @category Indexed Collections
  * @param value The value to identify.
@@ -22,7 +23,7 @@ import { Guard } from '../types';
  * util.isArray({}); // ↪ false
  * ```
  */
-export function isArray<T = unknown>(value: unknown): value is T[] {
+export function isArray(value: unknown): value is unknown[] {
   return Array.isArray(value);
 }
 (isArray as Guard).expectation = 'be an Array';

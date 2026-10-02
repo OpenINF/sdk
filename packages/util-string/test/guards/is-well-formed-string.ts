@@ -3,7 +3,22 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { isWellFormedString } from '../../src/guards/is-well-formed-string';
+import {
+  isWellFormedString,
+  type WellFormedString,
+} from '../../src/guards/is-well-formed-string';
+
+function checkWellFormedStringTypes(value: string | number): void {
+  if (isWellFormedString(value)) {
+    const wellFormed: WellFormedString = value;
+    void wellFormed;
+  } else {
+    // @ts-expect-error A string with a lone surrogate is still possible.
+    const number: number = value;
+    void number;
+  }
+}
+void checkWellFormedStringTypes;
 
 describe(isWellFormedString.name, () => {
   it('should accept a string with no surrogates at all', () => {

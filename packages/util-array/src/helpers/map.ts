@@ -19,11 +19,11 @@ export function map<T, R>(
   elems: ArrayLike<T> | Record<string, T>,
   callback: (elem: T, key: number | string, arg: unknown) => R,
   arg?: unknown
-): R[] {
-  const ret: R[] = [];
+): FlatArray<NonNullable<R>, 0>[] {
+  const ret: NonNullable<R>[] = [];
 
   // Go through the array, translating each of the items to their new values
-  if (isArrayLike<T>(elems)) {
+  if (isArrayLike(elems)) {
     const length = elems.length;
     for (let i = 0; i < length; i++) {
       // i < length guarantees elems[i] is present.
@@ -47,5 +47,5 @@ export function map<T, R>(
   }
 
   // Flatten any nested arrays
-  return (ret as unknown[]).flat() as R[];
+  return ret.flat();
 }
