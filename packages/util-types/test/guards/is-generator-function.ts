@@ -11,6 +11,14 @@ describe(isGeneratorFunction.name, () => {
     assert.strictEqual(isGeneratorFunction(gen), true);
   });
 
+  it('should detect a generator with a retained line comment', () => {
+    const generator = new Function(
+      'return function // retained comment\n* generate() {}'
+    )() as GeneratorFunction;
+
+    assert.strictEqual(isGeneratorFunction(generator), true);
+  });
+
   it('should reject a plain function', () => {
     assert.strictEqual(
       isGeneratorFunction(function foo(): void {}),
