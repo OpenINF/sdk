@@ -2,6 +2,7 @@
 // This code is available under the MIT license found in the LICENSE file.
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
+import { runInNewContext } from 'node:vm';
 
 import { copyArray } from '../../src/helpers/copy-array';
 
@@ -39,6 +40,27 @@ describe(copyArray.name, () => {
     const instance = new Foo(1);
     const [copy] = copyArray([instance]);
     assert.strictEqual(copy, instance);
+  });
+
+  it('should deep-copy plain objects from another realm', () => {
+    const original = runInNewContext('[{ nested: { value: 1 } }]') as {
+      nested: { value: number };
+    }[];
+    const [copy] = copyArray(original);
+
+    assert.ok(copy);
+    assert.notStrictEqual(copy, original[0]);
+    assert.notStrictEqual(copy.nested, original[0]?.nested);
+    copy.nested.value = 2;
+    assert.strictEqual(original[0]?.nested.value, 1);
+  });
+
+  it('should retain internal-slot objects with an ordinary prototype', () => {
+    const original = new Date(0);
+    Object.setPrototypeOf(original, Object.prototype);
+    Object.defineProperty(original, Symbol.toStringTag, { value: 'Object' });
+
+    assert.strictEqual(copyArray([original])[0], original);
   });
 
   it('should preserve a circular array', () => {

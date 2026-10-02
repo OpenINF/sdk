@@ -3,40 +3,7 @@
 
 // Adapted from jQuery
 
-import { _tagTester } from '@openinf/util-core';
-
-import { hasOwn } from './has-own';
-
-const { apply } = Reflect;
-const { getPrototypeOf } = Object;
-const { toStringTag } = Symbol;
-// oxlint-disable-next-line typescript/unbound-method -- invoked with captured Reflect.apply.
-const objectToString = Object.prototype.toString;
-// oxlint-disable-next-line typescript/unbound-method -- invoked with captured Reflect.apply.
-const functionToString = Function.prototype.toString;
-const objectFunctionString: unknown = apply(functionToString, Object, []);
-
-// The internal slots section 20.1.3.6 classifies an object by, apart from
-// IsArray and [[Call]], which are tested directly. These are asked only when a
-// Symbol.toStringTag hides the classification Object.prototype.toString would
-// otherwise report. Two of them have no probe in every runtime: nothing in the
-// language reveals [[ParameterMap]] but that same classification, and
-// [[ErrorData]] is revealed only by Error.isError, from ES2026, or by a host's
-// own check such as Node.js's. So an arguments object, or an Error where
-// neither is available, that has been given both another prototype and a tag
-// of its own cannot be recognized, and passes as plain.
-const hasClassifyingSlot = [
-  'Arguments',
-  'Error',
-  'Boolean',
-  'Number',
-  'String',
-  'Date',
-  'RegExp',
-].map((name) => _tagTester(name));
-
-// A module namespace object is exotic, and always carries its own tag.
-const isModuleNamespace = _tagTester('Module');
+import { _isPlainObject } from '@openinf/util-core';
 
 /**
  * Detects whether `value` is a plain object: an object whose `[[Prototype]]`
@@ -77,35 +44,5 @@ const isModuleNamespace = _tagTester('Module');
  * ```
  */
 export function isPlainObject(value: unknown): boolean {
-  if (value === null || typeof value !== 'object' || Array.isArray(value)) {
-    return false;
-  }
-
-  const proto: unknown = getPrototypeOf(value);
-
-  // Otherwise, plain only if the prototype's constructor is the global Object.
-  if (proto !== null) {
-    const protoRecord = proto as Record<PropertyKey, unknown>;
-    const ctor = hasOwn(protoRecord, 'constructor')
-      ? protoRecord.constructor
-      : undefined;
-
-    if (
-      typeof ctor !== 'function' ||
-      apply(functionToString, ctor, []) !== objectFunctionString
-    ) {
-      return false;
-    }
-  }
-
-  // With no tag in the way, Object.prototype.toString reports the
-  // classification itself, without a probe that has to throw.
-  if (!(toStringTag in value)) {
-    return apply(objectToString, value, []) === '[object Object]';
-  }
-
-  return (
-    !hasClassifyingSlot.some((hasSlot) => hasSlot(value)) &&
-    !isModuleNamespace(value)
-  );
+  return _isPlainObject(value);
 }
