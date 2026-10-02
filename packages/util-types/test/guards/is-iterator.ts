@@ -5,6 +5,15 @@ import { describe, it } from 'node:test';
 
 import { isIterator } from '../../src/guards/is-iterator';
 
+function checkIteratorTypes(value: unknown): void {
+  if (isIterator(value)) {
+    // @ts-expect-error A shallow next check does not validate the iterator type.
+    const iterator: Iterator<unknown> = value;
+    void iterator;
+  }
+}
+void checkIteratorTypes;
+
 describe(isIterator.name, () => {
   it('should detect iterators', () => {
     assert.strictEqual(isIterator([][Symbol.iterator]()), true);
@@ -50,5 +59,18 @@ describe(isIterator.name, () => {
     };
 
     assert.strictEqual(isIterator(iterator), true);
+  });
+
+  it('should inspect next without calling it or validating other methods', () => {
+    let calls = 0;
+    const shallow = {
+      next() {
+        calls += 1;
+        return null;
+      },
+      return: 123,
+    };
+    assert.strictEqual(isIterator(shallow), true);
+    assert.strictEqual(calls, 0);
   });
 });

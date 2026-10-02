@@ -5,6 +5,17 @@ import { describe, it } from 'node:test';
 
 import { isArrayLike } from '../../src/guards/is-array-like';
 
+function checkArrayLikeType(value: unknown): void {
+  if (isArrayLike(value)) {
+    const element: unknown = value[0];
+    void element;
+    // @ts-expect-error The container check does not establish element types.
+    const text: string = value[0];
+    void text;
+  }
+}
+void checkArrayLikeType;
+
 describe(isArrayLike.name, () => {
   it('should detect real arrays', () => {
     assert.strictEqual(isArrayLike([1, 2, 3]), true);

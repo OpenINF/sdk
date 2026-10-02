@@ -4,7 +4,19 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
 import { isDate } from '../../src/guards/is-date';
-import { isValidDate } from '../../src/guards/is-valid-date';
+import { isValidDate, type ValidDate } from '../../src/guards/is-valid-date';
+
+function checkValidDateTypes(value: Date | string): void {
+  if (isValidDate(value)) {
+    const valid: ValidDate = value;
+    void valid;
+  } else {
+    // @ts-expect-error An Invalid Date is still possible after this check fails.
+    const text: string = value;
+    void text;
+  }
+}
+void checkValidDateTypes;
 
 describe(isValidDate.name, () => {
   it('should accept a Date with a usable time value', () => {

@@ -25,9 +25,7 @@ import { isArray, isFunction, isNullish } from '@openinf/util-core';
  * isArrayLike(Function); // ↪ false
  * ```
  */
-export function isArrayLike<T = unknown>(
-  value: unknown
-): value is ArrayLike<T> {
+export function isArrayLike(value: unknown): value is ArrayLike<unknown> {
   if (isNullish(value) || isFunction(value)) {
     return false;
   }

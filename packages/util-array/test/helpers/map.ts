@@ -28,11 +28,27 @@ describe(map.name, () => {
   });
 
   it('should flatten one level of nested arrays produced by the callback', () => {
-    const result = map<number, number>(
-      [1, 2],
-      (x) => [x, x] as unknown as number
-    );
+    const result = map([1, 2], (x) => [x, x]);
+    const first: number = result[0] ?? 0;
+    // @ts-expect-error The return type reflects the one-level flattening.
+    const nested: number[] = result[0];
+    void first;
+    void nested;
     assert.deepStrictEqual(result, [1, 1, 2, 2]);
+  });
+
+  it('should type mixed, nested, and nullish results after one flat level', () => {
+    const mixed = map([1, 2], (x) => (x === 1 ? [x] : `${x}`));
+    const mixedElement: number | string = mixed[0] ?? '';
+    void mixedElement;
+
+    const nested = map([1], (x) => [[x]]);
+    const nestedElement: number[] = nested[0] ?? [];
+    void nestedElement;
+
+    const withoutNull = map([1, 2], (x) => (x === 1 ? x : null));
+    const number: number = withoutNull[0] ?? 0;
+    void number;
   });
 
   it('should pass the extra argument through to the callback', () => {

@@ -7,19 +7,45 @@
 import type { Guard } from '../types';
 import { isObjectLike } from './is-object-like';
 
+type IndexKey<T extends object> = {
+  [Key in keyof Required<T>]: {} extends Pick<Required<T>, Key> ? Key : never;
+}[keyof T];
+
+type SupportsInterface<T, Whole = T> = T extends object
+  ? [Whole] extends [T]
+    ? T extends (...args: never[]) => unknown
+      ? false
+      : T extends abstract new (...args: never[]) => unknown
+        ? false
+        : [IndexKey<T>] extends [never]
+          ? true
+          : false
+    : false
+  : false;
+
 /**
- * Collection of interface validators.
+ * Validators for every required property of a finite, non-callable interface.
+ * Call signatures, constructors, index signatures, and unions cannot be
+ * established by checking a fixed list of properties and are rejected.
  * @category Testing and Comparison Operations
  */
-export type InterfaceValidators<T> = {
-  /**
-   * Property validators.
-   */
-  [TP in keyof T]-?: Guard<T[TP] extends () => unknown ? () => unknown : T[TP]>; // Squash functions as we don't verify call signatures or return types.
-};
+export type InterfaceValidators<T extends object> = [T] extends [never]
+  ? never
+  : SupportsInterface<T> extends true
+    ? {
+        /**
+         * Property validators, including a property's complete function type.
+         */
+        [TP in keyof T]-?: Guard<Required<T>[TP]>;
+      }
+    : never;
 
 /**
  * Creates a guard that tests if a value implements a specified interface.
+ * Every listed property must be present, including properties optional in `T`,
+ * so the result narrows to `Required<T>`. Only objects and functions pass;
+ * primitive values with matching properties do not. Each validator must prove
+ * the property's full type, including a method's arguments and return type.
  * @since 3.0.0
  * @category Testing and Comparison Operations
  * @param interfaceName The interface name to report in the error message.
@@ -44,11 +70,13 @@ export type InterfaceValidators<T> = {
  * isPoint({ x: 0 }); // ↪ false
  * ```
  */
-export function hasInterface<T>(
+export function hasInterface<T extends object>(
   interfaceName: string,
   validators: InterfaceValidators<T> | (() => InterfaceValidators<T>)
-): Guard<T> {
-  const guard: Guard<T> = (value: unknown): value is T => {
+): Guard<Required<T> & object> {
+  const guard: Guard<Required<T> & object> = (
+    value: unknown
+  ): value is Required<T> & object => {
     // A function is an object, and can implement an interface as well as any
     // other object can: a class with static members, for instance.
     if (!isObjectLike(value)) {
@@ -59,8 +87,20 @@ export function hasInterface<T>(
       typeof validators === 'function' ? validators() : validators;
     const validatorRecord = resolvedValidators as Record<PropertyKey, Guard>;
     const valueRecord = value as Record<PropertyKey, unknown>;
+    const keys = new Set<PropertyKey>();
+    let current: object | null = resolvedValidators;
 
-    return Reflect.ownKeys(resolvedValidators).every(
+    // Validator maps can be class instances, whose declarations live on the
+    // prototype as non-enumerable accessors. Walk those declarations without
+    // accidentally treating Object.prototype itself as part of the map.
+    while (current !== null && current !== Object.prototype) {
+      for (const key of Reflect.ownKeys(current)) {
+        if (key !== 'constructor') keys.add(key);
+      }
+      current = Object.getPrototypeOf(current) as object | null;
+    }
+
+    return [...keys].every(
       (key) =>
         key in valueRecord &&
         // key comes from Reflect.ownKeys(resolvedValidators), so it is guaranteed present.
