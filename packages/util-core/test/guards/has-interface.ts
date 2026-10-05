@@ -131,6 +131,16 @@ describe(hasInterface.name, () => {
     assert.strictEqual(isPointFromClass({ x: 'bad', y: false }), false);
   });
 
+  it('should validate a declared constructor property', () => {
+    const hasNumericConstructor = hasInterface<{ constructor: number }>(
+      'NumericConstructor',
+      { constructor: isNumber }
+    );
+
+    assert.strictEqual(hasNumericConstructor({}), false);
+    assert.strictEqual(hasNumericConstructor({ constructor: 1 }), true);
+  });
+
   it('should set the expectation to reference the interface name', () => {
     assert.strictEqual(isPoint.expectation, "implement 'Point'");
   });
