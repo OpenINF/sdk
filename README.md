@@ -152,11 +152,19 @@ window and drops a line when it reaches end of life, so the floor tracks the
 [Node.js release schedule](https://nodejs.org/en/about/previous-releases) rather
 than the oldest runtime the code happens to work on.
 
-TypeScript 6 or newer. That is the version every package is built and tested
-with, and three of them cannot be consumed with less: `@openinf/util-date`
-declares `Temporal`, which no earlier release knows, and `@openinf/util-types`
-and `@openinf/util` re-export it. TypeScript 5.9 reads the other ten today, but
-nothing holds them to it.
+TypeScript 6 or newer. Three packages cannot be consumed with less:
+`@openinf/util-date` declares `Temporal`, which no earlier release knows, and
+`@openinf/util-types` and `@openinf/util` re-export it. TypeScript 5.9 reads the
+other ten today, but nothing holds them to it.
+
+TypeScript 6 knows `Temporal` but does not load it by default. A project that
+uses those three packages needs `esnext.temporal`, or all of `esnext`, in its
+`lib`; otherwise the compiler reports `Cannot find namespace 'Temporal'` from
+inside the package. `@openinf/util` also refers to Node's `Buffer`, so it needs
+`@types/node` installed and `node` in `types`, which TypeScript 6 no longer
+fills in by itself. Both are type checks of the package's own declarations, so
+`skipLibCheck` silences them instead, at the cost of reading those types as
+`any`.
 
 `module` and `moduleResolution` have to be set as a pair, and to one that reads
 an `exports` map -- the older `node` resolution mode does not:
