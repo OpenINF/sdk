@@ -4,7 +4,7 @@
 // Adapted from Node.js. Copyright Joyent, Inc. and other Node contributors.
 
 import { assert } from '@openinf/assert';
-import { curlyQuote, italicize } from '@openinf/util-text';
+import { curlyQuote } from '@openinf/util-text';
 
 import { _getInvalidTypeSubMsg } from '../_internal/_get-invalid-type-sub-msg';
 import { NodeTypeError } from '../abstractions/node-type-error';
@@ -24,7 +24,7 @@ export class InvalidArgTypeError extends NodeTypeError {
   ) {
     assert(
       typeof argName === 'string',
-      `The ${curlyQuote('argName')} argument ${italicize('must')} be of type ` +
+      `The ${curlyQuote('argName')} argument must be of type ` +
         `${curlyQuote('string')}`
     );
     super(
@@ -32,7 +32,7 @@ export class InvalidArgTypeError extends NodeTypeError {
       // `_getInvalidTypeSubMsg` already renders the expected type(s) -- as
       // "of type X", "one of X or Y", or "an instance of X" -- so naming them
       // again here produced "must be string.of type 'string'".
-      `The ${curlyQuote(argName)} argument ${italicize('must')} be ` +
+      `The ${curlyQuote(argName)} argument must be ` +
         `${_getInvalidTypeSubMsg(expected, value)}`
     );
     this.name = 'InvalidArgTypeError';

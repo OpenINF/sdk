@@ -3,8 +3,6 @@
 
 // Adapted from Node.js
 
-import { inspect } from 'node:util';
-
 import { assert } from '@openinf/assert';
 import { curlyQuote } from '@openinf/util-text';
 
@@ -73,7 +71,7 @@ export function _getInvalidTypeSubMsg(
     });
     if (types.length > 2) {
       const last = types.pop();
-      msg += `one of type ${types.join(', ')}, or ${inspect(last)}`;
+      msg += `one of type ${types.join(', ')}, or ${last}`;
     } else if (types.length === 2) {
       msg += `one of type ${types[0]} or ${types[1]}`;
     } else {
@@ -88,7 +86,7 @@ export function _getInvalidTypeSubMsg(
     });
     if (instances.length > 2) {
       const last = instances.pop();
-      msg += `an instance of ${instances.join(', ')}, or ${inspect(last)}`;
+      msg += `an instance of ${instances.join(', ')}, or ${last}`;
     } else {
       msg += `an instance of ${instances[0]}`;
       if (instances.length === 2) {
@@ -104,7 +102,7 @@ export function _getInvalidTypeSubMsg(
     });
     if (other.length > 2) {
       const last = other.pop();
-      msg += `one of ${other.join(', ')}, or ${inspect(last)}`;
+      msg += `one of ${other.join(', ')}, or ${last}`;
     } else if (other.length === 2) {
       // length === 2 guarantees indices 0 and 1 are present.
       // oxlint-disable-next-line typescript/no-unnecessary-type-assertion -- oxlint-tsgolint doesn't currently honor noUncheckedIndexedAccess; tsc does require this.
