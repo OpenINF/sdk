@@ -3,6 +3,8 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
+import { curlyQuote } from '@openinf/util-text';
+
 import { validateOneOf } from '../../src/validators/validate-one-of';
 
 describe(validateOneOf.name, () => {
@@ -17,10 +19,12 @@ describe(validateOneOf.name, () => {
     );
     assert.throws(() => validateOneOf('d', 'value', ['a', 'b', 'c']), {
       code: 'ERR_INVALID_ARG_VALUE',
+      // The quotes are curly only where the locale says the terminal can show
+      // them, so the expectation is built the same way the message is.
       message:
-        'The argument \u201Cvalue\u201D must be one of: \u201Ca\u201D, ' +
-        '\u201Cb\u201D, \u201Cc\u201D. Received type \u201Cstring\u201D ' +
-        '(\u201Cd\u201D)',
+        `The argument ${curlyQuote('value')} must be one of: ` +
+        `${curlyQuote('a')}, ${curlyQuote('b')}, ${curlyQuote('c')}. ` +
+        `Received type ${curlyQuote('string')} (${curlyQuote('d')})`,
     });
   });
 
