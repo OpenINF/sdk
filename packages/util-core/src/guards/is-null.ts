@@ -20,7 +20,7 @@ import type { Guard } from '../types';
  * util.isNull(null); // ↪ true
  * ```
  */
-export function isNull(value: unknown): boolean {
+export function isNull(value: unknown): value is null {
   return value === null;
 }
 (isNull as Guard).expectation = 'be of primitive type null';
