@@ -12,13 +12,13 @@ import type { Guard } from '../types';
  * @returns `true` if `value` is `undefined`; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isUndefined } from '@openinf/util-core';
  *
- * util.isUndefined(void 0); // ↪ true
+ * isUndefined(void 0); // ↪ true
  *
- * util.isUndefined(undefined); // ↪ true
+ * isUndefined(undefined); // ↪ true
  *
- * util.isUndefined(null); // ↪ false
+ * isUndefined(null); // ↪ false
  * ```
  */
 export function isUndefined(value: unknown): value is undefined {

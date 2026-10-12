@@ -25,15 +25,15 @@ export type Falsy =
  * @returns `true` if `value` is falsy; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isFalsy } from '@openinf/util';
  *
- * util.isFalsy(false); // ↪ true
+ * isFalsy(false); // ↪ true
  *
- * util.isFalsy(''); // ↪ true
+ * isFalsy(''); // ↪ true
  *
- * util.isFalsy(new Boolean()); // ↪ false
+ * isFalsy(new Boolean()); // ↪ false
  *
- * util.isFalsy(Number.NaN); // ↪ true
+ * isFalsy(Number.NaN); // ↪ true
  * ```
  */
 export function isFalsy(value: unknown): boolean {

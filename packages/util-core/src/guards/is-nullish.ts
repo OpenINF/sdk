@@ -19,13 +19,13 @@ export type Nullish = null | undefined;
  * @returns `true` if `value` is nullish; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isNullish } from '@openinf/util-core';
  *
- * util.isNullish(null); // ↪ true
+ * isNullish(null); // ↪ true
  *
- * util.isNullish(void 0); // ↪ true
+ * isNullish(void 0); // ↪ true
  *
- * util.isNullish(NaN); // ↪ false
+ * isNullish(NaN); // ↪ false
  * ```
  */
 export function isNullish(value: unknown): value is Nullish {

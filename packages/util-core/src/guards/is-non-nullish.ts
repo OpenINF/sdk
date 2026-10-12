@@ -13,13 +13,13 @@ import type { Guard } from '../types';
  * @returns `true` if `value` is non-nullish; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isNonNullish } from '@openinf/util-core';
  *
- * util.isNonNullish(null); // ↪ false
+ * isNonNullish(null); // ↪ false
  *
- * util.isNonNullish(void 0); // ↪ false
+ * isNonNullish(void 0); // ↪ false
  *
- * util.isNonNullish(NaN); // ↪ true
+ * isNonNullish(NaN); // ↪ true
  * ```
  */
 export function isNonNullish<T = unknown>(value: T): value is NonNullable<T> {

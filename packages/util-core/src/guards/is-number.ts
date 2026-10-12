@@ -17,19 +17,19 @@ import type { Guard } from '../types';
  * @see isNumberObject, isFiniteNumber, isInteger
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isNumber } from '@openinf/util-core';
  *
- * util.isNumber('0'); // ↪ false
+ * isNumber('0'); // ↪ false
  *
- * util.isNumber(0); // ↪ true
+ * isNumber(0); // ↪ true
  *
- * util.isNumber(new Number(0)); // ↪ false
+ * isNumber(new Number(0)); // ↪ false
  *
- * util.isNumber(Number.MIN_VALUE); // ↪ true
+ * isNumber(Number.MIN_VALUE); // ↪ true
  *
- * util.isNumber(NaN); // ↪ true
+ * isNumber(NaN); // ↪ true
  *
- * util.isNumber(Infinity); // ↪ true
+ * isNumber(Infinity); // ↪ true
  * ```
  */
 export function isNumber(value: unknown): value is number {

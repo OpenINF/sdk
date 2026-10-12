@@ -53,7 +53,7 @@ export type InterfaceValidators<T extends object> = [T] extends [never]
  * @returns The guard.
  * @example
  * ```ts
- * import { hasInterface, isNumber, isString } from '@openinf/util';
+ * import { hasInterface, isNumber, isString } from '@openinf/util-core';
  *
  * interface Point {
  *   x: number;

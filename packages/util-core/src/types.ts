@@ -134,7 +134,7 @@ export type Tag<T extends string> = {
  *
  * Branding gives each one a distinct identity, so the compiler catches it:
  * ```ts
- * import type { Tagged } from '@openinf/util';
+ * import type { Tagged } from '@openinf/util-core';
  *
  * type UserId = Tagged<string, '__UserId__'>;
  * type PostId = Tagged<string, '__PostId__'>;

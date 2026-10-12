@@ -23,13 +23,13 @@ export type NaN = Tagged<typeof NaN, '__NaN__'>;
  * @returns `true` if `value` is `NaN`; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isNaN } from '@openinf/util-number';
  *
- * util.isNaN(NaN); // ↪ true
+ * isNaN(NaN); // ↪ true
  *
- * util.isNaN(new Number(NaN)); // ↪ false
+ * isNaN(new Number(NaN)); // ↪ false
  *
- * util.isNaN(undefined); // ↪ false
+ * isNaN(undefined); // ↪ false
  * ```
  */
 export function isNaN(value: unknown): value is NaN {

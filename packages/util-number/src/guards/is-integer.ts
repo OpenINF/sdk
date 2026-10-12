@@ -21,7 +21,7 @@ export type Integer = Tagged<number, '__Integer__'>;
  * @returns `true` if `value` is an integer; else, `false`.
  * @example
  * ```ts
- * import { isInteger } from '@openinf/util';
+ * import { isInteger } from '@openinf/util-number';
  *
  * isInteger(3); // ↪ true
  *

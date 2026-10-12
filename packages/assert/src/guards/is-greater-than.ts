@@ -9,7 +9,7 @@ import { isComparable } from './is-comparable';
 
 /**
  * Creates a validator that tests if a value is greater than `expected`. If the
- * value implements {@link @openinf/util!Comparable}, its `compareTo` method is used;
+ * value implements {@link @openinf/util!Comparable | Comparable}, its `compareTo` method is used;
  * otherwise, strings, numbers, or bigints of the same type are compared.
  * @param expected The value to compare against.
  * @returns The validator.

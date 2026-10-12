@@ -12,15 +12,15 @@ import type { Guard } from '../types';
  * @returns `true` if `value` is a bigint; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isBigInt } from '@openinf/util-core';
  *
- * util.isBigInt(3); // ↪ false
+ * isBigInt(3); // ↪ false
  *
- * util.isBigInt(3n); // ↪ true
+ * isBigInt(3n); // ↪ true
  *
- * util.isBigInt(4.4); // ↪ false
+ * isBigInt(4.4); // ↪ false
  *
- * util.isBigInt(Object(5n)); // ↪ false
+ * isBigInt(Object(5n)); // ↪ false
  * ```
  */
 export function isBigInt(value: unknown): value is bigint {
