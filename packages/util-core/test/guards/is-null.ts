@@ -15,4 +15,13 @@ describe(isNull.name, () => {
     assert.strictEqual(isNull(undefined), false);
     assert.strictEqual(isNull(0), false);
   });
+
+  it('should narrow to null', () => {
+    const values: (string | null)[] = ['text', null];
+    const lengths = values.map((value) =>
+      // Compiles only if isNull narrowed `value` to string in the else branch.
+      isNull(value) ? -1 : value.length
+    );
+    assert.deepStrictEqual(lengths, [4, -1]);
+  });
 });
