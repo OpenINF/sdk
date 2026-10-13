@@ -21,13 +21,13 @@ export type Negative = Tagged<number, '__Negative__'>;
  * @returns `true` if `value` is negative; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isNegative } from '@openinf/util-number';
  *
- * util.isNegative(-1); // ↪ true
+ * isNegative(-1); // ↪ true
  *
- * util.isNegative(0); // ↪ false
+ * isNegative(0); // ↪ false
  *
- * util.isNegative(1); // ↪ false
+ * isNegative(1); // ↪ false
  * ```
  */
 export function isNegative(value: unknown): value is Negative {

@@ -12,15 +12,15 @@ import type { Guard } from '../types';
  * @returns `true` if `value` is a string; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isString } from '@openinf/util-core';
  *
- * util.isString(''); // ↪ true
+ * isString(''); // ↪ true
  *
- * util.isString('foo'); // ↪ true
+ * isString('foo'); // ↪ true
  *
- * util.isString(new String('bar')); // ↪ false
+ * isString(new String('bar')); // ↪ false
  *
- * util.isString(/baz/); // ↪ false
+ * isString(/baz/); // ↪ false
  * ```
  */
 export function isString(value: unknown): value is string {

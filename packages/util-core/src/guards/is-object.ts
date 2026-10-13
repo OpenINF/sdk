@@ -12,13 +12,13 @@ import type { Guard } from '../types';
  * @returns `true` if `value` is an object; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isObject } from '@openinf/util-core';
  *
- * util.isObject({}); // ↪ true
+ * isObject({}); // ↪ true
  *
- * util.isObject(null); // ↪ false
+ * isObject(null); // ↪ false
  *
- * util.isObject(() => {}); // ↪ false
+ * isObject(() => {}); // ↪ false
  * ```
  */
 export function isObject(value: unknown): value is Record<string, unknown> {

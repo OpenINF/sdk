@@ -11,15 +11,15 @@ import type { Guard } from '../types';
  * @returns `true` if `value` is a symbol; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isSymbol } from '@openinf/util-core';
  *
- * util.isSymbol('@#$%&!'); // ↪ false
+ * isSymbol('@#$%&!'); // ↪ false
  *
- * util.isSymbol(Symbol('foo')); // ↪ true
+ * isSymbol(Symbol('foo')); // ↪ true
  *
- * util.isSymbol(Symbol.iterator); // ↪ true
+ * isSymbol(Symbol.iterator); // ↪ true
  *
- * util.isSymbol(Object(Symbol('foo'))); // ↪ false
+ * isSymbol(Object(Symbol('foo'))); // ↪ false
  * ```
  */
 export function isSymbol(value: unknown): value is symbol {

@@ -36,7 +36,8 @@ export function and<T1, T2, T3, T4>(
  * @returns A guard that tests if a value satisfies all of `guards`.
  * @example
  * ```ts
- * import { and, isNumber, isPositive } from '@openinf/util';
+ * import { and, isNumber } from '@openinf/util-core';
+ * import { isPositive } from '@openinf/util-number';
  *
  * const isPositiveNumber = and(isNumber, isPositive);
  *

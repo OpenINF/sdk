@@ -14,13 +14,13 @@ import { Guard } from '../types';
  * @returns `true` if `value` is an `Array`; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isArray } from '@openinf/util-core';
  *
- * util.isArray([]); // ↪ true
+ * isArray([]); // ↪ true
  *
- * util.isArray(new Array()); // ↪ true
+ * isArray(new Array()); // ↪ true
  *
- * util.isArray({}); // ↪ false
+ * isArray({}); // ↪ false
  * ```
  */
 export function isArray(value: unknown): value is unknown[] {

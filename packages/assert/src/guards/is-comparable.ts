@@ -5,7 +5,7 @@ import { isNonNullish } from '@openinf/util-core';
 import type { Comparable, Guard } from '@openinf/util-core';
 
 /**
- * Detects whether `value` implements the {@link @openinf/util!Comparable} interface, i.e.
+ * Detects whether `value` implements the {@link @openinf/util!Comparable | Comparable} interface, i.e.
  * has a `compareTo` method.
  * @param value The value to identify.
  * @returns `true` if `value` is Comparable; else, `false`.

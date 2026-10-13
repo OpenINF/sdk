@@ -12,13 +12,13 @@ import type { Guard } from '../types';
  * @returns `true` if `value` is not `undefined` or `null`; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isDefined } from '@openinf/util-core';
  *
- * util.isDefined(void 0); // ↪ false
+ * isDefined(void 0); // ↪ false
  *
- * util.isDefined(undefined); // ↪ false
+ * isDefined(undefined); // ↪ false
  *
- * util.isDefined(null); // ↪ false
+ * isDefined(null); // ↪ false
  * ```
  */
 export function isDefined<T>(value: T | undefined | null | void): value is T {

@@ -35,12 +35,15 @@ export * from './helpers/is-node';
 export * from './guards/is-buffer';
 export * from './guards/is-falsy';
 
+// From @openinf/util-types: `isIterator` alone. Re-exporting all of it would
+// collide with the guards this package already re-exports from the packages
+// util-types itself re-exports.
+export { isIterator } from '@openinf/util-types';
+
 // From @openinf/util-object: `isError`, since an Error is a Fundamental Object
 // in section 20.5, and the type-name helpers, which read
 // `Object.prototype.toString` and belong with the rest of the Object
 // operations.
-export { isIterator } from '@openinf/util-types';
-
 export {
   getObjectType,
   isError,

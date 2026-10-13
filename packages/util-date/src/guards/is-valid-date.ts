@@ -31,7 +31,7 @@ export type ValidDate = Tagged<Date, '__ValidDate__'>;
  * @returns `true` if `value` is a valid `Date`; else, `false`.
  * @example
  * ```ts
- * import { isValidDate } from '@openinf/util';
+ * import { isValidDate } from '@openinf/util-date';
  *
  * isValidDate(new Date(91, 1)); // ↪ true
  *

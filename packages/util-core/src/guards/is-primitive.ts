@@ -21,29 +21,29 @@ export type Primitive =
  * @returns `true` if `value` is a primitive; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isPrimitive } from '@openinf/util-core';
  *
- * util.isPrimitive(0); // ↪ true
+ * isPrimitive(0); // ↪ true
  *
- * util.isPrimitive(new Number(0)); // ↪ false
+ * isPrimitive(new Number(0)); // ↪ false
  *
- * util.isPrimitive('foo'); // ↪ true
+ * isPrimitive('foo'); // ↪ true
  *
- * util.isPrimitive(false); // ↪ true
+ * isPrimitive(false); // ↪ true
  *
- * util.isPrimitive(new Boolean(true)); // ↪ false
+ * isPrimitive(new Boolean(true)); // ↪ false
  *
- * util.isPrimitive(null); // ↪ true
+ * isPrimitive(null); // ↪ true
  *
- * util.isPrimitive(undefined); // ↪ true
+ * isPrimitive(undefined); // ↪ true
  *
- * util.isPrimitive({}); // ↪ false
+ * isPrimitive({}); // ↪ false
  *
- * util.isPrimitive(() => {}); // ↪ false
+ * isPrimitive(() => {}); // ↪ false
  *
- * util.isPrimitive(/^$/); // ↪ false
+ * isPrimitive(/^$/); // ↪ false
  *
- * util.isPrimitive(new Date()); // ↪ false
+ * isPrimitive(new Date()); // ↪ false
  * ```
  */
 export function isPrimitive(value: unknown): value is Primitive {

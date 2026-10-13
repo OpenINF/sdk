@@ -20,9 +20,13 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is an `AsyncGenerator`; else, `false`.
  * @example
  * ```ts
- * Object.getPrototypeOf(async function* () { yield 0; });
- * globalThis.AsyncGenerator = Object.getPrototypeOf(async function* () {});
- * isAsyncGenerator(new AsyncGenerator()); //=> true
+ * async function* count() {
+ *   yield 0;
+ * }
+ *
+ * isAsyncGenerator(count()); // ↪ true
+ *
+ * isAsyncGenerator(count); // ↪ false
  * ```
  */
 export function isAsyncGenerator(value: unknown): boolean {
