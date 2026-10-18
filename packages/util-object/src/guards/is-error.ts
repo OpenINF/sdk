@@ -22,13 +22,13 @@ import type { Guard } from '@openinf/util-core';
  * @returns `true` if `value` is an `Error`; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isError } from '@openinf/util-object';
  *
- * util.isError(new Error('foo')); // ↪ true
+ * isError(new Error('foo')); // ↪ true
  *
- * util.isError({ message: 'foo', name: 'bar' }); // ↪ false
+ * isError({ message: 'foo', name: 'bar' }); // ↪ false
  *
- * util.isError(Object.create(Error.prototype)); // ↪ true
+ * isError(Object.create(Error.prototype)); // ↪ true
  * ```
  */
 export function isError(value: unknown): value is globalThis.Error {

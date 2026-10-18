@@ -14,17 +14,17 @@ import type { Guard } from '@openinf/util-core';
  * @returns `true` if `value` is a Buffer; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isBuffer } from '@openinf/util';
  *
- * util.isBuffer({ length: 0 }); // ↪ false
+ * isBuffer({ length: 0 }); // ↪ false
  *
- * util.isBuffer([]); // ↪ false
+ * isBuffer([]); // ↪ false
  *
- * util.isBuffer(Buffer.from('foo')); // ↪ true
+ * isBuffer(Buffer.from('foo')); // ↪ true
  *
- * util.isBuffer(new Uint8Array(1024)); // ↪ false
+ * isBuffer(new Uint8Array(1024)); // ↪ false
  *
- * util.isBuffer(Buffer.alloc(10)); // ↪ true
+ * isBuffer(Buffer.alloc(10)); // ↪ true
  * ```
  */
 export function isBuffer(value: unknown): value is globalThis.Buffer {

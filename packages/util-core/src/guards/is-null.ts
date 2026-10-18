@@ -11,13 +11,13 @@ import type { Guard } from '../types';
  * @returns `true` if `value` is `null`; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isNull } from '@openinf/util-core';
  *
- * util.isNull(NaN); // ↪ false
+ * isNull(NaN); // ↪ false
  *
- * util.isNull(undefined); // ↪ false
+ * isNull(undefined); // ↪ false
  *
- * util.isNull(null); // ↪ true
+ * isNull(null); // ↪ true
  * ```
  */
 export function isNull(value: unknown): value is null {

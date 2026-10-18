@@ -20,15 +20,15 @@ export type FiniteNumber = Tagged<number, '__FiniteNumber__'>;
  * @returns `true` if `value` is a finite number; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isFiniteNumber } from '@openinf/util-number';
  *
- * util.isFiniteNumber(0); // ↪ true
+ * isFiniteNumber(0); // ↪ true
  *
- * util.isFiniteNumber(Infinity); // ↪ false
+ * isFiniteNumber(Infinity); // ↪ false
  *
- * util.isFiniteNumber(NaN); // ↪ false
+ * isFiniteNumber(NaN); // ↪ false
  *
- * util.isFiniteNumber('0'); // ↪ false
+ * isFiniteNumber('0'); // ↪ false
  * ```
  */
 export function isFiniteNumber(value: unknown): value is FiniteNumber {

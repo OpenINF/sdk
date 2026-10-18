@@ -17,7 +17,7 @@ export type Int32 = Tagged<number, '__Int32__'>;
  * @returns `true` if `value` is an int32; else, `false`.
  * @example
  * ```ts
- * import { isInt32 } from '@openinf/util';
+ * import { isInt32 } from '@openinf/util-number';
  *
  * isInt32(123); // ↪ true
  *

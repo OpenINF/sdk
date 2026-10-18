@@ -8,7 +8,7 @@ import { isEquatable } from './is-equatable';
 
 /**
  * Creates a validator that tests if a value is equal to `expected`. If
- * `expected` implements {@link @openinf/util!Equatable}, its `equals` method is used;
+ * `expected` implements {@link @openinf/util!Equatable | Equatable}, its `equals` method is used;
  * otherwise, values are compared with `===`.
  * Equality does not establish a type: an `equals` method can accept another
  * type, and a different value can still have the expected value's type.

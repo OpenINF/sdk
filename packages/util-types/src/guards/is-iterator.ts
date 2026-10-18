@@ -7,7 +7,7 @@ import type { Guard } from '@openinf/util-core';
  * Detects whether `value` conforms to the
  * [iterator protocol](https://mdn.io/iteration_protocols#the_iterator_protocol):
  * it has a `next` method. An iterator does not have to be iterable; use
- * {@link isIterable} when a `Symbol.iterator` method is also required.
+ * {@link @openinf/util-types!isIterable | isIterable} when a `Symbol.iterator` method is also required.
  * This shallow check does not call `next`, inspect its result, or validate
  * optional methods, so it returns a boolean without narrowing to `Iterator`.
  * @since 3.0.0
@@ -16,11 +16,11 @@ import type { Guard } from '@openinf/util-core';
  * @returns `true` if `value` is an iterator; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isIterator } from '@openinf/util-types';
  *
- * util.isIterator([][Symbol.iterator]()); // ↪ true
+ * isIterator([][Symbol.iterator]()); // ↪ true
  *
- * util.isIterator([]); // ↪ false
+ * isIterator([]); // ↪ false
  * ```
  */
 export function isIterator(value: unknown): boolean {

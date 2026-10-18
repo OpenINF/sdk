@@ -12,15 +12,15 @@ import type { Guard } from '../types';
  * @returns `true` if `value` is a boolean; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isBoolean } from '@openinf/util-core';
  *
- * util.isBoolean(1); // ↪ false
+ * isBoolean(1); // ↪ false
  *
- * util.isBoolean(false); // ↪ true
+ * isBoolean(false); // ↪ true
  *
- * util.isBoolean(new Boolean(false)); // ↪ false
+ * isBoolean(new Boolean(false)); // ↪ false
  *
- * util.isBoolean(null); // ↪ false
+ * isBoolean(null); // ↪ false
  * ```
  */
 export function isBoolean(value: unknown): value is boolean {

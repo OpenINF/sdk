@@ -21,13 +21,13 @@ export type NegativeInteger = Tagged<number, '__NegativeInteger__'>;
  * @returns `true` if `value` is a negative integer; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isNegativeInteger } from '@openinf/util-number';
  *
- * util.isNegativeInteger(-1); // ↪ true
+ * isNegativeInteger(-1); // ↪ true
  *
- * util.isNegativeInteger(-1.5); // ↪ false
+ * isNegativeInteger(-1.5); // ↪ false
  *
- * util.isNegativeInteger(1); // ↪ false
+ * isNegativeInteger(1); // ↪ false
  * ```
  */
 export function isNegativeInteger(value: unknown): value is NegativeInteger {

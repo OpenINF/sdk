@@ -12,19 +12,19 @@ import type { AnyFunction, Guard } from '../types';
  * @returns `true` if `value` is a function; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isFunction } from '@openinf/util-core';
  *
- * util.isFunction(class foo {}); // ↪ true
+ * isFunction(class foo {}); // ↪ true
  *
- * util.isFunction(() => {}); // ↪ true
+ * isFunction(() => {}); // ↪ true
  *
- * util.isFunction(async () => {}); // ↪ true
+ * isFunction(async () => {}); // ↪ true
  *
- * util.isFunction(function* bar() {}); // ↪ true
+ * isFunction(function* bar() {}); // ↪ true
  *
- * util.isFunction(Math.round); // ↪ true
+ * isFunction(Math.round); // ↪ true
  *
- * util.isFunction(/abc/); // ↪ false
+ * isFunction(/abc/); // ↪ false
  * ```
  */
 export function isFunction(value: unknown): value is AnyFunction {

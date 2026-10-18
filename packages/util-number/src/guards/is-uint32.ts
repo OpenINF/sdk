@@ -17,7 +17,7 @@ export type Uint32 = Tagged<number, '__Uint32__'>;
  * @returns `true` if `value` is a uint32; else, `false`.
  * @example
  * ```ts
- * import { isUint32 } from '@openinf/util';
+ * import { isUint32 } from '@openinf/util-number';
  *
  * isUint32(123); // ↪ true
  *

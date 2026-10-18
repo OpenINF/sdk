@@ -36,7 +36,7 @@ export function or<T1, T2, T3, T4>(
  * @returns A guard that tests if a value satisfies any of `guards`.
  * @example
  * ```ts
- * import { or, isNull, isUndefined } from '@openinf/util';
+ * import { or, isNull, isUndefined } from '@openinf/util-core';
  *
  * const isNullish = or(isNull, isUndefined);
  *

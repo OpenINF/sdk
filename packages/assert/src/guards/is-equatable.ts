@@ -5,7 +5,7 @@ import { isNonNullish } from '@openinf/util-core';
 import type { Equatable, Guard } from '@openinf/util-core';
 
 /**
- * Detects whether `value` implements the {@link @openinf/util!Equatable} interface, i.e.
+ * Detects whether `value` implements the {@link @openinf/util!Equatable | Equatable} interface, i.e.
  * has an `equals` method.
  * @param value The value to identify.
  * @returns `true` if `value` is Equatable; else, `false`.

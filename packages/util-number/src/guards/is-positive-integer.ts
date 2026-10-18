@@ -21,13 +21,13 @@ export type PositiveInteger = Tagged<number, '__PositiveInteger__'>;
  * @returns `true` if `value` is a positive integer; else, `false`.
  * @example
  * ```ts
- * import util from '@openinf/util';
+ * import { isPositiveInteger } from '@openinf/util-number';
  *
- * util.isPositiveInteger(1); // ↪ true
+ * isPositiveInteger(1); // ↪ true
  *
- * util.isPositiveInteger(1.5); // ↪ false
+ * isPositiveInteger(1.5); // ↪ false
  *
- * util.isPositiveInteger(-1); // ↪ false
+ * isPositiveInteger(-1); // ↪ false
  * ```
  */
 export function isPositiveInteger(value: unknown): value is PositiveInteger {
