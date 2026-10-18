@@ -42,5 +42,3 @@ export class InvalidArgValueError extends NodeTypeError {
     this.name = 'InvalidArgValueError';
   }
 }
-
-// `The argument '${name}' ${reason}. Received ${inspect(value)}`.

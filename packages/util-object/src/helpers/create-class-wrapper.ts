@@ -1,13 +1,6 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-// Useful for wrapping an ES6 class with a constructor function that does not
-// require the `new` keyword. For instance:
-//   class A { constructor(x) { this.x = x; } }
-//   const B = createClassWrapper(A);
-//   B() instanceof A // true
-//   B() instanceof B // true
-
 interface ClassLike {
   name: string;
   length: number;
@@ -20,6 +13,22 @@ interface ClassLike {
  * @category Fundamental Objects
  * @param type The class to wrap.
  * @returns The wrapper function, callable both with and without `new`.
+ * @example
+ * ```ts
+ * class Point {
+ *   x: number;
+ *
+ *   constructor(x: number) {
+ *     this.x = x;
+ *   }
+ * }
+ *
+ * const makePoint = createClassWrapper(Point);
+ *
+ * makePoint(1) instanceof Point; // ↪ true
+ *
+ * makePoint(1) instanceof makePoint; // ↪ true
+ * ```
  */
 export function createClassWrapper<T extends new (...args: any[]) => unknown>(
   type: T

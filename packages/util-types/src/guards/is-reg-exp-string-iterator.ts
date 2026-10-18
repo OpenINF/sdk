@@ -6,7 +6,7 @@
 import { _tagTester, isObjectLike } from '@openinf/util-core';
 
 /**
- * Detects whether `value` is classified as an
+ * Detects whether `value` is classified as a
  * [`RegExp String Iterator`](https://mdn.io/Global_Objects/String/matchAll), what `String.prototype.matchAll` returns, section 22.2.9 of the specification.
  *
  * Like the Map and Set iterator guards, this is a tag-and-shape heuristic

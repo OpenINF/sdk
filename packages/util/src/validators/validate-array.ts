@@ -30,8 +30,8 @@ export function validateArray(
   assertValue(isLength, minLength);
   if (!isArray(value)) throw new InvalidArgTypeError(argName, 'Array', value);
   if (value.length < minLength) {
-    // Node's wording, which it moved to from "must be longer than": the bound
-    // is inclusive, and an array holding exactly `minLength` elements passes.
+    // Node's wording. The bound is inclusive: an array holding exactly
+    // `minLength` elements passes.
     const reason = `must have a length of at least ${minLength}`;
     throw new InvalidArgValueError(argName, value, reason);
   }

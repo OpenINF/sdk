@@ -1,9 +1,6 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
-// As of V8 6.6, depending on the size of the array, this is anywhere
-// between 1.5-10x faster than the two-arg version of Array#splice()
-
 /**
  * Removes a single element from `list` at `index`, in place.
  * @category Indexed Collections
@@ -20,7 +17,7 @@ export function spliceOne<T>(list: T[], index: number): void {
     // `Object.hasOwn` rather than `in`, which answers for the prototype as
     // well. A numeric property on `Array.prototype` would otherwise be copied
     // into the array in place of the hole it is standing in for, and this
-    // package's whole point at the moment is not trusting that object.
+    // package does not trust that object.
     if (Object.hasOwn(list, index + 1)) {
       // index + 1 < list.length and the presence check guarantee this access.
       list[index] = list[index + 1]!;

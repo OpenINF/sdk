@@ -9,8 +9,8 @@ import { _getReceivedSubMsg } from '../../src/_internal/_get-received-sub-msg';
 // characters, which are curly or straight depending on the locale.
 describe('_getReceivedSubMsg', () => {
   it('should render primitives without mangling them', () => {
-    // Regression: an unconditional .slice(1, -1) stripped the first and last
-    // character of every inspected value, rendering 42 as '' and true as 'ru'.
+    // An unconditional .slice(1, -1) would strip the first and last character
+    // of every inspected value, rendering 42 as '' and true as 'ru'.
     assert.match(_getReceivedSubMsg(42), /42/);
     assert.match(_getReceivedSubMsg(true), /true/);
     assert.match(_getReceivedSubMsg(0), /0/);
@@ -23,7 +23,7 @@ describe('_getReceivedSubMsg', () => {
   });
 
   it('should render empty objects and arrays rather than emptying them', () => {
-    // Regression: both used to render as an empty string.
+    // Unwrapping them like a placeholder would render both as nothing.
     assert.match(_getReceivedSubMsg({}), /\{\}/);
     assert.match(_getReceivedSubMsg([]), /\[\]/);
   });

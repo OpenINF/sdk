@@ -43,7 +43,7 @@ export function assertValue<T>(
  * @param value The value to check.
  * @param name An optional name for the value to be used in the error message.
  * @param expectation An optional expectation string to use in the error
- * message. Will override the expectation string attached to the guard.
+ * message. Will override the expectation string attached to the validator.
  */
 export function assertValue(
   validator: Validator | (() => Validator),

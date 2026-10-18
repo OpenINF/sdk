@@ -5,9 +5,7 @@
 // A README example is the first code a prospective consumer reads, and it is
 // the code most likely to rot: it is prose to the compiler and to the test
 // runner, so nothing else here would notice it drifting from the API it
-// documents. Two examples were already wrong when this was written -- one
-// imported a name the package does not export, another imported one name and
-// called a different one -- and neither broke anything that was being run.
+// documents.
 //
 // Every fenced `ts` block is checked two ways:
 //

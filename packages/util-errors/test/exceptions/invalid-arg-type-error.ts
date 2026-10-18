@@ -65,9 +65,8 @@ describe(InvalidArgTypeError.name, () => {
   });
 
   it('should keep terminal escape codes out of the message', (t) => {
-    // The message used to italicize "must" whenever stdout was a terminal, so
-    // a message logged to a file or compared in a test depended on where the
-    // process happened to be running.
+    // A message styled for a terminal would differ between a log file, a test
+    // and the console, depending on where the process happened to be running.
     // `isTTY` is only an own property when stdout is a terminal, so it is
     // defined here and its original descriptor, if any, put back afterwards.
     const isTTY = Object.getOwnPropertyDescriptor(process.stdout, 'isTTY');

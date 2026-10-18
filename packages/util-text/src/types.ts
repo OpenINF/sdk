@@ -9,11 +9,11 @@
  * @see https://developer.mozilla.org/en-US/docs/Tools/Web_Console/Console_messages
  */
 export enum UnicodeEscapes {
-  infoSymbol = 'ⓘ', // ⓘ
-  midlineEllipsis = '⋯', // ⋯
-  ellipsis = '…', // …
-  errorSymbol = 'ⓧ', // ⓧ
-  leftDoubleQuotes = '“', // “
-  rightDoubleQuotes = '”', // ”
-  warningSymbol = '⚠', // ⚠
+  infoSymbol = 'ⓘ',
+  midlineEllipsis = '⋯',
+  ellipsis = '…',
+  errorSymbol = 'ⓧ',
+  leftDoubleQuotes = '“',
+  rightDoubleQuotes = '”',
+  warningSymbol = '⚠',
 }

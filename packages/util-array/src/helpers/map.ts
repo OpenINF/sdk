@@ -7,7 +7,8 @@ import { isArrayLike } from '../guards/is-array-like';
 
 /**
  * Translates the elements of an array-like or object into a new array,
- * flattening any nested arrays produced by `callback` one level deep.
+ * flattening any nested arrays produced by `callback` one level deep. A
+ * `null` or `undefined` result is left out.
  * @category Indexed Collections
  * @param elems The array-like or object to map over.
  * @param callback The function used to translate each element.
@@ -33,9 +34,8 @@ export function map<T, R>(
         ret.push(value);
       }
     }
-
-    // Go through every key on the object,
   } else {
+    // Go through every key on the object
     for (const key in elems) {
       // key comes from `for...in` over elems, so it is guaranteed present.
       // oxlint-disable-next-line typescript/no-unnecessary-type-assertion -- oxlint-tsgolint doesn't currently honor noUncheckedIndexedAccess; tsc does require this.

@@ -24,8 +24,7 @@ const LICENSE = 'MIT';
 // than lingering as best-effort. Jod entered LTS at 22.11.0, but 22.12.0 is the
 // first 22.x whose require() loads an ES module, which the CommonJS build of
 // @openinf/gh-file-importer needs for the ESM-only @octokit/rest; CI tests this
-// floor exactly. Iron (20.x) reached end of life on 2026-04-30 and the previous
-// `>=20.19.0` floor has admitted an unsupported line since.
+// floor exactly.
 //
 // Moves next on 2027-04-30, when Jod reaches end of life and the floor becomes
 // 24.11.0. See <https://nodejs.org/en/about/previous-releases>.
@@ -90,10 +89,10 @@ function syncOne(dirName) {
     pkg.exports = exportsFromMain(pkg.main);
   }
 
-  // Every packages/*/src module was audited (2026-08-01) for top-level
-  // statements a bundler would have to evaluate on import. All of them are
-  // module-local: `guard.expectation = '...'` assignments onto a function
-  // declared in the same module, regex/string-literal constants, and the
+  // No packages/*/src module has a top-level statement a bundler would have
+  // to keep for its effect on import. Every one is module-local:
+  // `guard.expectation = '...'` assignments onto a function declared in the
+  // same module, regex/string-literal constants, and the
   // `Object.setPrototypeOf(NodeTypeError.prototype, TypeError.prototype)`
   // wiring in util-errors/src/abstractions (whose target is module-local and
   // whose source is only read). Nothing mutates a global, patches a builtin

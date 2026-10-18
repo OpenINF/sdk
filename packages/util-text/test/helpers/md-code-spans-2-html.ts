@@ -104,7 +104,7 @@ describe('mdCodeSpans2html performance', () => {
   });
 
   it('should stay linear on adversarial backtick input', () => {
-    // The previous regex backtracked quadratically here: 80 KB took ~20s.
+    // A backtracking pattern goes quadratic on this input.
     const adversarial = '`'.repeat(200_000) + 'x'.repeat(200_000);
     const start = Date.now();
     mdCodeSpans2html(adversarial);
@@ -131,7 +131,7 @@ describe('mdCodeSpans2html performance', () => {
 
   it('should require the opening and closing backtick runs to be equal', () => {
     // CommonMark: a backtick string is maximal, so a run of 3 cannot be closed
-    // by a run of 1. The old regex matched here by starting mid-run.
+    // by a run of 1, and a match must not start in the middle of a run.
     assert.strictEqual(mdCodeSpans2html('```a`'), '```a`');
     assert.strictEqual(mdCodeSpans2html('``a```'), '``a```');
   });

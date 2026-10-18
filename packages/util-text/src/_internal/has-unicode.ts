@@ -16,8 +16,7 @@ const UTF8_CHARSET = /UTF-?8$/i;
  *
  * Windows is always reported as `false`: modern consoles *can* display
  * Unicode but frequently use a local code page instead, and determining
- * which requires Win32 system calls or shelling out to `chcp`. Callers
- * needing Unicode on Windows should provide their own override.
+ * which requires Win32 system calls or shelling out to `chcp`.
  * @returns `true` if Unicode is supported; else, `false`.
  */
 export function hasUnicode(): boolean {

@@ -8,7 +8,8 @@ import { UnicodeEscapes } from '../types';
  * Returns the supplied string as curly quoted if Unicode is supported.
  * @category Text Processing
  * @param text The string to quote.
- * @returns The curly quoted string.
+ * @returns `text` in curly double quotes, or in straight ones where Unicode
+ * is not supported.
  */
 export function curlyQuote(text: string): string {
   // Detected once: both quotes answer the same question, and `hasUnicode`

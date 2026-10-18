@@ -14,7 +14,7 @@ export function omit<T>(
   obj: Record<string, T>,
   props: string[]
 ): Record<string, T> {
-  // Built once. Scanning `props` per key made this O(keys x props).
+  // Built once. Scanning `props` per key would make this O(keys x props).
   const omitted = new Set(props);
   return Object.keys(obj).reduce((acc: Record<string, T>, key) => {
     if (!omitted.has(key) && !_isUnsafeKey(key)) {

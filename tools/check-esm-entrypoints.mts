@@ -5,8 +5,8 @@
  * @module {type ES6Module} tools/check-esm-entrypoints
  */
 
-// Every package ships two builds, and until now only one of them ran. The
-// tests import TypeScript sources compiled for CommonJS, and `lint:packages`
+// Every package ships two builds, and the tests run only one of them: they
+// import TypeScript sources compiled for CommonJS. `lint:packages`
 // checks that `dist/esm` resolves for each kind of consumer, with publint and
 // arethetypeswrong, but resolving is not loading: a build that throws on
 // import, or that lost an export on its way through the ESM step, would pass

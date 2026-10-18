@@ -273,8 +273,8 @@ describe('GhFileImporter', () => {
       });
     });
 
-    // Before logLevel existed the built-in logger was pinned to 'info', so
-    // these two debug messages could never be emitted by any caller.
+    // The built-in logger defaults to 'info', so these two debug messages are
+    // only emitted when logLevel asks for them.
     it('should emit the omitted-path and omitted-ref debug messages at debug level', async () => {
       mockOctokit(async () => ({ data: {} }));
       const { GhFileImporter } = freshRequire('../src/index');

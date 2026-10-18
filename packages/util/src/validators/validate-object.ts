@@ -24,10 +24,10 @@ export interface ConformanceDescriptor {
  * @category Data Types and Values
  * @param value The argument to check.
  * @param argName The argument's name, used in the error message.
- * @param root0 Which of the borderline cases to accept.
- * @param root0.nullable Whether `null` is accepted.
- * @param root0.allowArray Whether an array is accepted.
- * @param root0.allowFunction Whether a function is accepted.
+ * @param descriptor Which of the borderline cases to accept.
+ * @param descriptor.nullable Whether `null` is accepted.
+ * @param descriptor.allowArray Whether an array is accepted.
+ * @param descriptor.allowFunction Whether a function is accepted.
  * @throws {InvalidArgTypeError} if `value` is not an object the descriptor
  * allows.
  */

@@ -31,7 +31,6 @@ import { isStringObject } from '@openinf/util-string';
  * ```
  */
 export function isBoxedPrimitive(value: unknown): boolean {
-  // has valueOf method
   return (
     isBooleanObject(value) ||
     isStringObject(value) ||

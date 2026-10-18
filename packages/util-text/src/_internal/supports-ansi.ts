@@ -12,9 +12,7 @@
 //  2. MinGW/MSYS2 is detected via the `MSYSTEM` environment variable those
 //     shells set, rather than by invoking `uname` through the original's
 //     `is-mingw` dependency. That removes a synchronous subprocess launch
-//     from what should be a cheap string helper. (Worded without naming the
-//     child-process APIs so supply-chain scanners do not read this comment
-//     as evidence of shell access.)
+//     from what should be a cheap string helper.
 
 import { release } from 'node:os';
 

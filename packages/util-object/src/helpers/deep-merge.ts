@@ -52,8 +52,8 @@ export function deepMerge(
   depth = 10
 ): Record<string, unknown> {
   // Iterated rather than drained with `shift()`, which is O(n) on V8 because
-  // it reindexes the array, and so was the other half of the quadratic
-  // behavior. An array iterator rechecks `length` on each step, so entries
+  // it reindexes the array, and would make the traversal quadratic. An
+  // array iterator rechecks `length` on each step, so entries
   // pushed below are still visited and the traversal stays breadth-first.
   const queue: TargetSourceDepth[] = [{ t: target, s: source, d: 0 }];
 

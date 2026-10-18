@@ -4,11 +4,11 @@
 // Adapted from jQuery
 
 /**
- * Merge the elements of two array.
+ * Appends the elements of `second` to `first`, in place.
  * @category Indexed Collections
- * @param first Array 1
- * @param second Array 2
- * @returns The two merged arrays.
+ * @param first The array to append to.
+ * @param second The array whose elements are appended.
+ * @returns `first`.
  */
 export function merge(first: unknown[], second: unknown[]): unknown[] {
   const len = +second.length;
