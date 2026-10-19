@@ -57,6 +57,38 @@ describe(Assert.name, () => {
     assert.throws(() => (Counter.value = 'nope'), /Counter\.value/);
   });
 
+  it('should name private auto-accessors once', () => {
+    class Counter {
+      @Assert(isNumber)
+      accessor #value: unknown = 0;
+
+      set(value: unknown): void {
+        this.#value = value;
+      }
+    }
+
+    assert.throws(
+      () => new Counter().set('nope'),
+      /Expected .Counter#value. to be a number/
+    );
+  });
+
+  it('should name static private auto-accessors', () => {
+    class Counter {
+      @Assert(isNumber)
+      static accessor #value: unknown = 0;
+
+      static set(value: unknown): void {
+        Counter.#value = value;
+      }
+    }
+
+    assert.throws(
+      () => Counter.set('nope'),
+      /Expected .Counter\.#value. to be a number/
+    );
+  });
+
   it('should stack multiple decorators on the same accessor', () => {
     const isPositive = (value: unknown): boolean => (value as number) > 0;
     class Counter {
