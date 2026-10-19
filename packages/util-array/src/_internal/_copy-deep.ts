@@ -5,6 +5,23 @@ import { _isPlainObject } from '@openinf/util-core';
 
 import { _isUnsafeKey } from './_is-unsafe-key';
 
+/**
+ * Gives `copy` an own data property `key` holding `value`. Defining it, rather
+ * than assigning it, never consults the prototype chain, so an inherited setter
+ * or read-only property cannot intercept or refuse the write.
+ * @param copy The fresh copy being built.
+ * @param key The property to define.
+ * @param value What the property holds.
+ */
+function defineOwn(copy: object, key: PropertyKey, value: unknown): void {
+  Object.defineProperty(copy, key, {
+    value,
+    writable: true,
+    enumerable: true,
+    configurable: true,
+  });
+}
+
 function keysOf(value: Record<string, unknown>, inherited: boolean): string[] {
   if (!inherited) {
     return Object.keys(value);
@@ -49,7 +66,7 @@ export function _copyDeep<T>(
       // Array.prototype.map, which this replaces, visits inherited indexed
       // properties but preserves holes with no property anywhere in the chain.
       if (index in value) {
-        copy[index] = _copyDeep(value[index], inherited, copies);
+        defineOwn(copy, index, _copyDeep(value[index], inherited, copies));
       }
     }
     return copy as T;
@@ -64,12 +81,12 @@ export function _copyDeep<T>(
   const copy: Record<PropertyKey, unknown> = {};
   copies.set(value, copy);
   for (const key of keysOf(value, inherited)) {
-    // Skipped silently: `copy['__proto__'] = ...` would replace the new
-    // object's prototype rather than adding a property to it.
+    // Skipped silently, as every copy and merge in the SDK does, so that a
+    // copy handed on to code that assigns its keys cannot carry them along.
     if (_isUnsafeKey(key)) {
       continue;
     }
-    copy[key] = _copyDeep(value[key], inherited, copies);
+    defineOwn(copy, key, _copyDeep(value[key], inherited, copies));
   }
 
   return copy as T;

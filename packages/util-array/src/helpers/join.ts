@@ -10,9 +10,12 @@
  * @returns The joined string.
  */
 export function join(output: ArrayLike<unknown>, separator: string): string {
+  // Normalized as ToLength does for Array.prototype.join, so a fractional,
+  // negative, or NaN length cannot read past the elements or before them.
+  const length = Math.max(0, Math.trunc(output.length) || 0);
   let str = '';
-  if (output.length !== 0) {
-    const lastIndex = output.length - 1;
+  if (length !== 0) {
+    const lastIndex = length - 1;
     for (let i = 0; i < lastIndex; i++) {
       str += String(output[i]);
       str += separator;
