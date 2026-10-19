@@ -18,6 +18,8 @@ import { _tagTester, isObjectLike, type Guard } from '@openinf/util-core';
  * @returns `true` if `value` is a `Temporal.PlainMonthDay`; else, `false`.
  * @example
  * ```ts
+ * import { isTemporalPlainMonthDay } from '@openinf/util-date';
+ *
  * isTemporalPlainMonthDay(Temporal.PlainMonthDay.from('09-16')); // ↪ true
  *
  * isTemporalPlainMonthDay(new Date()); // ↪ false

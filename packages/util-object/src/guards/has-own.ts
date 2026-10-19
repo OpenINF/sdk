@@ -19,7 +19,7 @@
  * ```ts
  * import { hasOwn } from '@openinf/util-object';
  *
- * const value: object = JSON.parse(input);
+ * const value: object = JSON.parse('{ "id": 1 }');
  *
  * if (hasOwn(value, 'id')) {
  *   value.id; // narrowed, no cast needed

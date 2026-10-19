@@ -21,6 +21,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `String Iterator`; else, `false`.
  * @example
  * ```ts
+ * import { isStringIterator } from '@openinf/util-types';
+ *
  * isStringIterator("ab"[Symbol.iterator]()); // ↪ true
  *
  * isStringIterator([1, 2]); // ↪ false

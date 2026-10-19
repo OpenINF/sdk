@@ -21,6 +21,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is an `Iterator Helper`; else, `false`.
  * @example
  * ```ts
+ * import { isIteratorHelper } from '@openinf/util-types';
+ *
  * isIteratorHelper([1, 2].values().map((n) => n)); // ↪ true
  *
  * isIteratorHelper([1, 2]); // ↪ false

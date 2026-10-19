@@ -12,6 +12,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `BigInt` object; else, `false`.
  * @example
  * ```ts
+ * import { isBigIntObject } from '@openinf/util-number';
+ *
  * isBigIntObject(1n); // ↪ false
  *
  * isBigIntObject(Object(1n)); // ↪ true

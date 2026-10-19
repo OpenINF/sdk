@@ -25,7 +25,7 @@
     "lint": "pnpm -r run lint && pnpm run lint:guards && pnpm run lint:categories",
     "lint:categories": "node tools/check-api-categories.mts",
     "lint:commits": "node build/tasks/verify/verify-commits.mts",
-    "lint:examples": "node tools/check-readme-examples.js",
+    "lint:examples": "node tools/check-examples.js",
     "lint:guards": "node tools/check-guard-expectations.mts",
     "lint:format": "prettier --check .",
     "lint:knip": "knip --no-progress",

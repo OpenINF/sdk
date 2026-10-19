@@ -15,6 +15,8 @@ interface ClassLike {
  * @returns The wrapper function, callable both with and without `new`.
  * @example
  * ```ts
+ * import { createClassWrapper } from '@openinf/util-object';
+ *
  * class Point {
  *   x: number;
  *

@@ -18,6 +18,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `GeneratorFunction`; else, `false`.
  * @example
  * ```ts
+ * import { isGeneratorFunction } from '@openinf/util-types';
+ *
  * isGeneratorFunction(function* foo() {}); // ↪ true
  *
  * isGeneratorFunction(function foo() {}); // ↪ false

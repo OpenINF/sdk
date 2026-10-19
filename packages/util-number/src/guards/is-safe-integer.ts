@@ -22,6 +22,8 @@ export type SafeInteger = Tagged<number, '__SafeInteger__'>;
  * @returns `true` if `value` is a safe integer; else, `false`.
  * @example
  * ```ts
+ * import { isSafeInteger } from '@openinf/util-number';
+ *
  * isSafeInteger(2 ** 53 - 1); // ↪ true
  *
  * isSafeInteger(2 ** 53); // ↪ false

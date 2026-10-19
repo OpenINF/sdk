@@ -19,6 +19,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `RegExp`; else, `false`.
  * @example
  * ```ts
+ * import { isRegExp } from '@openinf/util-string';
+ *
  * isRegExp(/abc/); // ↪ true
  *
  * isRegExp('/abc/'); // ↪ false

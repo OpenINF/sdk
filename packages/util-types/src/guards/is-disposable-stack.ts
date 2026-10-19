@@ -19,6 +19,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `DisposableStack`; else, `false`.
  * @example
  * ```ts
+ * import { isDisposableStack } from '@openinf/util-types';
+ *
  * isDisposableStack(new DisposableStack()); // ↪ true
  *
  * isDisposableStack({}); // ↪ false

@@ -24,6 +24,8 @@ const detached = _accessorValue(ArrayBuffer, 'detached');
  * @returns `true` if `value` is a detached `ArrayBuffer`; else, `false`.
  * @example
  * ```ts
+ * import { isDetachedArrayBuffer } from '@openinf/util-types';
+ *
  * const buffer = new ArrayBuffer(8);
  *
  * isDetachedArrayBuffer(buffer); // ↪ false

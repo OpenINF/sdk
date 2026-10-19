@@ -23,6 +23,8 @@ export type Email = Tagged<string, '__Email__'>;
  * @returns `true` if `value` is an email address; else, `false`.
  * @example
  * ```ts
+ * import { isEmail } from '@openinf/util-string';
+ *
  * isEmail('foo@example.com'); // ↪ true
  *
  * isEmail('foo@'); // ↪ false

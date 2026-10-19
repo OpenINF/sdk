@@ -12,6 +12,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `DataView`; else, `false`.
  * @example
  * ```ts
+ * import { isDataView } from '@openinf/util-types';
+ *
  * isDataView(new DataView(new ArrayBuffer(16))); // ↪ true
  *
  * isDataView([]); // ↪ false

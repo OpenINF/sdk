@@ -33,6 +33,8 @@ export type WellFormedString = Tagged<string, '__WellFormedString__'>;
  * @returns `true` if `value` is a well-formed string; else, `false`.
  * @example
  * ```ts
+ * import { isWellFormedString } from '@openinf/util-string';
+ *
  * isWellFormedString('a😀b'); // ↪ true, a paired surrogate
  *
  * isWellFormedString('a\uD800b'); // ↪ false, a lone high surrogate

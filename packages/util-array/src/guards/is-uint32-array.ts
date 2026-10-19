@@ -12,6 +12,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `Uint32Array`; else, `false`.
  * @example
  * ```ts
+ * import { isUint32Array } from '@openinf/util-array';
+ *
  * isUint32Array(new Uint32Array()); // ↪ true
  *
  * isUint32Array([]); // ↪ false

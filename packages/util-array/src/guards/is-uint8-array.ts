@@ -12,6 +12,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `Uint8Array`; else, `false`.
  * @example
  * ```ts
+ * import { isUint8Array } from '@openinf/util-array';
+ *
  * isUint8Array(new Uint8Array()); // ↪ true
  *
  * isUint8Array([]); // ↪ false

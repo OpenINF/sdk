@@ -15,9 +15,13 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is an `arguments` object; else, `false`.
  * @example
  * ```ts
- * (function () {
- *   return isArgumentsObject(arguments);
- * })(); // ↪ true
+ * import { isArgumentsObject } from '@openinf/util-object';
+ *
+ * const args = (function () {
+ *   return arguments;
+ * })();
+ *
+ * isArgumentsObject(args); // ↪ true
  *
  * isArgumentsObject([1, 2, 3]); // ↪ false
  * ```

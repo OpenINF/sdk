@@ -106,7 +106,7 @@ pnpm run test
 pnpm run lint:format   # prettier, repo-wide
 pnpm run lint:knip     # unused files, exports, and dependencies
 pnpm run lint:commits  # commit message format and sign-off
-pnpm run lint:examples # README examples compile and claim true results
+pnpm run lint:examples # README and doc comment examples compile and claim true results
 pnpm run lint:md       # markdown, in files and in doc comments
 pnpm run lint:types    # the build tasks and checkers type-check
 pnpm run lint:spelling # cspell, en-US

@@ -23,6 +23,8 @@ import { isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is iterable; else, `false`.
  * @example
  * ```ts
+ * import { isIterable } from '@openinf/util-types';
+ *
  * isIterable([1, 2]); // ↪ true
  *
  * isIterable({}); // ↪ false

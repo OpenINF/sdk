@@ -24,6 +24,8 @@ export type Int8 = Tagged<number, '__Int8__'>;
  * @returns `true` if `value` is an 8-bit two’s complement signed integer; else, `false`.
  * @example
  * ```ts
+ * import { isInt8 } from '@openinf/util-number';
+ *
  * isInt8(127); // ↪ true
  *
  * isInt8(127 + 1); // ↪ false

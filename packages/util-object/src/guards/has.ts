@@ -11,6 +11,8 @@
  * @see hasOwn
  * @example
  * ```ts
+ * import { create, has } from '@openinf/util-object';
+ *
  * const obj = { 'a': { 'b': 2 } }
  * const other = create(obj)
  *

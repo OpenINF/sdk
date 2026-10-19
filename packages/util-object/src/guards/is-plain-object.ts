@@ -30,11 +30,13 @@ import { _isPlainObject } from '@openinf/util-core';
  * @returns `true` if `value` is a plain object; else, `false`.
  * @example
  * ```ts
- * function Foo() {
- *   this.a = 1
+ * import { isPlainObject } from '@openinf/util-object';
+ *
+ * class Foo {
+ *   a = 1;
  * }
  *
- * isPlainObject(new Foo); // ↪ false
+ * isPlainObject(new Foo()); // ↪ false
  *
  * isPlainObject([1, 2, 3]); // ↪ false
  *

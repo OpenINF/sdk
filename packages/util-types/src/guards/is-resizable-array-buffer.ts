@@ -23,6 +23,8 @@ const resizable = _accessorValue(ArrayBuffer, 'resizable');
  * @returns `true` if `value` is a resizable `ArrayBuffer`; else, `false`.
  * @example
  * ```ts
+ * import { isResizableArrayBuffer } from '@openinf/util-types';
+ *
  * isResizableArrayBuffer(new ArrayBuffer(8, { maxByteLength: 16 })); // ↪ true
  *
  * isResizableArrayBuffer(new ArrayBuffer(8)); // ↪ false

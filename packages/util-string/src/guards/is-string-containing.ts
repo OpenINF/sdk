@@ -12,6 +12,8 @@ import type { Guard } from '@openinf/util-core';
  * @returns The guard.
  * @example
  * ```ts
+ * import { isStringContaining } from '@openinf/util-string';
+ *
  * const isStringContainingFoo = isStringContaining('foo');
  *
  * isStringContainingFoo('foobar'); // ↪ true

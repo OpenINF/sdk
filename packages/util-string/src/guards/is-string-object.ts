@@ -12,6 +12,8 @@ import { _tagTester, isObjectLike, type Guard } from '@openinf/util-core';
  * @returns `true` if `value` is a `String` object; else, `false`.
  * @example
  * ```ts
+ * import { isStringObject } from '@openinf/util-string';
+ *
  * isStringObject(new String('Foo')); // ↪ true
  *
  * isStringObject('Foo'); // ↪ false

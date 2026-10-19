@@ -22,6 +22,8 @@ const { keyFor } = Symbol;
  * @returns `true` if `value` can be held weakly; else, `false`.
  * @example
  * ```ts
+ * import { canBeHeldWeakly } from '@openinf/util-types';
+ *
  * canBeHeldWeakly({}); // ↪ true
  *
  * canBeHeldWeakly(Symbol('unregistered')); // ↪ true

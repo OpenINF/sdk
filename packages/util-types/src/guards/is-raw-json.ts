@@ -22,6 +22,9 @@ const rawJSONCheck = (
  * @returns `true` if `value` is a raw JSON object; else, `false`.
  * @example
  * ```ts
+ * import { isRawJSON } from '@openinf/util-types';
+ *
+ * // @ts-expect-error -- TypeScript's lib does not declare JSON.rawJSON yet.
  * isRawJSON(JSON.rawJSON('12345678901234567890')); // ↪ true
  *
  * isRawJSON({ rawJSON: '1' }); // ↪ false

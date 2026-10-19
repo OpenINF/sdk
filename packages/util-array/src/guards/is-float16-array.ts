@@ -13,6 +13,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `Float16Array`; else, `false`.
  * @example
  * ```ts
+ * import { isFloat16Array } from '@openinf/util-array';
+ *
  * isFloat16Array(new Float16Array()); // ↪ true
  *
  * isFloat16Array([]); // ↪ false

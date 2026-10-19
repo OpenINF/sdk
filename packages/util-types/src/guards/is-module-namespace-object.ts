@@ -14,8 +14,13 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `Module`; else, `false`.
  * @example
  * ```ts
- * import * as Module from './modules/module.js';
- * isModuleNamespaceObject(Module); // ↪ true
+ * import { isModuleNamespaceObject } from '@openinf/util-types';
+ *
+ * import * as path from 'node:path';
+ *
+ * isModuleNamespaceObject(path); // ↪ true
+ *
+ * isModuleNamespaceObject({ ...path }); // ↪ false
  * ```
  */
 export function isModuleNamespaceObject(value: unknown): boolean {

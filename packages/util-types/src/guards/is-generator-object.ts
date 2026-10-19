@@ -15,6 +15,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `Generator`; else, `false`.
  * @example
  * ```ts
+ * import { isGeneratorObject } from '@openinf/util-types';
+ *
  * function* infinite() {
  *     let index = 0;
  *

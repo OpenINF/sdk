@@ -25,6 +25,8 @@
  * @returns `true` if `value` is an `ArrayBufferView`; else, `false`.
  * @example
  * ```ts
+ * import { isArrayBufferView } from '@openinf/util-types';
+ *
  * isArrayBufferView(new DataView(new ArrayBuffer(16))); // ↪ true
  *
  * isArrayBufferView(new BigUint64Array()); // ↪ true

@@ -16,6 +16,8 @@ import { isComparable } from './is-comparable';
  * @returns The validator.
  * @example
  * ```ts
+ * import { isGreaterThanOrEqualTo } from '@openinf/assert';
+ *
  * const isAtLeastOne = isGreaterThanOrEqualTo(1);
  *
  * isAtLeastOne(1); // ↪ true

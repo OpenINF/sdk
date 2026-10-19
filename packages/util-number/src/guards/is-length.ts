@@ -22,6 +22,8 @@ export type Length = Tagged<number, '__Length__'>;
  * @returns `true` if `value` is a valid length; else, `false`.
  * @example
  * ```ts
+ * import { isLength } from '@openinf/util-number';
+ *
  * isLength(3); // ↪ true
  *
  * isLength(Number.MIN_VALUE); // ↪ false

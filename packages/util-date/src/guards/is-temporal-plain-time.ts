@@ -18,6 +18,8 @@ import { _tagTester, isObjectLike, type Guard } from '@openinf/util-core';
  * @returns `true` if `value` is a `Temporal.PlainTime`; else, `false`.
  * @example
  * ```ts
+ * import { isTemporalPlainTime } from '@openinf/util-date';
+ *
  * isTemporalPlainTime(Temporal.PlainTime.from('12:30')); // ↪ true
  *
  * isTemporalPlainTime(new Date()); // ↪ false

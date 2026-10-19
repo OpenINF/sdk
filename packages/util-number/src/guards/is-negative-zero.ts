@@ -22,6 +22,8 @@ export type NegativeZero = Tagged<number, '__NegativeZero__'>;
  * @returns `true` if `value` is `-0`; else, `false`.
  * @example
  * ```ts
+ * import { isNegativeZero } from '@openinf/util-number';
+ *
  * isNegativeZero(-0); // ↪ true
  *
  * isNegativeZero(0); // ↪ false

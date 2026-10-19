@@ -24,6 +24,8 @@ export type Uint8 = Tagged<number, '__Uint8__'>;
  * @returns `true` if `value` is an 8-bit unsigned integer; else, `false`.
  * @example
  * ```ts
+ * import { isUint8 } from '@openinf/util-number';
+ *
  * isUint8(255); // ↪ true
  *
  * isUint8(255 + 1); // ↪ false

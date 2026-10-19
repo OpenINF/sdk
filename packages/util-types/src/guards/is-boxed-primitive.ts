@@ -21,6 +21,8 @@ import { isStringObject } from '@openinf/util-string';
  * @returns `true` if `value` is a boxed primitive; else, `false`.
  * @example
  * ```ts
+ * import { isBoxedPrimitive } from '@openinf/util-types';
+ *
  * isBoxedPrimitive(false); // ↪ false
  *
  * isBoxedPrimitive(new Boolean(true)); // ↪ true

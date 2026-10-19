@@ -11,6 +11,8 @@ import type { Comparable, Guard } from '@openinf/util-core';
  * @returns `true` if `value` is Comparable; else, `false`.
  * @example
  * ```ts
+ * import { isComparable } from '@openinf/assert';
+ *
  * isComparable({ compareTo: () => 0 }); // ↪ true
  *
  * isComparable({}); // ↪ false

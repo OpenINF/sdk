@@ -19,6 +19,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `WeakRef`; else, `false`.
  * @example
  * ```ts
+ * import { isWeakRef } from '@openinf/util-types';
+ *
  * isWeakRef(new WeakRef({})); // ↪ true
  *
  * isWeakRef({}); // ↪ false

@@ -17,6 +17,8 @@ import type { Guard } from '../types';
  * @returns `true` if `value` is a `Promise`; else, `false`.
  * @example
  * ```ts
+ * import { isPromise } from '@openinf/util-types';
+ *
  * isPromise({ then: function() {} }); // ↪ false
  *
  * isPromise(Promise.resolve(100)); // ↪ true

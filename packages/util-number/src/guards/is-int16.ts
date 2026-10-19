@@ -24,6 +24,8 @@ export type Int16 = Tagged<number, '__Int16__'>;
  * @returns `true` if `value` is a 16-bit two’s complement signed integer; else, `false`.
  * @example
  * ```ts
+ * import { isInt16 } from '@openinf/util-number';
+ *
  * isInt16(32767); // ↪ true
  *
  * isInt16(32767 + 1); // ↪ false

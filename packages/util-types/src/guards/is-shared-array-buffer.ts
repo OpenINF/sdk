@@ -12,6 +12,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `SharedArrayBuffer`; else, `false`.
  * @example
  * ```ts
+ * import { isSharedArrayBuffer } from '@openinf/util-types';
+ *
  * isSharedArrayBuffer(new SharedArrayBuffer(16)); // ↪ true
  *
  * isSharedArrayBuffer(new ArrayBuffer(16)); // ↪ false

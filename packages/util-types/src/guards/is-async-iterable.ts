@@ -24,6 +24,8 @@ import { isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is async iterable; else, `false`.
  * @example
  * ```ts
+ * import { isAsyncIterable } from '@openinf/util-types';
+ *
  * isAsyncIterable((async function* () {})()); // ↪ true
  *
  * isAsyncIterable({}); // ↪ false
