@@ -16,9 +16,11 @@ publishing is one idea, carried consistently:
 
 **A type guard here is also the specification for its own check.**
 
-Every guard carries an `expectation` describing what it tests. Assertion helpers
-and argument validators read it to build their error messages, so the
-description and the check cannot drift apart -- there is only one of them.
+Every type guard -- a function that narrows `unknown` to a type -- carries an
+`expectation` describing what it tests. Assertion helpers and argument
+validators read it to build their error messages, so the description and the
+check cannot drift apart -- there is only one of them. A predicate that returns
+a plain `boolean` narrows nothing, and carries none.
 
 ```ts
 import { and, isInteger, isPositive } from '@openinf/util';
@@ -42,8 +44,8 @@ import { validateString } from '@openinf/util';
 import { InvalidArgTypeError } from '@openinf/util-errors';
 
 validateString(42, 'name');
-// ↪ InvalidArgTypeError: The "name" argument must be of type "string".
-//   Received type "number" ("42")
+// ↪ InvalidArgTypeError [ERR_INVALID_ARG_TYPE]: The "name" argument must be
+//   of type "string". Received type "number" ("42")
 ```
 
 Errors are classes, not string codes, so callers can catch by type.
@@ -88,13 +90,15 @@ testing before removal.
 bottom with no dependencies at all. It holds the language types and testing
 operations of ECMAScript sections 6 and 7.2, and the vocabulary everything else
 is written in -- `Guard`, `Validator` and `Tagged`. A package for a chapter of
-the specification builds on it: `util-number` for Number, BigInt and Math, and
-`util-date` for Date, `util-string` for String and RegExp. Depend on any of them
-alone if that is all you need.
+the specification builds on it: `util-number` for Number and BigInt, `util-date`
+for Date, and `util-string` for String and RegExp. Depend on any of them alone
+if that is all you need.
 
-Each package builds only on the ones listed above it. A package names only the
-dependencies it does not already reach through another, so `util-errors` names
-`assert`, which brings `util-text` and the rest with it:
+Each package builds only on the ones listed above it. The table names the
+nearest packages each one builds on, so `util-errors` shows `assert`, which
+brings `util-text` and the rest with it. Its `package.json` still lists every
+package it imports, because an install that keeps packages apart, as pnpm's
+does, lets a package reach only what it declares:
 
 | Package            | Builds on                                                |
 | ------------------ | -------------------------------------------------------- |
@@ -142,8 +146,9 @@ the full test suite, plus:
 Releases are published from a manually triggered workflow using npm
 [trusted publishing](https://docs.npmjs.com/trusted-publishers), with
 [provenance](https://docs.npmjs.com/generating-provenance-statements)
-attestations. No long-lived tokens exist in CI. Third-party actions are pinned
-to commit SHAs.
+attestations, so no npm token exists in CI. The one long-lived secret is the
+commit queue's GitHub App key, which it exchanges for an installation token that
+expires within the hour. Third-party actions are pinned to commit SHAs.
 
 ## Requirements
 
@@ -160,9 +165,12 @@ other ten today, but nothing holds them to it.
 TypeScript 6 knows `Temporal` but does not load it by default. A project that
 uses those three packages needs `esnext.temporal`, or all of `esnext`, in its
 `lib`; otherwise the compiler reports `Cannot find namespace 'Temporal'` from
-inside the package. `@openinf/util` also refers to Node's `Buffer`, so it needs
-`@types/node` installed and `node` in `types`, which TypeScript 6 no longer
-fills in by itself. Both are type checks of the package's own declarations, so
+inside the package. `@openinf/util-array` names `Float16Array`, as do
+`@openinf/util-types` and `@openinf/util` through it; that needs `es2025` or
+later in `lib`, or `@types/node` 24 or later installed and `node` in `types`.
+`@openinf/util` also refers to Node's `Buffer`, so it needs `@types/node`
+installed and `node` in `types`, which TypeScript 6 no longer fills in by
+itself. These are all type checks of the package's own declarations, so
 `skipLibCheck` silences them instead, at the cost of reading those types as
 `any`.
 

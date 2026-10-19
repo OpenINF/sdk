@@ -6,7 +6,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
 /**
  * Detects whether `value` is classified as a
  * [`Float16Array`](https://mdn.io/Global_Objects/Float16Array), the typed
- * array ES2025 added.
+ * array ES2025 added. Node.js has it from release 24; on an earlier one,
+ * nothing is a `Float16Array`, so this returns `false`.
  * @since 3.0.0
  * @category Indexed Collections
  * @param value The value to identify.

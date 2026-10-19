@@ -5,7 +5,9 @@ import { _isUnsafeKey } from '../_internal/_is-unsafe-key';
 import { hasOwn } from '../guards/has-own';
 
 /**
- * Shallowly clones an object's own enumerable properties.
+ * Shallowly clones an object's own enumerable string-keyed properties into a
+ * plain object. The keys `__proto__`, `constructor` and `prototype` are
+ * skipped, since writing them could reach a prototype.
  * @category Fundamental Objects
  * @param object The object to clone.
  * @returns The clone.

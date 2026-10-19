@@ -33,8 +33,8 @@ console.log(mdTbl2json(table, (value) => value.toLowerCase()));
 
 ## Requirements
 
-TypeScript 6 or newer, which is what these packages are built and tested with,
-and a `module` and `moduleResolution` pair that reads an `exports` map:
+TypeScript 6 or newer, which CI type-checks the published declarations with, and
+a `module` and `moduleResolution` pair that reads an `exports` map:
 
 - `node16` with `node16`
 - `nodenext` with `nodenext`

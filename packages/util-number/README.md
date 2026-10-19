@@ -1,10 +1,10 @@
 # @openinf/util-number
 
-Guards for ECMAScript numbers, following sections 21.1 to 21.3 of the
-specification, Number, BigInt and Math, and the numeric conversions of section
-7.1. That covers integers and their sign, the 32-bit ranges `ToInt32` and
-`ToUint32` produce, the lengths `ToLength` produces, and the boxed `Number` and
-`BigInt` objects.
+Guards for ECMAScript numbers, following sections 21.1 and 21.2 of the
+specification, Number and BigInt, and the numeric conversions of section 7.1.
+That covers integers and their sign, the 32-bit ranges `ToInt32` and `ToUint32`
+produce, the lengths `ToLength` produces, and the boxed `Number` and `BigInt`
+objects.
 
 The number guards narrow to branded types such as `Integer` and `Uint32`, so a
 value checked once carries the check with it. There is a guard for each range a
@@ -14,7 +14,7 @@ tell from `0`.
 
 It depends only on
 [`@openinf/util-core`](https://www.npmjs.com/package/@openinf/util-core), which
-supplies the `isNumber` and `isBigInt` type guards these refine.
+supplies the `isNumber` type guard these refine.
 
 ## Installation
 
@@ -34,8 +34,8 @@ isUint32(-1); // ↪ false
 
 ## Requirements
 
-TypeScript 6 or newer, which is what these packages are built and tested with,
-and a `module` and `moduleResolution` pair that reads an `exports` map:
+TypeScript 6 or newer, which CI type-checks the published declarations with, and
+a `module` and `moduleResolution` pair that reads an `exports` map:
 
 - `node16` with `node16`
 - `nodenext` with `nodenext`

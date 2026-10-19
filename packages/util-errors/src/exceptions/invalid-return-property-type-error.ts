@@ -12,7 +12,6 @@ import { NodeTypeError } from '../abstractions/node-type-error';
 /**
  * Thrown in case a function does not provide an expected value type for
  * one of its returned object properties on execution.
- * @see https://nodejs.org/api/errors.html#ERR_INVALID_RETURN_PROPERTY_VALUE
  */
 export class InvalidReturnPropertyTypeError extends NodeTypeError {
   /**

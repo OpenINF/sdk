@@ -66,12 +66,18 @@ const ghFileImporter = new GhFileImporter({ destDir: './tmp', log });
 
 ## Requirements
 
-TypeScript 6 or newer, which is what these packages are built and tested with,
-and a `module` and `moduleResolution` pair that reads an `exports` map:
+TypeScript 6 or newer, which CI type-checks the published declarations with, and
+a `module` and `moduleResolution` pair that reads an `exports` map:
 
 - `node16` with `node16`
 - `nodenext` with `nodenext`
 - `commonjs`, `esnext`, or `preserve` with `bundler`
+
+`node16` with `node16` works only from an ES module: `@octokit/rest` is
+ESM-only, and under `node16` TypeScript does not let a CommonJS file import it.
+A CommonJS project uses `nodenext` or `bundler` instead. The declarations also
+name the fetch types `AbortSignal`, `Blob` and `File`, so the project needs
+`@types/node` or the `dom` library.
 
 ## Documentation
 
