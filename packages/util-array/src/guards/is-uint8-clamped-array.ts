@@ -12,6 +12,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `Uint8ClampedArray`; else, `false`.
  * @example
  * ```ts
+ * import { isUint8ClampedArray } from '@openinf/util-array';
+ *
  * isUint8ClampedArray(new Uint8ClampedArray()); // ↪ true
  *
  * isUint8ClampedArray([]); // ↪ false

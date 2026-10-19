@@ -44,6 +44,8 @@ function decoratedName<This, Value>(
  * @returns An auto-accessor decorator.
  * @example
  * ```ts
+ * import { Assert } from '@openinf/assert';
+ *
  * class Counter {
  *   @Assert((value) => typeof value === 'number')
  *   accessor value: unknown = 0;

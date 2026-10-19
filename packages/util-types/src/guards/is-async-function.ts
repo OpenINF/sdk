@@ -18,6 +18,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is an `AsyncFunction`; else, `false`.
  * @example
  * ```ts
+ * import { isAsyncFunction } from '@openinf/util-types';
+ *
  * isAsyncFunction(async function foo() {}); // ↪ true
  *
  * isAsyncFunction(function foo() {}); // ↪ false

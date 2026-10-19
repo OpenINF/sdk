@@ -11,6 +11,8 @@ import type { AnyConstructor, Guard } from '@openinf/util-core';
  * @returns `true` if `value` is a constructor; else, `false`.
  * @example
  * ```ts
+ * import { isConstructor } from '@openinf/util-object';
+ *
  * class Foo {}
  *
  * isConstructor(Foo); // ↪ true

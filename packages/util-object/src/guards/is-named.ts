@@ -19,11 +19,15 @@ export interface Named {
  * @param value The value to identify.
  * @returns `true` if `value` is a named object; else, `false`.
  * @example
+ * ```ts
+ * import { isNamed } from '@openinf/util-object';
+ *
  * isNamed({ name: 'Derek' }); // ↪ true
  *
  * isNamed({ name: 1000 }); // ↪ false
  *
  * isNamed({ name: undefined }); // ↪ false
+ * ```
  */
 export function isNamed(value: unknown): value is Named {
   return (

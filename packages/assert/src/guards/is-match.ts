@@ -9,6 +9,8 @@ import type { Guard } from '@openinf/util-core';
  * @returns The guard.
  * @example
  * ```ts
+ * import { isMatch } from '@openinf/assert';
+ *
  * const isMatchFoo = isMatch(/^foo/);
  *
  * isMatchFoo('foobar'); // ↪ true

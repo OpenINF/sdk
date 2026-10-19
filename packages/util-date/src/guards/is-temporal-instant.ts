@@ -18,6 +18,8 @@ import { _tagTester, isObjectLike, type Guard } from '@openinf/util-core';
  * @returns `true` if `value` is a `Temporal.Instant`; else, `false`.
  * @example
  * ```ts
+ * import { isTemporalInstant } from '@openinf/util-date';
+ *
  * isTemporalInstant(Temporal.Now.instant()); // ↪ true
  *
  * isTemporalInstant(new Date()); // ↪ false

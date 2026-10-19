@@ -27,6 +27,8 @@ import type { TypedArray } from '../types';
  * @returns `true` if `value` is a typed array; else, `false`.
  * @example
  * ```ts
+ * import { isTypedArray } from '@openinf/util-array';
+ *
  * isTypedArray(new Uint8Array()); // ↪ true
  *
  * isTypedArray([]); // ↪ false

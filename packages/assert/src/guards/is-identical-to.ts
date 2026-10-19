@@ -16,6 +16,8 @@ import { _stringifyValue } from '../_internal/_stringify-value';
  * @returns The validator.
  * @example
  * ```ts
+ * import { isIdenticalTo } from '@openinf/assert';
+ *
  * const isIdenticalToFoo = isIdenticalTo('foo');
  *
  * isIdenticalToFoo('foo'); // ↪ true

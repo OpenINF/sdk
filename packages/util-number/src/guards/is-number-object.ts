@@ -12,6 +12,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `Number` object; else, `false`.
  * @example
  * ```ts
+ * import { isNumberObject } from '@openinf/util-number';
+ *
  * isNumberObject(3); // ↪ false
  *
  * isNumberObject(Object(123)); // ↪ true

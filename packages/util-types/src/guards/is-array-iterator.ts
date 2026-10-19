@@ -21,6 +21,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is an `Array Iterator`; else, `false`.
  * @example
  * ```ts
+ * import { isArrayIterator } from '@openinf/util-types';
+ *
  * isArrayIterator([1, 2].values()); // ↪ true
  *
  * isArrayIterator([1, 2]); // ↪ false

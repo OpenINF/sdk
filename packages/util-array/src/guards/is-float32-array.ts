@@ -12,6 +12,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `Float32Array`; else, `false`.
  * @example
  * ```ts
+ * import { isFloat32Array } from '@openinf/util-array';
+ *
  * isFloat32Array(new Float32Array()); // ↪ true
  *
  * isFloat32Array([]); // ↪ false

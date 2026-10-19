@@ -24,6 +24,8 @@ export type Uint16 = Tagged<number, '__Uint16__'>;
  * @returns `true` if `value` is a 16-bit unsigned integer; else, `false`.
  * @example
  * ```ts
+ * import { isUint16 } from '@openinf/util-number';
+ *
  * isUint16(65535); // ↪ true
  *
  * isUint16(65535 + 1); // ↪ false

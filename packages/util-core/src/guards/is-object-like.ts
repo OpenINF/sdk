@@ -20,6 +20,8 @@ export type ObjectLike = Tagged<Record<string, unknown>, '__ObjectLike__'>;
  * @returns `true` if `value` is an object; else, `false`.
  * @example
  * ```ts
+ * import { isObjectLike } from '@openinf/util-core';
+ *
  * isObjectLike({}); // ↪ true
  *
  * isObjectLike([1, 2, 3]); // ↪ true

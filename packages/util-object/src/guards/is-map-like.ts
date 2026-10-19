@@ -12,6 +12,8 @@ import { isObjectLike, type Guard } from '@openinf/util-core';
  * @returns `true` if `value` is map-like; else, `false`.
  * @example
  * ```ts
+ * import { isMapLike } from '@openinf/util-object';
+ *
  * isMapLike({ a: 1 }); // ↪ true
  *
  * isMapLike([1, 2, 3]); // ↪ false

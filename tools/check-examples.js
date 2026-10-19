@@ -1,11 +1,13 @@
 #!/usr/bin/env node
-// Checks that the TypeScript examples in every package README compile, and
-// that the results they claim are the results they produce.
+// Checks that the TypeScript examples in every package README, and in every
+// `@example` of the doc comments in package sources, compile, and that the
+// results they claim are the results they produce.
 //
-// A README example is the first code a prospective consumer reads, and it is
-// the code most likely to rot: it is prose to the compiler and to the test
-// runner, so nothing else here would notice it drifting from the API it
-// documents.
+// An example is the first code a prospective consumer reads, and it is the
+// code most likely to rot: it is prose to the compiler and to the test runner,
+// so nothing else here would notice it drifting from the API it documents.
+// The doc comment examples matter as much as the README ones, since TypeDoc
+// puts them on every page of the API reference.
 //
 // Every fenced `ts` block is checked two ways:
 //
@@ -20,13 +22,16 @@
 // A block with no claims is only compiled, which is what makes an example
 // that reaches the network or the filesystem safe to include.
 //
+// An `@example` has to hold a fenced `ts` block. One written as bare lines
+// would be skipped here, so it fails instead of passing unread.
+//
 // Running an example means running code out of this repository's own README
-// files, which is the point, and the same posture as running its tests. The
-// expression in a claim is the one thing interpolated into what gets run.
-// What the check needs beside it -- the value claimed, and where it was
-// written -- travels as data through the environment rather than as generated
-// source, so `JSON.stringify` is never left standing in for a sanitizer that
-// it cannot be.
+// files and sources, which is the point, and the same posture as running its
+// tests. The expression in a claim is the one thing interpolated into what
+// gets run. What the check needs beside it -- the value claimed, and where it
+// was written -- travels as data through the environment rather than as
+// generated source, so `JSON.stringify` is never left standing in for a
+// sanitizer that it cannot be.
 //
 // Run from the repo root, after `pnpm run build`: `pnpm run lint:examples`.
 
@@ -125,10 +130,9 @@ function show(value) {
   return String(value);
 }
 
-/** Every fenced `ts` block in one README, with the line each starts at. */
-function examplesIn(markdown) {
+/** Every fenced `ts` block in some lines, with the line each starts at. */
+function examplesIn(lines) {
   const found = [];
-  const lines = markdown.split(/\r?\n/);
 
   for (let index = 0; index < lines.length; index += 1) {
     if (lines[index] !== '```ts') continue;
@@ -144,6 +148,64 @@ function examplesIn(markdown) {
   }
 
   return found;
+}
+
+/** A doc comment's lines with the leading ` * ` of each taken off. */
+const COMMENT = /\/\*\*[\s\S]*?\*\//g;
+const MARGIN = /^\s*\*(?: |$)/;
+
+/** Every `ts` block of every `@example` in one source file. */
+function docExamplesIn(source, file) {
+  const found = [];
+  const unfenced = [];
+
+  for (const comment of source.matchAll(COMMENT)) {
+    const first = source.slice(0, comment.index).split('\n').length;
+    const lines = comment[0]
+      .replace(/^\/\*\*/, '')
+      .replace(/\*\/$/, '')
+      .split('\n')
+      .map((line) => line.replace(MARGIN, ''));
+
+    for (let index = 0; index < lines.length; index += 1) {
+      if (!/^@example\b/.test(lines[index].trim())) continue;
+
+      // The example runs to the next tag, but a decorator inside a fence is
+      // code, not a tag.
+      const start = index;
+      let fenced = false;
+      index += 1;
+      while (index < lines.length) {
+        if (lines[index].startsWith('```')) fenced = !fenced;
+        else if (!fenced && /^@\w/.test(lines[index].trim())) break;
+        index += 1;
+      }
+      const section = lines.slice(start + 1, index);
+      index -= 1;
+
+      const blocks = examplesIn(section);
+      if (blocks.length === 0) {
+        unfenced.push(`${file}:${first + start}`);
+        continue;
+      }
+      for (const block of blocks) {
+        found.push({ line: first + start + block.line - 1, body: block.body });
+      }
+    }
+  }
+
+  return { found, unfenced };
+}
+
+/** Every `.ts` file under a directory, in a stable order. */
+function sourcesUnder(directory) {
+  if (!fs.existsSync(directory)) return [];
+
+  return fs
+    .readdirSync(directory, { recursive: true, withFileTypes: true })
+    .filter((entry) => entry.isFile() && entry.name.endsWith('.ts'))
+    .map((entry) => path.join(entry.parentPath, entry.name))
+    .sort();
 }
 
 const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'readme-examples-'));
@@ -196,53 +258,63 @@ process.on('exit', () => {
 `;
 
 const blocks = [];
+const unfenced = [];
+const examples = [];
 
 for (const name of names) {
   const readme = path.join(PACKAGES, name, 'README.md');
-  if (!fs.existsSync(readme)) continue;
-
-  for (const [index, example] of examplesIn(
-    fs.readFileSync(readme, 'utf8')
-  ).entries()) {
-    const claims = [];
-    const running = example.body.map((line, row) => {
-      const found = line.match(CLAIM);
-      if (found === null) return line;
-
-      const literal = readLiteral(found.groups.claimed);
-      if (literal === undefined) return line;
-
-      const at = claims.length;
-      claims.push({
-        expected: show(literal.value),
-        where: `${name}/README.md:${example.line + row}`,
-      });
-
-      return `${found.groups.indent}__claim(() => (${found.groups.expression}), ${at});`;
-    });
-
-    blocks.push({
-      name,
-      index,
-      line: example.line,
-      compile: path.join(scratch, `${name}__${index}.mts`),
-      run:
-        claims.length > 0
-          ? path.join(scratch, `${name}__${index}.run.mts`)
-          : '',
-      claims,
-    });
-
-    fs.writeFileSync(
-      path.join(scratch, `${name}__${index}.mts`),
-      `${example.body.join('\n')}\n`
-    );
-    if (claims.length > 0) {
-      fs.writeFileSync(
-        path.join(scratch, `${name}__${index}.run.mts`),
-        `${PRELUDE}${running.join('\n')}\n`
-      );
+  if (fs.existsSync(readme)) {
+    for (const example of examplesIn(
+      fs.readFileSync(readme, 'utf8').split(/\r?\n/)
+    )) {
+      examples.push({ ...example, file: `${name}/README.md` });
     }
+  }
+
+  for (const source of sourcesUnder(path.join(PACKAGES, name, 'src'))) {
+    const file = path.relative(PACKAGES, source).split(path.sep).join('/');
+    const found = docExamplesIn(fs.readFileSync(source, 'utf8'), file);
+    unfenced.push(...found.unfenced);
+    for (const example of found.found) examples.push({ ...example, file });
+  }
+}
+
+for (const [index, example] of examples.entries()) {
+  const claims = [];
+  const running = example.body.map((line, row) => {
+    const found = line.match(CLAIM);
+    if (found === null) return line;
+
+    const literal = readLiteral(found.groups.claimed);
+    if (literal === undefined) return line;
+
+    const at = claims.length;
+    claims.push({
+      expected: show(literal.value),
+      where: `${example.file}:${example.line + row}`,
+    });
+
+    return `${found.groups.indent}__claim(() => (${found.groups.expression}), ${at});`;
+  });
+
+  blocks.push({
+    source: example.body.join('\n'),
+    file: example.file,
+    readme: example.file.endsWith('README.md'),
+    line: example.line,
+    run: claims.length > 0 ? path.join(scratch, `example${index}.run.mts`) : '',
+    claims,
+  });
+
+  fs.writeFileSync(
+    path.join(scratch, `example${index}.mts`),
+    `${example.body.join('\n')}\n`
+  );
+  if (claims.length > 0) {
+    fs.writeFileSync(
+      path.join(scratch, `example${index}.run.mts`),
+      `${PRELUDE}${running.join('\n')}\n`
+    );
   }
 }
 
@@ -281,21 +353,15 @@ try {
 } catch (error) {
   const output = `${error.stdout ?? ''}${error.stderr ?? ''}`;
   for (const line of output.split('\n').filter(Boolean)) {
-    const found = line.match(
-      /^(?<file>[^(]+)__(?<index>\d+)\.mts\((?<row>\d+),/
-    );
+    const found = line.match(/^example(?<index>\d+)\.mts\((?<row>\d+),/);
     if (found === null) {
       failures.push(`  ${line}`);
       continue;
     }
 
-    const block = blocks.find(
-      (entry) =>
-        entry.name === found.groups.file &&
-        entry.index === Number(found.groups.index)
-    );
+    const block = blocks[Number(found.groups.index)];
     const where = block
-      ? `${block.name}/README.md:${block.line + Number(found.groups.row) - 1}`
+      ? `${block.file}:${block.line + Number(found.groups.row) - 1}`
       : line;
     failures.push(`  ${where}\n      ${line.slice(line.indexOf(': ') + 2)}`);
   }
@@ -308,8 +374,20 @@ try {
 // any example here takes and far less than that.
 const EXAMPLE_TIMEOUT_MS = 10_000;
 
+// Temporal is finished for ES2027, but a Node LTS line may not have it yet.
+// An example that uses it is still compiled there, against TypeScript's own
+// declarations, and its claims wait for a runtime that can check them, with
+// the count said out loud rather than passed over.
+const hasTemporal = typeof Temporal !== 'undefined';
+const USES_TEMPORAL = /\bTemporal\./;
+let waiting = 0;
+
 for (const block of blocks) {
   if (block.run === '') continue;
+  if (!hasTemporal && USES_TEMPORAL.test(block.source)) {
+    waiting += 1;
+    continue;
+  }
 
   try {
     execFileSync(process.execPath, [block.run], {
@@ -322,7 +400,7 @@ for (const block of blocks) {
   } catch (error) {
     if (error.code === 'ETIMEDOUT') {
       failures.push(
-        `  ${block.name}/README.md:${block.line}\n` +
+        `  ${block.file}:${block.line}\n` +
           `      still running after ${EXAMPLE_TIMEOUT_MS / 1000} seconds; ` +
           'an example has to finish on its own'
       );
@@ -335,23 +413,41 @@ for (const block of blocks) {
 
 fs.rmSync(scratch, { recursive: true, force: true });
 
-const claimed = blocks.reduce((total, block) => total + block.claims.length, 0);
+for (const where of unfenced) {
+  failures.push(`  ${where}\n      @example holds no fenced \`ts\` block`);
+}
+
+const readmes = blocks.filter((block) => block.readme);
+const comments = blocks.filter((block) => !block.readme);
+const claimsIn = (list) =>
+  list.reduce((total, block) => total + block.claims.length, 0);
 
 // Finding nothing is a failure, not a pass. A fence that stopped matching --
 // a renamed language tag, a line ending nobody expected -- would otherwise
-// leave this reporting success over zero examples.
-if (blocks.length === 0) {
+// leave this reporting success over zero examples. Each source is held to it
+// separately, so the doc comments going unread cannot hide behind the READMEs.
+if (readmes.length === 0) {
   console.error('No `ts` examples found in any package README.');
+  process.exit(1);
+}
+if (comments.length === 0) {
+  console.error('No `ts` examples found in any doc comment `@example`.');
   process.exit(1);
 }
 
 if (failures.length > 0) {
-  console.error(
-    `The README examples do not hold up:\n\n${failures.join('\n')}\n`
-  );
+  console.error(`The examples do not hold up:\n\n${failures.join('\n')}\n`);
   process.exit(1);
 }
 
 console.info(
-  `Checked ${blocks.length} README examples and the ${claimed} results they claim.`
+  `Checked ${readmes.length} README examples and the ${claimsIn(readmes)} ` +
+    `results they claim, and ${comments.length} doc comment examples and ` +
+    `the ${claimsIn(comments)} results they claim.`
 );
+if (waiting > 0) {
+  console.info(
+    `${waiting} of them use Temporal, which this Node does not have, so ` +
+      'they were compiled but their claims were not run.'
+  );
+}

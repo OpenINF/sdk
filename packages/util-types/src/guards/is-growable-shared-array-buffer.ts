@@ -29,9 +29,11 @@ const growable = _accessorValue(
  * @returns `true` if `value` is a growable `SharedArrayBuffer`; else, `false`.
  * @example
  * ```ts
- * isGrowableSharedArrayBuffer(
- *   new SharedArrayBuffer(8, { maxByteLength: 16 })
- * ); // ↪ true
+ * import { isGrowableSharedArrayBuffer } from '@openinf/util-types';
+ *
+ * const growable = new SharedArrayBuffer(8, { maxByteLength: 16 });
+ *
+ * isGrowableSharedArrayBuffer(growable); // ↪ true
  *
  * isGrowableSharedArrayBuffer(new SharedArrayBuffer(8)); // ↪ false
  * ```

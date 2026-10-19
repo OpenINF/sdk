@@ -12,6 +12,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `Symbol` object; else, `false`.
  * @example
  * ```ts
+ * import { isSymbolObject } from '@openinf/util-object';
+ *
  * isSymbolObject(Symbol.iterator); // ↪ false
  *
  * isSymbolObject(Symbol('foo')); // ↪ false

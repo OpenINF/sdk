@@ -21,6 +21,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `RegExp String Iterator`; else, `false`.
  * @example
  * ```ts
+ * import { isRegExpStringIterator } from '@openinf/util-types';
+ *
  * isRegExpStringIterator("aa".matchAll(/a/g)); // ↪ true
  *
  * isRegExpStringIterator([1, 2]); // ↪ false

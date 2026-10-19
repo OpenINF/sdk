@@ -12,6 +12,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `Boolean` object; else, `false`.
  * @example
  * ```ts
+ * import { isBooleanObject } from '@openinf/util-object';
+ *
  * isBooleanObject(new Boolean(false)); // ↪ true
  *
  * isBooleanObject(true); // ↪ false

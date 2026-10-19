@@ -18,6 +18,8 @@ import { _tagTester, isObjectLike, type Guard } from '@openinf/util-core';
  * @returns `true` if `value` is a `Temporal.PlainYearMonth`; else, `false`.
  * @example
  * ```ts
+ * import { isTemporalPlainYearMonth } from '@openinf/util-date';
+ *
  * isTemporalPlainYearMonth(Temporal.PlainYearMonth.from('2026-09')); // ↪ true
  *
  * isTemporalPlainYearMonth(new Date()); // ↪ false

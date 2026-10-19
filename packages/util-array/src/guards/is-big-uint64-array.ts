@@ -12,6 +12,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `BigUint64Array`; else, `false`.
  * @example
  * ```ts
+ * import { isBigUint64Array } from '@openinf/util-array';
+ *
  * isBigUint64Array(new BigUint64Array()); // ↪ true
  *
  * isBigUint64Array([]); // ↪ false

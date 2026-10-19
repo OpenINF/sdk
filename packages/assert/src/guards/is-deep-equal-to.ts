@@ -86,6 +86,8 @@ function deepEqual(
  * @returns The validator.
  * @example
  * ```ts
+ * import { isDeepEqualTo } from '@openinf/assert';
+ *
  * const isDeepEqualToFoo = isDeepEqualTo({ a: [1, 2] });
  *
  * isDeepEqualToFoo({ a: [1, 2] }); // ↪ true

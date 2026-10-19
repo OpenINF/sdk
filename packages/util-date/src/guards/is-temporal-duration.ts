@@ -18,6 +18,8 @@ import { _tagTester, isObjectLike, type Guard } from '@openinf/util-core';
  * @returns `true` if `value` is a `Temporal.Duration`; else, `false`.
  * @example
  * ```ts
+ * import { isTemporalDuration } from '@openinf/util-date';
+ *
  * isTemporalDuration(Temporal.Duration.from({ days: 1 })); // ↪ true
  *
  * isTemporalDuration(new Date()); // ↪ false

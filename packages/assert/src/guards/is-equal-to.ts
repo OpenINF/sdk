@@ -16,6 +16,8 @@ import { isEquatable } from './is-equatable';
  * @returns The validator.
  * @example
  * ```ts
+ * import { isEqualTo } from '@openinf/assert';
+ *
  * const isEqualToOne = isEqualTo(1);
  *
  * isEqualToOne(1); // ↪ true

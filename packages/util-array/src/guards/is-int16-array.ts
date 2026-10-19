@@ -12,6 +12,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is an `Int16Array`; else, `false`.
  * @example
  * ```ts
+ * import { isInt16Array } from '@openinf/util-array';
+ *
  * isInt16Array(new Int16Array()); // ↪ true
  *
  * isInt16Array([]); // ↪ false

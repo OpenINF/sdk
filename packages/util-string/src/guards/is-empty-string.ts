@@ -13,6 +13,8 @@ import type { Guard } from '@openinf/util-core';
  * @returns `true` if `value` is an empty string; else, `false`.
  * @example
  * ```ts
+ * import { isEmptyString } from '@openinf/util-string';
+ *
  * isEmptyString(''); // ↪ true
  *
  * isEmptyString('foo'); // ↪ false

@@ -16,9 +16,11 @@ import { isArray, isFunction, isNullish } from '@openinf/util-core';
  * @returns `true` if `value` is array-like; else, `false`.
  * @example
  * ```ts
+ * import { isArrayLike } from '@openinf/util-array';
+ *
  * isArrayLike([1, 2, 3]); // ↪ true
  *
- * isArrayLike(document.body.children); // ↪ true
+ * isArrayLike({ 0: 'a', 1: 'b', length: 2 }); // ↪ true
  *
  * isArrayLike('abc'); // ↪ true
  *

@@ -11,6 +11,8 @@ import type { Equatable, Guard } from '@openinf/util-core';
  * @returns `true` if `value` is Equatable; else, `false`.
  * @example
  * ```ts
+ * import { isEquatable } from '@openinf/assert';
+ *
  * isEquatable({ equals: () => true }); // ↪ true
  *
  * isEquatable({}); // ↪ false

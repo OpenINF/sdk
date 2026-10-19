@@ -19,6 +19,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is a `FinalizationRegistry`; else, `false`.
  * @example
  * ```ts
+ * import { isFinalizationRegistry } from '@openinf/util-types';
+ *
  * isFinalizationRegistry(new FinalizationRegistry(() => {})); // ↪ true
  *
  * isFinalizationRegistry({}); // ↪ false

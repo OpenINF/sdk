@@ -22,6 +22,8 @@ import { _tagTester, isObjectLike, type Guard } from '@openinf/util-core';
  * @returns `true` if `value` is a `Date`; else, `false`.
  * @example
  * ```ts
+ * import { isDate } from '@openinf/util-date';
+ *
  * isDate(new Date(91, 1)); // ↪ true
  *
  * isDate(new Date(NaN)); // ↪ true (an Invalid Date is still a Date)

@@ -18,6 +18,8 @@ import { _tagTester, isObjectLike, type Guard } from '@openinf/util-core';
  * @returns `true` if `value` is a `Temporal.ZonedDateTime`; else, `false`.
  * @example
  * ```ts
+ * import { isTemporalZonedDateTime } from '@openinf/util-date';
+ *
  * isTemporalZonedDateTime(Temporal.Now.zonedDateTimeISO()); // ↪ true
  *
  * isTemporalZonedDateTime(new Date()); // ↪ false

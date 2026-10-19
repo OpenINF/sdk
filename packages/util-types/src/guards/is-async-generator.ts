@@ -20,6 +20,8 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @returns `true` if `value` is an `AsyncGenerator`; else, `false`.
  * @example
  * ```ts
+ * import { isAsyncGenerator } from '@openinf/util-types';
+ *
  * async function* count() {
  *   yield 0;
  * }
