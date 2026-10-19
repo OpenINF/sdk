@@ -2,11 +2,12 @@
 // This code is available under the MIT license found in the LICENSE file.
 
 /**
- * Type guard that ensures that the value can be coerced to Object
- * to weed out host objects that do not derive from Object.
+ * Detects whether `value` is already an object, so that `Object(value)`
+ * returns `value` itself rather than wrapping it. Functions pass; primitives,
+ * `null` and `undefined` do not.
  * @category Testing and Comparison Operations
- * @param  value The value to check
- * @returns       If the value is coercible into an Object
+ * @param value The value to check.
+ * @returns `true` if `value` is an object; else, `false`.
  */
 export function isObjectCoercible(value: unknown): boolean {
   return value === Object(value);

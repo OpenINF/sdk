@@ -4,12 +4,12 @@
 import { isNullish } from '@openinf/util-core';
 
 /**
- * Determines if any element is in an array.
+ * Finds the index of `elem` in `arr`, searching from index `i`.
  * @category Indexed Collections
- * @param elem The array element.
- * @param arr The array.
- * @param i The index.
- * @returns The index of the array element.
+ * @param elem The element to search for.
+ * @param arr The array to search.
+ * @param i The index to start searching from.
+ * @returns The index of `elem`, or `-1` if it is absent or `arr` is nullish.
  */
 export function inArray(
   elem: unknown,

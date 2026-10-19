@@ -4,10 +4,10 @@
 import { isArray } from '@openinf/util-core';
 
 /**
- * Converts a non-array to an array.
+ * Wraps a value that is not an array in one.
  * @category Indexed Collections
  * @param value The value to potentially convert into an array.
- * @returns If the value is already an array, returns itself untouched.
+ * @returns `value` itself if it is an array; else, `[value]`.
  */
 export function toArray(value: unknown): unknown[] {
   return isArray(value) ? value : [value];

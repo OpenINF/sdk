@@ -5,8 +5,8 @@
 // https://github.com/denoland/deno_std/blob/main/node/_errors.ts
 
 /**
- * All error instances in Node have additional methods and properties.
- * This export class is meant to be extended by these instances abstracting native JS error instances
+ * The base of this package's errors, which carry a `code` property and render
+ * as `Name [CODE]: message`, as Node.js errors do.
  */
 export class NodeErrorAbstraction extends Error {
   public code: string;

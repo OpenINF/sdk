@@ -15,7 +15,7 @@
 //   <out>/<version>/docs/navigation.json
 //   <out>/<version>/docs/@openinf/<package>/...
 //
-// The version is not a label chosen here. All ten packages share one version
+// The version is not a label chosen here. All the packages share one version
 // -- Changesets `fixed` mode -- so the workspace already knows what release
 // the documentation belongs to, and this reads it rather than being told. It
 // refuses to guess when the packages disagree, which is what a workspace looks

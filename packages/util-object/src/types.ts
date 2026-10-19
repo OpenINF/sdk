@@ -206,15 +206,11 @@ export interface Object {
   /** Returns a string representation of an object. */
   toString(): string;
 
-  /** Returns a date converted to a string using the current locale. */
+  /** Returns a string representation of an object, using the current locale. */
   toLocaleString(): string;
 
   /** Returns the primitive value of the specified object. */
   valueOf(): AnyObject;
-
-  // export interface Object {
-  //   hasOwnProperty<T>(this: T, v: any): v is keyof T;
-  // }
 
   /**
    * Determines whether an object has a property with the specified name.

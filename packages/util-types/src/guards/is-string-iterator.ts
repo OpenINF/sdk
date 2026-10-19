@@ -6,7 +6,7 @@
 import { _tagTester, isObjectLike } from '@openinf/util-core';
 
 /**
- * Detects whether `value` is classified as an
+ * Detects whether `value` is classified as a
  * [`String Iterator`](https://mdn.io/Global_Objects/String/@@iterator), what iterating a string produces, section 22.1.5 of the specification.
  *
  * Like the Map and Set iterator guards, this is a tag-and-shape heuristic

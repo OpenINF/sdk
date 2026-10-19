@@ -7,11 +7,12 @@ import type { EqualityComparer } from '../types';
 import { contains } from './contains';
 
 /**
- * push value to array only if Unique
+ * Pushes `toAdd` onto `array` unless an equal element is already there.
  * @category Indexed Collections
  * @param array The array to potentially push to.
  * @param toAdd The value to potentially push.
- * @param equalityComparer The function that determines equality.
+ * @param equalityComparer Decides whether two elements are equal. Defaults
+ * to strict equality.
  * @returns Whether the value was added.
  */
 export function pushIfUnique<T>(

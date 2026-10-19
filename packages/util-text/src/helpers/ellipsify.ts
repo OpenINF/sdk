@@ -8,7 +8,8 @@ import { UnicodeEscapes } from '../types';
  * Returns the supplied string as ellipsified if Unicode is supported.
  * @category Text Processing
  * @param text The string to ellipsify.
- * @returns The ellipsified string.
+ * @returns `text` followed by `…`, or by `...` where Unicode is not
+ * supported.
  */
 export function ellipsify(text: string): string {
   return `${text}${hasUnicode() ? UnicodeEscapes.ellipsis : '...'}`;

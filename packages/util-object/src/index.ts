@@ -45,5 +45,4 @@ export * from './guards/is-symbol-object';
 export * from './guards/objects-equal-shallow';
 export * from './guards/property-is-enumerable';
 export * from './guards/type';
-// export * from './guards/is-instance-of';
 export * from './types';

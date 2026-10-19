@@ -10,7 +10,7 @@
  * @param callback The function to test each element with.
  * @param invert If `true`, keeps elements for which `callback` returns
  * falsy instead of truthy.
- * @returns The elements that passed the test.
+ * @returns The elements that were kept, in their original order.
  */
 export function grep<T>(
   elems: ArrayLike<T>,
@@ -21,8 +21,6 @@ export function grep<T>(
   const shouldMatchTruthy = !invert;
   const length = elems.length;
 
-  // Go through the array, only saving the items
-  // that pass the validator function
   for (let i = 0; i < length; i++) {
     // i < length guarantees elems[i] is present.
     // oxlint-disable-next-line typescript/no-unnecessary-type-assertion -- oxlint-tsgolint doesn't currently honor noUncheckedIndexedAccess; tsc does require this.

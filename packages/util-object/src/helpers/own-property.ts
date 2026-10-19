@@ -4,12 +4,12 @@
 import { hasOwn } from '../guards/has-own';
 
 /**
- * Gets the map[key] iff the key is the map's own property
+ * Gets `map[key]` if `key` is an own property of `map`.
  * @category Fundamental Objects
  * @param map A map-like.
  * @param key A property key.
- * @returns map[key] iff the key is the map's own property (is not inherited);
- * otherwise, returns `undefined`.
+ * @returns `map[key]` if `key` is an own property of `map` (is not
+ * inherited); otherwise, `undefined`.
  */
 export function ownProperty<P extends PropertyKey, T>(
   map: Record<P, T>,

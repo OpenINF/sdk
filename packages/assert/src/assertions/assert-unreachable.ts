@@ -7,8 +7,8 @@ import { AssertionError } from '../errors/assertion-error';
 
 /**
  * Asserts that the given call is never reached. Will always throw if called.
- * Useful for ending branches that TypeScript can't properly determine
- * @param msg The message to throw
+ * Useful for ending branches that TypeScript can't prove are unreachable.
+ * @param msg The message to throw.
  * @throws { AssertionError } always.
  */
 export function assertUnreachable(

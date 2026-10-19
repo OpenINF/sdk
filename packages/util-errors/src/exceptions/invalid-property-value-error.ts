@@ -10,7 +10,8 @@ import { _getReceivedSubMsg } from '../_internal/_get-received-sub-msg';
 import { NodeTypeError } from '../abstractions/node-type-error';
 
 /**
- * Thrown in case an invalid or unsupported value of an object property.
+ * Thrown in case an object property is assigned an invalid or unsupported
+ * value.
  */
 export class InvalidPropertyValueError extends NodeTypeError {
   /**

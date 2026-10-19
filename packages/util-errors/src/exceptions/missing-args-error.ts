@@ -13,8 +13,8 @@ import { NodeTypeError } from '../abstractions/node-type-error';
  *
  * This is only used for strict compliance with the API specification (which in
  * some cases may accept `func(undefined)` but not `func()`). In most native
- * Node.js APIs, `func(undefined)` and `func()` are treated identically, and the
- * `InvalidArgTypeError` error code may be used instead.
+ * Node.js APIs, `func(undefined)` and `func()` are treated identically, and
+ * `InvalidArgTypeError` may be used instead.
  * @see https://nodejs.org/api/errors.html#ERR_MISSING_ARGS
  */
 export class MissingArgsError extends NodeTypeError {

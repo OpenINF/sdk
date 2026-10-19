@@ -14,11 +14,13 @@ import { _tagTester, isObjectLike } from '@openinf/util-core';
  * @param value The value to identify.
  * @returns `true` if `value` is an `arguments` object; else, `false`.
  * @example
- * isArgumentsObject(function() { return arguments }()); // ↪ true
+ * ```ts
+ * (function () {
+ *   return isArgumentsObject(arguments);
+ * })(); // ↪ true
  *
- * (arg0, arg1, arg2) => { return isArgumentsObject(arguments) } // ↪ true
- *
- * (args) => { return isArgumentsObject(args) } // ↪ false
+ * isArgumentsObject([1, 2, 3]); // ↪ false
+ * ```
  */
 export function isArgumentsObject(value: unknown): boolean {
   return isObjectLike(value) && _tagTester('Arguments')(value);

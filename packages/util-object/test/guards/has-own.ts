@@ -11,8 +11,8 @@ describe(hasOwn.name, () => {
   });
 
   it('should return false for a missing property', () => {
-    // No explicit type argument needed: the old signature required the object
-    // to already carry the property being tested for.
+    // No explicit type argument needed: the object does not have to be known
+    // to carry the property being tested for.
     assert.strictEqual(hasOwn({}, 'a'), false);
   });
 

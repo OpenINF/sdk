@@ -10,7 +10,8 @@ import { _getInvalidTypeSubMsg } from '../_internal/_get-invalid-type-sub-msg';
 import { NodeTypeError } from '../abstractions/node-type-error';
 
 /**
- * Thrown in case an invalid or unsupported value type for an object property.
+ * Thrown in case an object property is assigned a value of an invalid or
+ * unsupported type.
  */
 export class InvalidPropertyTypeError extends NodeTypeError {
   /**

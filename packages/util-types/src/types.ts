@@ -26,8 +26,6 @@ export type {
 export interface Mapish {
   [k: string]: unknown;
 }
-// type M = keyof Mapish;
-//   ^ = type M = string | number
 
 // Adapted from TypeShield
 
