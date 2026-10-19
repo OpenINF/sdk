@@ -86,6 +86,15 @@ describe(isPlainObject.name, () => {
     assert.strictEqual(isPlainObject(await loadNamespace()), false);
   });
 
+  it('should reject an arguments object that was given a tag', () => {
+    const args = (function () {
+      // oxlint-disable-next-line prefer-rest-params -- the arguments object is what is under test.
+      return arguments;
+    })() as unknown as Record<PropertyKey, unknown>;
+    args[Symbol.toStringTag] = 'Args';
+    assert.strictEqual(isPlainObject(args), false);
+  });
+
   it('should reject non-object-like values', () => {
     assert.strictEqual(isPlainObject(null), false);
     assert.strictEqual(isPlainObject(42), false);

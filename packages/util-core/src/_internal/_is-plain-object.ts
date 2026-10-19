@@ -1,6 +1,7 @@
 // Copyright (c) The OpenINF Authors. All rights reserved.
 // This code is available under the MIT license found in the LICENSE file.
 
+import { _matchesBrandShape } from './_matches-brand-shape';
 import { _tagTester } from './_tag-tester';
 
 const { apply } = Reflect;
@@ -49,8 +50,11 @@ export function _isPlainObject(
   if (!(toStringTag in value)) {
     return apply(objectToString, value, []) === '[object Object]';
   }
+  // An arguments object has no slot to test, and its tag check reads the tag
+  // it was given, so its shape is what tells it apart once it has one.
   return (
     !hasClassifyingSlot.some((hasSlot) => hasSlot(value)) &&
+    !_matchesBrandShape('Arguments', value) &&
     !isModuleNamespace(value)
   );
 }
