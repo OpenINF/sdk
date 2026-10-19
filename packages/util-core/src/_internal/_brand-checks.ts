@@ -187,7 +187,7 @@ export const _brandChecks: ReadonlyMap<string, Predicate> = new Map([
     },
   ],
   temporalCheck('Instant', 'epochNanoseconds'),
-  temporalCheck('ZonedDateTime', 'timeZoneId'),
+  temporalCheck('ZonedDateTime', 'offsetNanoseconds'),
   temporalCheck('PlainDate', 'day'),
   temporalCheck('PlainTime', 'hour'),
   temporalCheck('PlainDateTime', 'day'),
