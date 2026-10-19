@@ -17,4 +17,20 @@ describe(NodeError.name, () => {
     assert.strictEqual(header, 'Error [ERR_TEST]: short message');
     assert.ok(frames.some((frame) => frame.includes('createError')));
   });
+
+  it('should keep a multiline message out of the frames', () => {
+    function createError(): NodeError {
+      return new NodeError('ERR_TEST', 'first line\nsecond line');
+    }
+
+    const error = createError();
+    const lines = error.stack?.split('\n') ?? [];
+
+    assert.deepStrictEqual(lines.slice(0, 2), [
+      'Error [ERR_TEST]: first line',
+      'second line',
+    ]);
+    assert.match(lines[2] ?? '', /^\s+at /);
+    assert.ok(lines.slice(2).every((line) => line !== 'second line'));
+  });
 });
