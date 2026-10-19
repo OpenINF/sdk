@@ -1,12 +1,12 @@
 # @openinf/util-date
 
-Guards for ECMAScript dates, following section 21.4 of the specification: the
-`Date` object, and the `Temporal` objects finished for ES2027.
+Guards for ECMAScript dates: the `Date` object of section 21.4 of the
+specification, and the `Temporal` objects finished for ES2027.
 
 `isDate` checks for a real `Date`, one with the internal time value only the
 `Date` constructor gives an object, so a look-alike carrying
 `Symbol.toStringTag` does not pass. `isValidDate` also requires that time value
-to be a number, which an Invalid Date's is not.
+not be `NaN`, which an Invalid Date's is.
 
 There is a guard for each Temporal type: `isTemporalInstant`,
 `isTemporalZonedDateTime`, `isTemporalPlainDate`, `isTemporalPlainTime`,
@@ -42,12 +42,17 @@ isTemporalInstant(new Date()); // ↪ false
 
 ## Requirements
 
-TypeScript 6 or newer, which is what these packages are built and tested with,
-and a `module` and `moduleResolution` pair that reads an `exports` map:
+TypeScript 6 or newer, which CI type-checks the published declarations with, and
+a `module` and `moduleResolution` pair that reads an `exports` map:
 
 - `node16` with `node16`
 - `nodenext` with `nodenext`
 - `commonjs`, `esnext`, or `preserve` with `bundler`
+
+The declarations name `Temporal`, which TypeScript 6 does not load by default,
+so `lib` needs `esnext.temporal`, or all of `esnext`; otherwise the compiler
+reports `Cannot find namespace 'Temporal'` from inside the package, whichever
+guard you import.
 
 ## Documentation
 

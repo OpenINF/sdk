@@ -10,7 +10,8 @@
 
 /**
  * Safer version of `Function` which should not be called.
- * Every function should be assignable to this, but this should not be assignable to every function.
+ * Every callable function is assignable to this, but a class, which can only be
+ * constructed, is not, and this is not assignable to every function.
  * @category Data Types and Values
  */
 export type AnyFunction = (...args: never[]) => void;

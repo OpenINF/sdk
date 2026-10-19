@@ -7,7 +7,9 @@ import { _mixin } from '../_internal/_mixin';
 
 /**
  * Copies the values of all enumerable (own or inherited) properties of one or
- * more source objects to the target object.
+ * more source objects to the target object. Only string keys are copied, and
+ * `__proto__`, `constructor` and `prototype` are skipped, since writing them
+ * could reach a prototype.
  * @category Fundamental Objects
  * @returns The modified target object
  */

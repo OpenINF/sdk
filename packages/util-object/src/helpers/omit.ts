@@ -4,7 +4,9 @@
 import { _isUnsafeKey } from '../_internal/_is-unsafe-key';
 
 /**
- * Creates an object with the given properties removed.
+ * Creates an object with the given properties removed. Only own enumerable
+ * string-keyed properties are kept; symbol keys and the keys `__proto__`,
+ * `constructor` and `prototype` are always left out.
  * @category Fundamental Objects
  * @param obj An object to remove properties from.
  * @param props A list of properties to remove from the Object.

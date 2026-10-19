@@ -6,8 +6,9 @@
 // extensionless relative specifiers, so that output is unloadable as-is.
 //
 // This rewrites a tsc ESM output directory in place so it's directly
-// importable: relative specifiers get an explicit .mjs (or .d.mts, inside
-// declaration files) appended, and every file is renamed to match
+// importable: relative specifiers get an explicit .mjs appended, declaration
+// files included, since TypeScript pairs a .mjs specifier with its .d.mts,
+// and every file is renamed to match
 // (.js -> .mjs, .d.ts -> .d.mts, plus their .map siblings). The .mjs/.d.mts
 // extensions are unambiguous to Node/TypeScript by themselves, so no
 // dist/esm/package.json "type" marker is needed.

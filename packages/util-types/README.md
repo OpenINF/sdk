@@ -34,20 +34,20 @@ where the language exposes a non-mutating internal-slot check. For example,
 even when the receiver inherits `Map.prototype` or advertises a `Map` tag. The
 predicate catches that exception and returns `false`.
 
-| Types                                                                                            | Implementation                                                                | Guarantee                                                     |
-| ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| Maps, sets, weak maps, weak sets                                                                 | Captured `has` methods                                                        | Internal-slot check                                           |
-| Dates, boxed primitives                                                                          | Captured `getTime` or `valueOf`                                               | Internal-slot check                                           |
-| Regular expressions                                                                              | Captured `source` getter                                                      | Internal-slot check; does not change `lastIndex`              |
-| Buffers, data views                                                                              | Captured `byteLength` or `buffer` getter                                      | Internal-slot check; accepts detached and out-of-bounds views |
-| Typed arrays                                                                                     | Captured `%TypedArray%` tag getter                                            | Reads the internal element type, not the object's tag         |
-| Weak refs, finalization registries, disposable stacks                                            | Captured `deref`, `unregister`, `disposed`                                    | Internal-slot check; leaves the value as it found it          |
-| WebAssembly modules                                                                              | Captured `WebAssembly.Module.exports`                                         | Host brand check; returns `false` if WebAssembly is absent    |
-| Errors                                                                                           | `Error.isError`, or Node.js's `types.isNativeError`                           | Internal brand check; tag fallback on other older engines     |
-| Arguments, promises, async/generator functions and objects, map/set iterators, module namespaces | Tag, source, and descriptor checks                                            | Best effort; rejects casual spoofs, not deliberate forgeries  |
-| Buffer state, raw JSON                                                                           | Captured `detached`, `resizable` and `growable` getters, and `JSON.isRawJSON` | Internal-slot check; reads state without changing it          |
-| Proxies                                                                                          | Captured `Array.isArray`                                                      | Detects revoked proxies only; live proxies remain opaque      |
-| Native external values                                                                           | Compatibility stub                                                            | Always `false`; detection requires engine support             |
+| Types                                                                                                      | Implementation                                                                | Guarantee                                                     |
+| ---------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| Maps, sets, weak maps, weak sets                                                                           | Captured `has` methods                                                        | Internal-slot check                                           |
+| Dates, boxed primitives                                                                                    | Captured `getTime` or `valueOf`                                               | Internal-slot check                                           |
+| Regular expressions                                                                                        | Captured `source` getter                                                      | Internal-slot check; does not change `lastIndex`              |
+| Buffers, data views                                                                                        | Captured `byteLength` or `buffer` getter                                      | Internal-slot check; accepts detached and out-of-bounds views |
+| Typed arrays                                                                                               | Captured `%TypedArray%` tag getter                                            | Reads the internal element type, not the object's tag         |
+| Weak refs, finalization registries, disposable stacks                                                      | Captured `deref`, `unregister`, `disposed`                                    | Internal-slot check; leaves the value as it found it          |
+| WebAssembly modules                                                                                        | Captured `WebAssembly.Module.exports`                                         | Host brand check; returns `false` if WebAssembly is absent    |
+| Errors                                                                                                     | `Error.isError`, or Node.js's `types.isNativeError`                           | Internal brand check; tag fallback on other older engines     |
+| Arguments, promises, async/generator functions and objects, iterators, iterator helpers, module namespaces | Tag, source, and descriptor checks                                            | Best effort; an object inheriting the real prototype passes   |
+| Buffer state, raw JSON                                                                                     | Captured `detached`, `resizable` and `growable` getters, and `JSON.isRawJSON` | Internal-slot check; reads state without changing it          |
+| Proxies                                                                                                    | Captured `Array.isArray`                                                      | Detects revoked proxies only; live proxies remain opaque      |
+| Native external values                                                                                     | Compatibility stub                                                            | Always `false`; detection requires engine support             |
 
 The internal-slot checks accept values from other realms, including subclasses
 and genuine objects with custom tags or overridden methods. They reject proxies
@@ -63,12 +63,16 @@ cross-realm error tag, which only an object with `[[ErrorData]]` reports, and
 fall back to local `Error.prototype` ancestry when a custom tag hides it. Forged
 prototypes and proxy traps can still fool that fallback.
 
-For opaque types, the Underscore tag fallback now reads property descriptors
-instead of invoking ordinary tag or method getters. It also checks expected
-methods and descriptors, uses captured `Function.prototype.toString` for
-async/generator function syntax, and validates the observable invariants of
-module namespace objects. These filters reject casual tag spoofing, but a
-carefully constructed object or proxy can still pass. Thrown proxy traps return
+For opaque types, the Underscore tag fallback reads property descriptors instead
+of invoking ordinary tag or method getters. It also checks expected methods and
+descriptors, uses captured `Function.prototype.toString` for async/generator
+function syntax, and validates the observable invariants of module namespace
+objects. These filters reject a plain object that only sets a tag, but a
+carefully constructed object or proxy can still pass. `isPromise`,
+`isGeneratorObject`, `isAsyncGenerator`, `isIteratorHelper` and the array,
+string, RegExp string, map and set iterator guards only ask for the methods
+their type has, so an object made with `Object.create` from the real prototype
+inherits those methods and the tag, and passes. Thrown proxy traps return
 `false`. `isProxy` can identify revoked proxies because the standard `IsArray`
 operation exposes revocation without invoking user traps; it cannot identify a
 live proxy. None of these best-effort checks is a security boundary.
@@ -113,12 +117,18 @@ function.
 
 ## Requirements
 
-TypeScript 6 or newer, which is what these packages are built and tested with,
-and a `module` and `moduleResolution` pair that reads an `exports` map:
+TypeScript 6 or newer, which CI type-checks the published declarations with, and
+a `module` and `moduleResolution` pair that reads an `exports` map:
 
 - `node16` with `node16`
 - `nodenext` with `nodenext`
 - `commonjs`, `esnext`, or `preserve` with `bundler`
+
+It re-exports `@openinf/util-date`, whose declarations name `Temporal`, and
+`@openinf/util-array`, whose declarations name `Float16Array`. TypeScript 6
+loads neither by default, so `lib` needs `esnext.temporal`, or all of `esnext`,
+and `Float16Array` needs `es2025` or later there, or `@types/node` 24 or later
+installed and `node` in `types`.
 
 ## Documentation
 

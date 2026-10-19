@@ -7,8 +7,10 @@ import { _tagTester, isObject } from '@openinf/util-core';
 
 /**
  * Names the kind of value `obj` is, in lower case: a `typeof` result for a
- * non-null primitive, and for an object the built-in it was made by, such as
- * `'array'`, `'date'` or `'error'`, falling back to `'object'`. Unlike
+ * non-null primitive or a function, and for any other object `'array'`,
+ * `'date'`, `'regexp'` or `'error'` when it is one, the primitive's name for a
+ * `Boolean`, `Number`, `String` or `Symbol` wrapper, and `'object'` for
+ * everything else, a `Map` or a `BigInt` wrapper included. Unlike
  * `typeof null`, which is `'object'`, this function reports null as `'null'`.
  *
  * Older documentation called this the internal `[[Class]]`, a slot the

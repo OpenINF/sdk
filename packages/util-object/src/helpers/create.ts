@@ -6,7 +6,9 @@ import { deepAssign } from './deep-assign';
 /**
  * Creates an object that inherits from the `prototype` object. If a
  * `properties` object is given, its own enumerable string keyed properties
- * are assigned to the created object.
+ * are copied onto the created object as {@link deepAssign} copies them:
+ * nested plain objects and arrays are copied rather than shared, and the keys
+ * `__proto__`, `constructor` and `prototype` are skipped.
  * @since 3.0.0
  * @category Fundamental Objects
  * @param prototype The object to inherit from.

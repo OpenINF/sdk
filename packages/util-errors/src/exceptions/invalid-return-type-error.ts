@@ -12,7 +12,6 @@ import { NodeTypeError } from '../abstractions/node-type-error';
 /**
  * Thrown in case a function does not return an expected value type on
  * execution, such as when a function is expected to return a promise.
- * @see https://nodejs.org/api/errors.html#ERR_INVALID_RETURN_VALUE
  */
 export class InvalidReturnTypeError extends NodeTypeError {
   /**

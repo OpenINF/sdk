@@ -1,8 +1,13 @@
 # @openinf/util-errors
 
 Error classes modeled on the ones Node.js core throws, so that a caller can
-catch by class rather than by matching a message. Each carries the same `code`
-its Node.js counterpart does.
+catch by class rather than by matching a message. Each carries a `code` in the
+form Node.js uses. Where Node.js defines that code, it is the same error, except
+that `ERR_INVALID_RETURN_PROPERTY_VALUE` and `ERR_INVALID_RETURN_VALUE` here
+mean an invalid value, and Node.js uses them for a value of the wrong type.
+`ERR_INVALID_ARGS_NUMBER`, `ERR_INVALID_PROPERTY_TYPE`,
+`ERR_INVALID_PROPERTY_VALUE`, `ERR_INVALID_RETURN_PROPERTY_TYPE` and
+`ERR_INVALID_RETURN_TYPE` are not Node.js codes.
 
 ## Installation
 
@@ -32,8 +37,8 @@ try {
 
 ## Requirements
 
-TypeScript 6 or newer, which is what these packages are built and tested with,
-and a `module` and `moduleResolution` pair that reads an `exports` map:
+TypeScript 6 or newer, which CI type-checks the published declarations with, and
+a `module` and `moduleResolution` pair that reads an `exports` map:
 
 - `node16` with `node16`
 - `nodenext` with `nodenext`

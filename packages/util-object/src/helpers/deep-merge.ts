@@ -37,14 +37,21 @@ function sourcePathIncludes(
  * Only nested plain objects are merged. Anything else on the source (a
  * primitive, an array, a function, a `Date`, a `Map`, a class instance)
  * replaces whatever the target holds at that key, and is assigned as it stands
- * rather than copied, so the target and the source share it afterwards.
+ * rather than copied, so the target and the source share it afterwards. A
+ * plain object is shared the same way wherever the target holds nothing at
+ * that key to merge it into, such as a key it lacks. The keys `__proto__`,
+ * `constructor` and `prototype` are skipped, since writing them could reach a
+ * prototype, and symbol keys are not copied.
  * @category Fundamental Objects
  * @param target The object to merge properties into.
  * @param source The object to merge properties from.
  * @param depth The maximum merge depth. If exceeded, properties are assigned
  * without recursively merging them.
  * @returns The modified `target` object.
- * @throws {Error} If source contains a circular reference.
+ * @throws {Error} If the merge, descending into plain objects the target also
+ * has, reaches a source object it is already inside. This is not a general
+ * cycle check: a cycle the merge does not descend into is assigned as it
+ * stands, and one the target and source already share is left alone.
  */
 export function deepMerge(
   target: Record<string, unknown>,

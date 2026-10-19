@@ -11,7 +11,8 @@ import { NodeTypeError } from '../abstractions/node-type-error';
 
 /**
  * Thrown in case a function does not return an expected valid value on
- * execution.
+ * execution. Node.js throws the same code for a return value of the wrong
+ * type, which is {@link InvalidReturnTypeError} here.
  * @see https://nodejs.org/api/errors.html#ERR_INVALID_RETURN_VALUE
  */
 export class InvalidReturnValueError extends NodeTypeError {

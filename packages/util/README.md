@@ -64,12 +64,19 @@ for the full set of guards, validators, and helpers.
 
 ## Requirements
 
-TypeScript 6 or newer, which is what these packages are built and tested with,
-and a `module` and `moduleResolution` pair that reads an `exports` map:
+TypeScript 6 or newer, which CI type-checks the published declarations with, and
+a `module` and `moduleResolution` pair that reads an `exports` map:
 
 - `node16` with `node16`
 - `nodenext` with `nodenext`
 - `commonjs`, `esnext`, or `preserve` with `bundler`
+
+It re-exports `@openinf/util-date`, whose declarations name `Temporal`, so `lib`
+needs `esnext.temporal`, or all of `esnext`. It also refers to Node's `Buffer`
+and, through `@openinf/util-array`, to `Float16Array`, so it needs `@types/node`
+installed and `node` in `types`, which TypeScript 6 no longer fills in by
+itself. Unless `lib` has `es2025` or later, that has to be `@types/node` 24 or
+later, since earlier releases do not declare `Float16Array`.
 
 ## Documentation
 

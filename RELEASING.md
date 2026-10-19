@@ -12,10 +12,10 @@ mode, configured in [`.changeset/config.json`](.changeset/config.json) as
 Practically, that means:
 
 - A release bumps **every** package, including ones with no changes. That is
-  intentional: `@openinf/util-core` has eight transitive dependents here, and a
-  breaking change in it can leak through re-exports to consumers of a package
-  that didn't itself change. Independent versioning would signal that as a patch
-  bump, which understates the risk.
+  intentional: nearly every other package here builds on `@openinf/util-core`,
+  and a breaking change in it can leak through re-exports to consumers of a
+  package that didn't itself change. Independent versioning would signal that as
+  a patch bump, which understates the risk.
 - The whole group lands on the highest version any member needs. One `major`
   changeset anywhere makes it a major release for all thirteen.
 - A package with no changeset naming it still gets bumped, but its generated
@@ -173,11 +173,7 @@ The `release` script also passes `--provenance`, so each package ships a signed
 linking the tarball to the commit and workflow run that produced it. npm shows a
 verified badge for it on the package page.
 
-Three things to know about that flag.
-
-It is undocumented in `pnpm publish --help` but genuinely supported -- pnpm
-rejects flags it does not recognize, so it would fail loudly rather than
-silently skip.
+Two things to know about that flag.
 
 **Provenance requires a public repository.** From a private one the publish
 fails outright rather than degrading to an unsigned publish.

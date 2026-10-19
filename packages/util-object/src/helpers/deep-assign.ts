@@ -61,7 +61,9 @@ export function deepAssign<
  * Copies the values of all enumerable own properties of one or more source
  * objects to the target object, recursively copying all nested plain objects
  * and arrays as well. Any other object (a function, a `Date`, a `Map`, a class
- * instance) is assigned by reference.
+ * instance) is assigned by reference. Only string keys are copied, and
+ * `__proto__`, `constructor` and `prototype` are skipped, since writing them
+ * could reach a prototype.
  * @category Fundamental Objects
  * @param target The target object to receive values from source objects
  * @param sources Any number of objects whose enumerable own properties will be
