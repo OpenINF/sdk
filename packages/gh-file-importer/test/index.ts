@@ -54,16 +54,31 @@ function soleOctokitOptions(calls: unknown[]): Record<string, unknown> {
 }
 
 function mockFetch(
-  text: string,
+  body: string | Uint8Array,
   response: { ok?: boolean; status?: number; statusText?: string } = {}
 ): void {
+  const bytes = typeof body === 'string' ? Buffer.from(body, 'utf-8') : body;
   mock.method(globalThis, 'fetch', async () => ({
     ok: response.ok ?? true,
     status: response.status ?? 200,
     statusText: response.statusText ?? 'OK',
-    text: async () => text,
+    text: async () => new TextDecoder().decode(bytes),
+    arrayBuffer: async () => new Uint8Array(bytes).buffer,
   }));
 }
+
+/**
+ * A PNG signature, a Latin-1 `é` (not valid UTF-8 on its own), and a
+ * byte-order mark: each one is changed by a decode and re-encode as UTF-8.
+ */
+const binaryCases = [
+  [
+    'PNG-like bytes',
+    Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0xff]),
+  ],
+  ['a Latin-1 byte', Buffer.from([0x63, 0x61, 0x66, 0xe9])],
+  ['a UTF-8 byte-order mark', Buffer.from([0xef, 0xbb, 0xbf, 0x68, 0x69])],
+] as const;
 
 describe('GhFileImporter', () => {
   afterEach(() => {
@@ -524,7 +539,83 @@ describe('GhFileImporter', () => {
     });
   });
 
+  describe('importFile bytes', () => {
+    for (const [label, bytes] of binaryCases) {
+      it(`should write ${label} unchanged from base64 contents`, async () => {
+        mockOctokit(async () => ({
+          data: {
+            type: 'file',
+            content: bytes.toString('base64'),
+            encoding: 'base64',
+          },
+        }));
+        const { GhFileImporter } = freshRequire('../src/index');
+
+        const destDir = await mkdtemp(pathJoin(tmpdir(), 'gh-file-importer-'));
+        try {
+          const importer = new GhFileImporter({ destDir });
+          const written = await importer.importFile({
+            owner: 'octocat',
+            repo: 'Hello-World',
+            path: 'asset.bin',
+          });
+
+          assert.deepStrictEqual(await readFile(written), bytes);
+        } finally {
+          await rm(destDir, { recursive: true, force: true });
+        }
+      });
+
+      it(`should write ${label} unchanged from raw contents`, async () => {
+        // GitHub omits the encoded body for large files, which sends the
+        // import through the second, raw request instead.
+        mockOctokit(async (opts) =>
+          (opts as { headers?: unknown }).headers === undefined
+            ? { data: { type: 'file', content: '', encoding: 'none' } }
+            : { data: new Response(bytes).body }
+        );
+        const { GhFileImporter } = freshRequire('../src/index');
+
+        const destDir = await mkdtemp(pathJoin(tmpdir(), 'gh-file-importer-'));
+        try {
+          const importer = new GhFileImporter({ destDir });
+          const written = await importer.importFile({
+            owner: 'octocat',
+            repo: 'Hello-World',
+            path: 'asset.bin',
+          });
+
+          assert.deepStrictEqual(await readFile(written), bytes);
+        } finally {
+          await rm(destDir, { recursive: true, force: true });
+        }
+      });
+    }
+  });
+
   describe('importUrl', () => {
+    for (const [label, bytes] of binaryCases) {
+      it(`should write ${label} unchanged`, async () => {
+        mockOctokit(() => {
+          throw new Error('should not be called');
+        });
+        mockFetch(bytes);
+        const { GhFileImporter } = freshRequire('../src/index');
+
+        const destDir = await mkdtemp(pathJoin(tmpdir(), 'gh-file-importer-'));
+        try {
+          const importer = new GhFileImporter({ destDir });
+          const written = await importer.importUrl(
+            'https://example.com/asset.bin'
+          );
+
+          assert.deepStrictEqual(await readFile(written), bytes);
+        } finally {
+          await rm(destDir, { recursive: true, force: true });
+        }
+      });
+    }
+
     it('should write the fetched URL contents to destDir, named from the URL', async () => {
       mockOctokit(() => {
         throw new Error('should not be called');
@@ -682,6 +773,50 @@ describe('path traversal', () => {
         () => importer.importUrl('https://example.com/x', destPath),
         /resolves outside/
       );
+    });
+  }
+
+  for (const destPath of ['', '.', 'a/..']) {
+    it(`should name destPath when ${JSON.stringify(destPath)} is destDir itself`, async () => {
+      // Its parent is outside destDir, which a later check would otherwise
+      // report as a symbolic link escaping it.
+      mockOctokit(async () => ({
+        data: { type: 'file', content: '', encoding: 'base64' },
+      }));
+      mockFetch('payload');
+      const { GhFileImporter } = freshRequire('../src/index');
+      const dir = await mkdtemp(pathJoin(tmpdir(), 'ghfi-'));
+      try {
+        const importer = new GhFileImporter({ destDir: dir });
+        const expected = {
+          name: 'InvalidArgValueError',
+          message:
+            /^The argument .destPath. is invalid because it resolves to .* itself/,
+        };
+
+        await assert.rejects(
+          () =>
+            importer.importFile(
+              { owner: 'octocat', repo: 'Hello-World', path: 'x' },
+              destPath
+            ),
+          expected
+        );
+        // An empty destPath is refused before the request, as an empty
+        // string, but it is still destPath that is named and not url.
+        await assert.rejects(
+          () => importer.importUrl('https://example.com/x', destPath),
+          destPath === ''
+            ? {
+                name: 'InvalidArgValueError',
+                message:
+                  /^The argument .destPath. is invalid because an empty string/,
+              }
+            : expected
+        );
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
     });
   }
 
