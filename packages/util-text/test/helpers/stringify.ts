@@ -34,4 +34,14 @@ describe(stringify.name, () => {
     const token = { toString: (): string => 'line one\nline two' };
     assert.strictEqual(stringify(token), 'line one');
   });
+
+  it('should end the representation at any line ending', () => {
+    assert.strictEqual(stringify({ toString: () => 'one\r\ntwo' }), 'one');
+    assert.strictEqual(stringify({ toString: () => 'one\rtwo' }), 'one');
+  });
+
+  it('should describe a value that cannot be converted to a string', () => {
+    assert.strictEqual(stringify(Object.create(null)), '[object Object]');
+    assert.strictEqual(stringify(Object(Symbol('s'))), '[object Symbol]');
+  });
 });
