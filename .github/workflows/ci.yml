@@ -92,6 +92,12 @@ jobs:
       # they never go through the published `exports` map.
       - run: pnpm run lint:packages
 
+      # The same tarballs, installed into an empty project the way a consumer
+      # installs them, then required, imported, and type-checked from there.
+      # Every other check reads the packages inside the workspace, where a file
+      # missing from `files` or a dependency nobody declared still resolves.
+      - run: pnpm run test:installed
+
   # The build job runs on the repository's toolchain, the newest LTS. The
   # published packages promise every Node.js line still in an LTS window, so
   # their tests, and a load of each built entry point, run again on the oldest
@@ -132,3 +138,4 @@ jobs:
 
       # Type stripping is on by default only from Node.js 22.18.0.
       - run: node --experimental-strip-types tools/check-esm-entrypoints.mts
+      - run: node --experimental-strip-types tools/check-installed-packages.mts
