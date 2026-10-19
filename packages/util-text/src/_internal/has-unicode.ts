@@ -16,10 +16,13 @@ const UTF8_CHARSET = /UTF-?8$/i;
  *
  * Windows is always reported as `false`: modern consoles *can* display
  * Unicode but frequently use a local code page instead, and determining
- * which requires Win32 system calls or shelling out to `chcp`.
+ * which requires Win32 system calls or shelling out to `chcp`. Outside a
+ * Node-like environment (no `process`), there is no locale to read, so the
+ * answer is `false` there too, as it is for `supportsAnsi`.
  * @returns `true` if Unicode is supported; else, `false`.
  */
 export function hasUnicode(): boolean {
+  if (typeof process === 'undefined') return false;
   if (os.type() === 'Windows_NT') return false;
 
   const env = process.env;
