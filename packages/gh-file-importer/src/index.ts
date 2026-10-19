@@ -185,8 +185,19 @@ function resolveWithinDestDir(destDir: string, relativePath: string): string {
   const root = pathResolve(destDir);
   const resolved = pathResolve(root, relativePath);
 
+  // A path naming the directory itself leaves no file to write. Left to the
+  // later checks, it would be refused for its parent being outside `destDir`,
+  // which blames a symbolic link that is not there.
+  if (resolved === root) {
+    throw new InvalidArgValueError(
+      'destPath',
+      relativePath,
+      `is invalid because it resolves to ${curlyQuote(root)} itself`
+    );
+  }
+
   // The separator check keeps `/tmp/safe-evil` from passing as `/tmp/safe`.
-  if (resolved !== root && !resolved.startsWith(root + pathSep)) {
+  if (!resolved.startsWith(root + pathSep)) {
     throw new InvalidArgValueError(
       'destPath',
       relativePath,
@@ -249,13 +260,13 @@ const O_NOFOLLOW = fsConstants.O_NOFOLLOW ?? 0;
  * between. `O_NOFOLLOW` applies the same rule to the final component.
  * @param destDir The directory writes are confined to.
  * @param relativePath The caller-supplied path to resolve within it.
- * @param text The contents to write.
+ * @param contents The bytes to write, unchanged.
  * @returns The absolute path of the written file.
  */
 async function writeWithinDestDir(
   destDir: string,
   relativePath: string,
-  text: string
+  contents: Uint8Array
 ): Promise<string> {
   const filepath = resolveWithinDestDir(destDir, relativePath);
   const parent = pathDirname(filepath);
@@ -315,7 +326,7 @@ async function writeWithinDestDir(
   });
 
   try {
-    await handle.writeFile(text);
+    await handle.writeFile(contents);
   } finally {
     await handle.close();
   }
@@ -440,6 +451,14 @@ export class GhFileImporter {
   public async fetchFileText(
     location: RepoLocation & { path: string }
   ): Promise<string> {
+    return (await this.#fetchFileBytes(location)).toString('utf-8');
+  }
+
+  // The file exactly as stored. Decoding is left to whoever needs text, since
+  // a file that is not UTF-8 would not survive the round trip.
+  async #fetchFileBytes(
+    location: RepoLocation & { path: string }
+  ): Promise<Buffer> {
     const { owner, repo, path, ref } = location;
     validateRequiredPath(path);
     const requestedLocation = {
@@ -462,16 +481,11 @@ export class GhFileImporter {
         request: { parseSuccessResponseBody: false },
       });
       // Octokit's endpoint type describes JSON metadata even when parsing
-      // is disabled and data is the response's byte stream. Decode it like
-      // the base64 path, preserving a leading UTF-8 byte-order mark too.
+      // is disabled and data is the response's byte stream.
       const body = response.data as unknown as ReadableStream<Uint8Array>;
-      return Buffer.from(await new Response(body).arrayBuffer()).toString(
-        'utf-8'
-      );
+      return Buffer.from(await new Response(body).arrayBuffer());
     }
-    return Buffer.from(data.content, data.encoding as BufferEncoding).toString(
-      'utf-8'
-    );
+    return Buffer.from(data.content, data.encoding as BufferEncoding);
   }
 
   /**
@@ -484,6 +498,12 @@ export class GhFileImporter {
    * @throws {Error} if the server returns a non-success HTTP status.
    */
   public async fetchUrlText(url: string): Promise<string> {
+    return (await this.#fetchUrl(url)).text();
+  }
+
+  // The successful response with its body unread, so a caller can take it as
+  // text or as the bytes the server sent.
+  async #fetchUrl(url: string): Promise<Response> {
     validateUrl(url);
 
     this.log.info(
@@ -497,7 +517,7 @@ export class GhFileImporter {
           (response.statusText === '' ? '' : ` ${response.statusText}`)
       );
     }
-    return response.text();
+    return response;
   }
 
   /**
@@ -519,8 +539,12 @@ export class GhFileImporter {
     location: RepoLocation & { path: string },
     destPath?: string
   ): Promise<string> {
-    const text = await this.fetchFileText(location);
-    return writeWithinDestDir(this.#destDir, destPath ?? location.path, text);
+    const contents = await this.#fetchFileBytes(location);
+    return writeWithinDestDir(
+      this.#destDir,
+      destPath ?? location.path,
+      contents
+    );
   }
 
   /**
@@ -556,14 +580,21 @@ export class GhFileImporter {
     }
 
     if (relativePath === '') {
-      throw new InvalidArgValueError(
-        'url',
-        url,
-        'is invalid because its pathname does not contain a filename'
-      );
+      throw destPath === undefined
+        ? new InvalidArgValueError(
+            'url',
+            url,
+            'is invalid because its pathname does not contain a filename'
+          )
+        : new InvalidArgValueError(
+            'destPath',
+            destPath,
+            'is invalid because an empty string was provided'
+          );
     }
 
-    const text = await this.fetchUrlText(url);
-    return writeWithinDestDir(this.#destDir, relativePath, text);
+    const response = await this.#fetchUrl(url);
+    const contents = new Uint8Array(await response.arrayBuffer());
+    return writeWithinDestDir(this.#destDir, relativePath, contents);
   }
 }
