@@ -10,6 +10,8 @@ import { _copyDeep } from '../_internal/_copy-deep';
  *
  * A cycle is preserved rather than followed, and an object reached by more
  * than one path is copied once, so the copy has the shape of the original.
+ * A plain object's `__proto__`, `constructor` and `prototype` keys are left
+ * out of its copy, so the copy cannot carry them to code that assigns them.
  * @category Indexed Collections
  * @param array The array to copy.
  * @param inherited Whether to also copy a plain object's inherited

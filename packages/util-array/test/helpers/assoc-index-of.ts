@@ -22,4 +22,11 @@ describe(assocIndexOf.name, () => {
     assert.strictEqual(assocIndexOf(pairs, 'z'), -1);
     assert.strictEqual(assocIndexOf([], 'a'), -1);
   });
+
+  it('should skip entries that are not arrays', () => {
+    const sparse = [['a', 1], , null, ['b', 2]] as unknown[][];
+    assert.strictEqual(assocIndexOf(sparse, 'a'), 0);
+    assert.strictEqual(assocIndexOf(sparse, 'b'), 3);
+    assert.strictEqual(assocIndexOf(sparse, 'z'), -1);
+  });
 });

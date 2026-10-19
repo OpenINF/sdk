@@ -31,7 +31,8 @@ export function arrayIsHomogeneous<T>(
   comparer: EqualityComparer<T> = equateValues
 ): boolean {
   if (array.length < 2) return true;
-  // length >= 2 guarantees index 0 and every index in the loop are present.
+  // Only the bounds are checked: a hole reads as `undefined`, which the
+  // element type does not admit, and is compared like any other element.
   // oxlint-disable-next-line typescript/no-unnecessary-type-assertion -- oxlint-tsgolint doesn't currently honor noUncheckedIndexedAccess; tsc does require this.
   const first = array[0]!;
   for (let i = 1, length = array.length; i < length; i++) {

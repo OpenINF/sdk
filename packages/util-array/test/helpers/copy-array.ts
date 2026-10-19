@@ -138,4 +138,46 @@ describe('copyArray prototype pollution', () => {
     assert.strictEqual(Object.getPrototypeOf(copied), Object.prototype);
     assert.deepStrictEqual(copied, { safe: 'kept' });
   });
+
+  it('should not run or be refused by inherited properties', () => {
+    let setterCalls = 0;
+    Object.defineProperty(Object.prototype, '__testSetter__', {
+      configurable: true,
+      set() {
+        setterCalls += 1;
+      },
+    });
+    Object.defineProperty(Array.prototype, 0, {
+      configurable: true,
+      value: 'inherited',
+      writable: false,
+    });
+    try {
+      const copy = copyArray([{ __testSetter__: 1 }, 'b']);
+
+      assert.strictEqual(setterCalls, 0);
+      assert.ok(Object.hasOwn(copy, 0));
+      assert.deepStrictEqual(
+        Object.getOwnPropertyDescriptor(copy[0], '__testSetter__'),
+        {
+          value: 1,
+          writable: true,
+          enumerable: true,
+          configurable: true,
+        }
+      );
+      assert.strictEqual(copy[1], 'b');
+    } finally {
+      delete (Object.prototype as Record<string, unknown>)['__testSetter__'];
+      delete (Array.prototype as unknown as Record<number, unknown>)[0];
+    }
+  });
+
+  it('should keep holes as holes', () => {
+    const copy = copyArray([1, , 3]);
+
+    assert.strictEqual(copy.length, 3);
+    assert.ok(!(1 in copy));
+    assert.deepStrictEqual(copy, [1, , 3]);
+  });
 });

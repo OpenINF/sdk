@@ -17,4 +17,10 @@ describe(join.name, () => {
   it('should return the sole element without a separator', () => {
     assert.strictEqual(join(['a'], ','), 'a');
   });
+
+  it('should normalize the length as ToLength does', () => {
+    assert.strictEqual(join({ length: 1.5, 0: 'a', 1: 'b' }, ','), 'a');
+    assert.strictEqual(join({ length: -1, 0: 'a' }, ','), '');
+    assert.strictEqual(join({ length: Number.NaN, 0: 'a' }, ','), '');
+  });
 });

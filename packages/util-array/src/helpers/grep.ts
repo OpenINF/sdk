@@ -22,7 +22,8 @@ export function grep<T>(
   const length = elems.length;
 
   for (let i = 0; i < length; i++) {
-    // i < length guarantees elems[i] is present.
+    // i < length bounds the index but does not make it present: a hole
+    // reaches `callback` as `undefined`, as it does in jQuery.
     // oxlint-disable-next-line typescript/no-unnecessary-type-assertion -- oxlint-tsgolint doesn't currently honor noUncheckedIndexedAccess; tsc does require this.
     const isCallbackFalsy = !callback(elems[i]!, i);
     if (isCallbackFalsy !== shouldMatchTruthy) {
