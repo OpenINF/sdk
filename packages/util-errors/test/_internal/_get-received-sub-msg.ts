@@ -56,4 +56,16 @@ describe('_getReceivedSubMsg', () => {
       /namedFn/
     );
   });
+
+  it('should describe a function without a usable name by its type', () => {
+    const anonymous = _getReceivedSubMsg(() => {
+      /* no-op */
+    });
+    assert.match(anonymous, /Received type .function. /);
+    assert.doesNotMatch(anonymous, /function ..$/);
+
+    class Numbered {}
+    Object.defineProperty(Numbered, 'name', { value: 5 });
+    assert.match(_getReceivedSubMsg(Numbered), /Received type .function. /);
+  });
 });

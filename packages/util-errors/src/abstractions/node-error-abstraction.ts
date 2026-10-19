@@ -18,8 +18,15 @@ export class NodeErrorAbstraction extends Error {
     this.name = name;
     const stack = this.stack;
     if (stack) {
-      const firstFrame = stack.indexOf('\n');
-      const frames = firstFrame === -1 ? '' : stack.slice(firstFrame);
+      // The header V8 wrote is `Error: message`, so it spans one line more
+      // than the message has line breaks. Cutting at the first line break
+      // instead would leave the rest of a multiline message in the frames.
+      let header = -1;
+      for (let lines = message.split('\n').length; lines > 0; lines -= 1) {
+        header = stack.indexOf('\n', header + 1);
+        if (header === -1) break;
+      }
+      const frames = header === -1 ? '' : stack.slice(header);
       this.stack = `${name} [${this.code}]: ${message}${frames}`;
     }
   }

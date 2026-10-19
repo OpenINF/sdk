@@ -19,7 +19,15 @@ export function _getReceivedSubMsg(value: unknown): string {
   let msg = '';
   if (value == null) {
     msg += `. Received ${curlyQuote(String(value))}`;
-  } else if (typeof value === 'function' && hasOwn(value, 'name')) {
+  } else if (
+    typeof value === 'function' &&
+    hasOwn(value, 'name') &&
+    typeof value.name === 'string' &&
+    value.name !== ''
+  ) {
+    // An anonymous function has an own `name` too, the empty string, and a
+    // class can declare a static `name` that is not a string. Neither names
+    // anything, so both are described by type below, as Node.js does.
     msg += `. Received function ${curlyQuote(value.name)}`;
   } else if (typeof value === 'object') {
     // At `depth: -1`, a nested object or array inspects as the placeholder
