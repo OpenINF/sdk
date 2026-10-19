@@ -14,8 +14,10 @@ function decoratedName<This, Value>(
     ? (receiver as { name?: unknown }).name
     : (receiver as { constructor?: { name?: unknown } }).constructor?.name;
 
+  // A private name already starts with `#`, which marks an instance member.
+  const separator = context.static ? '.' : context.private ? '' : '#';
   return typeof owner === 'string' && owner.length > 0
-    ? `${owner}${context.static ? '.' : '#'}${propertyName}`
+    ? `${owner}${separator}${propertyName}`
     : propertyName;
 }
 

@@ -18,6 +18,16 @@ describe(assertEqual.name, () => {
     assert.throws(() => assertEqual(1, 2, 'first', 'second'), /first second/);
   });
 
+  it('should end the message at the comparison when no message is given', () => {
+    assert.throws(() => assertEqual(1, 2), { message: 'Expected 1 === 2' });
+  });
+
+  it('should keep the second message when the first is absent', () => {
+    assert.throws(() => assertEqual(1, 2, undefined, 'second'), {
+      message: 'Expected 1 === 2. second',
+    });
+  });
+
   it('should throw an AssertionError for a value String cannot convert', () => {
     const bare = Object.create(null) as object;
     assert.throws(() => assertEqual<unknown>(bare, 1), {

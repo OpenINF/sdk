@@ -23,7 +23,7 @@ export function assertLessThan(
 ): void {
   if (!(a < b)) {
     fail(
-      `Expected ${a} < ${b}. ${msg || ''}`,
+      `Expected ${a} < ${b}` + (msg ? `. ${msg}` : ''),
       stackCrawlMark || assertLessThan
     );
   }

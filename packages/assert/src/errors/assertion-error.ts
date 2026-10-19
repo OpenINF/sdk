@@ -23,8 +23,9 @@ export interface AssertionErrorConstructorOptions {
 }
 
 /**
- * Indicates the failure of an assertion. All errors thrown by this package
- * are instances of `AssertionError`.
+ * Indicates the failure of an assertion. Every assertion in this package
+ * that fails throws an `AssertionError`, unless a message callback passed to
+ * it throws first, in which case that error propagates unchanged.
  */
 export class AssertionError extends Error {
   public actual: unknown;

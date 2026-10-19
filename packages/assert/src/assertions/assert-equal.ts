@@ -25,9 +25,10 @@ export function assertEqual<T>(
   stackCrawlMark?: AnyFunction
 ): void {
   if (a !== b) {
-    const message = msg ? (msg2 ? `${msg} ${msg2}` : msg) : '';
+    const message = [msg, msg2].filter(Boolean).join(' ');
     fail(
-      `Expected ${_stringifyValue(a)} === ${_stringifyValue(b)}. ${message}`,
+      `Expected ${_stringifyValue(a)} === ${_stringifyValue(b)}` +
+        (message ? `. ${message}` : ''),
       stackCrawlMark || assertEqual
     );
   }
