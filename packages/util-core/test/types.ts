@@ -8,7 +8,10 @@ import type { AnyConstructor } from '../src/types';
 describe('AnyConstructor', () => {
   it('should accept constructors with required arguments', () => {
     class NeedsArgument {
-      constructor(readonly value: string) {}
+      readonly value: string;
+      constructor(value: string) {
+        this.value = value;
+      }
     }
 
     const constructor: AnyConstructor = NeedsArgument;

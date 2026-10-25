@@ -3,9 +3,11 @@
 
 // Missing from Node.js
 
+// Read by name: Closure Compiler's ADVANCED mode has no declaration of
+// JSON.isRawJSON, so it would rename the property and find nothing.
 const rawJSONCheck = (
   JSON as { isRawJSON?: (this: void, value: unknown) => boolean }
-).isRawJSON;
+)['isRawJSON'];
 
 /**
  * Detects whether `value` is a raw JSON object, the result of

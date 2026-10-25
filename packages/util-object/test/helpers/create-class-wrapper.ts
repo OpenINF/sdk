@@ -6,7 +6,10 @@ import { describe, it } from 'node:test';
 import { createClassWrapper } from '../../src/helpers/create-class-wrapper';
 
 class Foo {
-  public constructor(public x: number) {}
+  public x: number;
+  public constructor(x: number) {
+    this.x = x;
+  }
 }
 
 describe(createClassWrapper.name, () => {

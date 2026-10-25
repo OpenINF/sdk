@@ -191,11 +191,6 @@ export interface ObjectConstructor {
 }
 
 /**
- * Provides functionality common to all JavaScript objects.
- */
-declare let Object: ObjectConstructor;
-
-/**
  * The members every object inherits from `Object.prototype`.
  * @category Fundamental Objects
  */
