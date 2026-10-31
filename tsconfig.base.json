@@ -5,6 +5,11 @@
     "allowUnusedLabels": false,
     "declaration": true,
     "declarationMap": true,
+    // No enums, namespaces or parameter properties: only syntax that erases to
+    // the JavaScript beside it. An enum compiles to quoted writes read back
+    // unquoted, which a property-renaming minifier such as Closure Compiler's
+    // ADVANCED mode breaks, and Node.js's type stripping cannot run one.
+    "erasableSyntaxOnly": true,
     "esModuleInterop": true,
     "exactOptionalPropertyTypes": true,
     // Standard decorators. The `Assert` decorator @openinf/assert ships is an

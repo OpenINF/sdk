@@ -35,7 +35,10 @@ describe(copyArray.name, () => {
 
   it('should copy non-plain objects by reference', () => {
     class Foo {
-      public constructor(public value: number) {}
+      public value: number;
+      public constructor(value: number) {
+        this.value = value;
+      }
     }
     const instance = new Foo(1);
     const [copy] = copyArray([instance]);

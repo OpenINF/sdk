@@ -42,8 +42,14 @@ const { toStringTag } = Symbol;
 const objectToString = Object.prototype.toString;
 // oxlint-disable-next-line typescript/unbound-method -- invoked with captured Reflect.apply.
 const isPrototypeOf = Object.prototype.isPrototypeOf;
-const errorIsError = (Error as ErrorConstructor & { isError?: Predicate })
-  .isError;
+// Error.isError, Node.js's process and Temporal are read by name, as quoted
+// keys, like the globals further down. A minifier that renames properties,
+// such as Closure Compiler's ADVANCED mode, renames any property it has no
+// declaration for, its declarations leave these out, and a renamed probe
+// finds nothing, so the check would quietly fall back or say false.
+const errorIsError = (Error as ErrorConstructor & { isError?: Predicate })[
+  'isError'
+];
 
 // The Node.js 22 line has no Error.isError, but its util.types.isNativeError
 // asks V8 the same question about [[ErrorData]], so a supported Node.js answers
@@ -58,7 +64,9 @@ const hostIsNativeError = ((): Predicate | undefined => {
         ): { types?: { isNativeError?: Predicate } } | undefined;
       };
     };
-    return host.process?.getBuiltinModule?.('node:util')?.types?.isNativeError;
+    return host['process']?.['getBuiltinModule']?.('node:util')?.['types']?.[
+      'isNativeError'
+    ];
   } catch {
     return undefined;
   }
@@ -78,7 +86,7 @@ const temporalObject = (
   globalThis as unknown as {
     Temporal?: Record<string, { prototype: object } | undefined>;
   }
-).Temporal;
+)['Temporal'];
 
 function temporalCheck(name: string, key: string): [string, Predicate] {
   const constructor = temporalObject?.[name];
