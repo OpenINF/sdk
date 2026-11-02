@@ -5,6 +5,7 @@ import {
   mkdtemp,
   readdir,
   readFile,
+  rename,
   rm,
   symlink,
   writeFile,
@@ -471,6 +472,39 @@ describe('GhFileImporter', () => {
       assert.strictEqual(result, 'raw file contents');
     });
 
+    it('should percent-encode control characters in the URL it logs and reports', async () => {
+      mockOctokit(() => {
+        throw new Error('should not be called');
+      });
+      mockFetch('gone', { ok: false, status: 410, statusText: 'Gone' });
+      const { GhFileImporter } = freshRequire('../src/index');
+      const lines: string[] = [];
+      const record = (line: string): void => {
+        lines.push(line);
+      };
+      const importer = new GhFileImporter({
+        destDir: '/tmp',
+        log: {
+          trace: record,
+          debug: record,
+          info: record,
+          warn: record,
+          error: record,
+          fatal: record,
+        },
+      });
+
+      const error = await importer
+        .fetchUrlText('https://example.com/x\r\n1 forged\u001b[2Jy\u0085z')
+        .catch((caught: unknown) => caught as Error);
+
+      assert.strictEqual(lines.length, 1);
+      for (const text of [lines[0] ?? '', error.message]) {
+        assert.match(text, /x%0D%0A1 forged%1B\[2Jy%85z/);
+        assert.doesNotMatch(text, /[\r\n\u0085]|\u001b\[2J/);
+      }
+    });
+
     it('should reject a non-success HTTP response', async () => {
       mockOctokit(() => {
         throw new Error('should not be called');
@@ -919,4 +953,105 @@ describe('path traversal', () => {
       await rm(outsideDir, { recursive: true, force: true });
     }
   });
+
+  it('should truncate a longer file it overwrites', async () => {
+    mockOctokit(() => {
+      throw new Error('should not be called');
+    });
+    mockFetch('new');
+    const dir = await mkdtemp(pathJoin(tmpdir(), 'ghfi-'));
+    try {
+      await writeFile(pathJoin(dir, 'x.txt'), 'a much longer original');
+      const { GhFileImporter } = freshRequire('../src/index');
+      const importer = new GhFileImporter({ destDir: dir });
+      const written = await importer.importUrl('https://example.com/x.txt');
+      assert.strictEqual(await readFile(written, 'utf8'), 'new');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it(
+    'should refuse a file reached through a directory swapped in after the checks',
+    {
+      skip: process.platform !== 'linux' && 'only Linux names the opened file',
+    },
+    async () => {
+      mockOctokit(() => {
+        throw new Error('should not be called');
+      });
+      mockFetch('replacement');
+      const dir = await mkdtemp(pathJoin(tmpdir(), 'ghfi-root-'));
+      const outsideDir = await mkdtemp(pathJoin(tmpdir(), 'ghfi-outside-'));
+      const outside = pathJoin(outsideDir, 'target.txt');
+      try {
+        await writeFile(outside, 'original');
+        const fsPromises = await import('node:fs/promises');
+        // Every path check has passed by the time `open` runs. Swapping the
+        // parent for a symlink then is the race only the opened file shows.
+        const realOpen = fsPromises.open;
+        let swapped = false;
+        const open: typeof fsPromises.open = async (path, ...rest) => {
+          if (!swapped && path === pathJoin(dir, 'sub', 'target.txt')) {
+            swapped = true;
+            await rename(pathJoin(dir, 'sub'), pathJoin(dir, 'moved'));
+            await symlink(outsideDir, pathJoin(dir, 'sub'));
+          }
+          return realOpen(path, ...rest);
+        };
+        mock.module('node:fs/promises', {
+          [exportsOption]: { ...fsPromises, open },
+        });
+        const { GhFileImporter } = freshRequire('../src/index');
+        const importer = new GhFileImporter({ destDir: dir });
+
+        await assert.rejects(
+          () => importer.importUrl('https://example.com/x', 'sub/target.txt'),
+          /symbolic link resolves outside/
+        );
+        assert.strictEqual(swapped, true);
+        assert.strictEqual(await readFile(outside, 'utf8'), 'original');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+        await rm(outsideDir, { recursive: true, force: true });
+      }
+    }
+  );
+
+  it(
+    'should not write when the opened file cannot be looked up',
+    {
+      skip: process.platform !== 'linux' && 'only Linux names the opened file',
+    },
+    async () => {
+      mockOctokit(() => {
+        throw new Error('should not be called');
+      });
+      mockFetch('replacement');
+      const dir = await mkdtemp(pathJoin(tmpdir(), 'ghfi-root-'));
+      try {
+        await writeFile(pathJoin(dir, 'target.txt'), 'original');
+        const fsPromises = await import('node:fs/promises');
+        const readlink: typeof fsPromises.readlink = async () => {
+          throw Object.assign(new Error('lookup failed'), { code: 'EACCES' });
+        };
+        mock.module('node:fs/promises', {
+          [exportsOption]: { ...fsPromises, readlink },
+        });
+        const { GhFileImporter } = freshRequire('../src/index');
+        const importer = new GhFileImporter({ destDir: dir });
+
+        await assert.rejects(
+          () => importer.importUrl('https://example.com/x', 'target.txt'),
+          /lookup failed/
+        );
+        assert.strictEqual(
+          await readFile(pathJoin(dir, 'target.txt'), 'utf8'),
+          'original'
+        );
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    }
+  );
 });

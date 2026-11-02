@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------
 
 import { constants as fsConstants } from 'node:fs';
-import { lstat, mkdir, open, realpath } from 'node:fs/promises';
+import { lstat, mkdir, open, readlink, realpath } from 'node:fs/promises';
 import {
   basename as pathBasename,
   dirname as pathDirname,
@@ -249,6 +249,55 @@ async function physicalAncestorOf(target: string): Promise<string> {
 const O_NOFOLLOW = fsConstants.O_NOFOLLOW ?? 0;
 
 /**
+ * Where an open file descriptor actually leads, on a platform that says.
+ *
+ * Linux names every open descriptor under `/proc/self/fd`, resolved through
+ * every symlink that led to it, so this is the file `open` reached rather
+ * than the one its path named when it was checked. Elsewhere, or without a
+ * mounted `/proc`, there is nothing to ask and the answer is `undefined`.
+ * @param fd The descriptor to look up.
+ * @returns The physical path of the open file, or `undefined`.
+ */
+async function physicalPathOfDescriptor(
+  fd: number
+): Promise<string | undefined> {
+  if (process.platform !== 'linux') return undefined;
+
+  try {
+    return await readlink(`/proc/self/fd/${fd}`);
+  } catch (error) {
+    // Only a system with no `/proc` mounted has nothing to ask. Where it is
+    // mounted, a failed lookup leaves the opened file unchecked, so it is
+    // passed on rather than read as "nothing to ask".
+    const mounted = await lstat('/proc/self/fd').then(
+      () => true,
+      () => false
+    );
+    if (mounted) throw error;
+    return undefined;
+  }
+}
+
+// oxlint-disable-next-line no-control-regex -- matching control characters is the point.
+const CONTROL_CHARACTER = /[\u0000-\u001f\u007f-\u009f]/g;
+
+/**
+ * A URL as it can safely appear in a line of output. Control characters,
+ * line breaks and escapes among them, are percent-encoded the way a URL would
+ * carry them, so a URL cannot end a log line early, start a forged one, or
+ * restyle the terminal it is printed to.
+ * @param url The URL as the caller gave it.
+ * @returns The URL with every C0 and C1 control character percent-encoded.
+ */
+function printableUrl(url: string): string {
+  return url.replace(
+    CONTROL_CHARACTER,
+    (character) =>
+      `%${character.charCodeAt(0).toString(16).toUpperCase().padStart(2, '0')}`
+  );
+}
+
+/**
  * Writes a file, confined to `destDir` at every step.
  *
  * {@link resolveWithinDestDir} rejects `..` and absolute paths, which settles
@@ -258,6 +307,14 @@ const O_NOFOLLOW = fsConstants.O_NOFOLLOW ?? 0;
  * follows symlinks and would otherwise make directories outside `destDir`
  * before being told not to, and once after, in case the tree changed in
  * between. `O_NOFOLLOW` applies the same rule to the final component.
+ *
+ * Those checks are of paths, and a directory swapped for a symlink after the
+ * last of them still redirects the `open`. So the file is opened without
+ * truncating it, and, where the platform can say which file a descriptor
+ * reached (Linux), that file is checked too before a byte of it changes. A
+ * swap that wins the race there costs at most an empty file created outside
+ * `destDir`. Where the platform cannot say, `destDir` has to be a tree that
+ * nobody less trusted than the caller can change while an import runs.
  * @param destDir The directory writes are confined to.
  * @param relativePath The caller-supplied path to resolve within it.
  * @param contents The bytes to write, unchanged.
@@ -311,10 +368,7 @@ async function writeWithinDestDir(
 
   const handle = await open(
     filepath,
-    fsConstants.O_CREAT |
-      fsConstants.O_TRUNC |
-      fsConstants.O_WRONLY |
-      O_NOFOLLOW,
+    fsConstants.O_CREAT | fsConstants.O_WRONLY | O_NOFOLLOW,
     0o666
   ).catch((error: unknown) => {
     // What `O_NOFOLLOW` reports when the final component is a symlink. On its
@@ -326,6 +380,13 @@ async function writeWithinDestDir(
   });
 
   try {
+    const opened = await physicalPathOfDescriptor(handle.fd);
+
+    if (opened !== undefined && !isWithinDirectory(physicalRoot, opened)) {
+      refuse();
+    }
+
+    await handle.truncate(0);
     await handle.writeFile(contents);
   } finally {
     await handle.close();
@@ -507,13 +568,15 @@ export class GhFileImporter {
     validateUrl(url);
 
     this.log.info(
-      `${ellipsify(`Download of ${blueify(underline(url))} has started`)}`
+      `${ellipsify(
+        `Download of ${blueify(underline(printableUrl(url)))} has started`
+      )}`
     );
 
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(
-        `Download of ${curlyQuote(url)} failed with HTTP ${response.status}` +
+        `Download of ${curlyQuote(printableUrl(url))} failed with HTTP ${response.status}` +
           (response.statusText === '' ? '' : ` ${response.statusText}`)
       );
     }
