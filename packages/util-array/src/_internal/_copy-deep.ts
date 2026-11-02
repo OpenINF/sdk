@@ -22,6 +22,38 @@ function defineOwn(copy: object, key: PropertyKey, value: unknown): void {
   });
 }
 
+/**
+ * Above this length an array is no longer walked index by index. Below it the
+ * walk costs no more than listing the indices would.
+ */
+const INDEX_WALK_MAX = 0x10000;
+
+/**
+ * Every index below `length` that `array` or anything on its prototype chain
+ * holds a property at, in ascending order. These are the only indices `in`
+ * can answer `true` for, so a sparse array costs what it holds rather than
+ * what its `length` claims.
+ * @param array The array to read.
+ * @param length The array's length.
+ * @returns The candidate indices, each still to be confirmed with `in`.
+ */
+function heldIndices(array: unknown[], length: number): number[] {
+  const indices = new Set<number>();
+  for (
+    let holder: object | null = array;
+    holder !== null;
+    holder = Object.getPrototypeOf(holder) as object | null
+  ) {
+    for (const key of Object.getOwnPropertyNames(holder)) {
+      const index = Number(key);
+      if (Number.isInteger(index) && index >= 0 && index < length) {
+        if (String(index) === key) indices.add(index);
+      }
+    }
+  }
+  return [...indices].sort((a, b) => a - b);
+}
+
 function keysOf(value: Record<string, unknown>, inherited: boolean): string[] {
   if (!inherited) {
     return Object.keys(value);
@@ -62,11 +94,41 @@ export function _copyDeep<T>(
     const copy: unknown[] = [];
     copy.length = value.length;
     copies.set(value, copy);
-    for (let index = 0; index < value.length; index += 1) {
-      // Array.prototype.map, which this replaces, visits inherited indexed
-      // properties but preserves holes with no property anywhere in the chain.
-      if (index in value) {
-        defineOwn(copy, index, _copyDeep(value[index], inherited, copies));
+    // Array.prototype.map, which this replaces, visits inherited indexed
+    // properties but preserves holes with no property anywhere in the chain.
+    // A long array is read through the indices it holds instead: walking
+    // every index of `new Array(2 ** 32 - 1)` to find none present would take
+    // minutes for an empty copy.
+    const copyIndex = (index: number): boolean => {
+      if (!(index in value)) return false;
+      defineOwn(copy, index, _copyDeep(value[index], inherited, copies));
+      return true;
+    };
+    if (value.length <= INDEX_WALK_MAX) {
+      for (let index = 0; index < value.length; index += 1) copyIndex(index);
+    } else {
+      // Copying an element can run a getter, and a getter can add indices
+      // the first listing never saw, so the listing is taken again until it
+      // holds nothing new. That is one more listing for an ordinary array.
+      const copied = new Set<number>();
+      for (;;) {
+        const pending = heldIndices(value, value.length).filter(
+          (index) => !copied.has(index)
+        );
+        if (pending.length === 0) break;
+        // A pass that copies nothing ran no getter, so listing again would
+        // find the same indices: a proxy can list an index its `has` trap
+        // denies, and would otherwise keep this loop going forever.
+        let progressed = false;
+        for (const index of pending) {
+          // Marked only once read: an index a getter removed before its turn
+          // is listed again, and copied, if another getter puts it back.
+          if (index < value.length && copyIndex(index)) {
+            copied.add(index);
+            progressed = true;
+          }
+        }
+        if (!progressed) break;
       }
     }
     return copy as T;

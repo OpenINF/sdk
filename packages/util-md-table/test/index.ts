@@ -101,4 +101,16 @@ describe(mdTbl2json.name, () => {
     const table = ['Name | Value', '-----|------', 'one  | two'].join('\n');
     assert.deepStrictEqual(mdTbl2json(table), [{ Name: 'one', Value: 'two' }]);
   });
+
+  it('should cost short rows only the cells they have, however wide the header', () => {
+    const width = 30_000;
+    const header = `| ${Array.from({ length: width }, (_, i) => `h${i}`).join(' | ')} |`;
+    const divider = `|${' --- |'.repeat(width)}`;
+    const rows = Array.from({ length: 30_000 }, (_, i) => `| ${i} |`);
+    const started = performance.now();
+    const json = mdTbl2json([header, divider, ...rows].join('\n'));
+    assert.ok(performance.now() - started < 1000);
+    assert.strictEqual(json.length, 30_000);
+    assert.deepStrictEqual(json[7], { h0: '7' });
+  });
 });

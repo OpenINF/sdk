@@ -183,4 +183,94 @@ describe('copyArray prototype pollution', () => {
     assert.ok(!(1 in copy));
     assert.deepStrictEqual(copy, [1, , 3]);
   });
+
+  it('should copy a long sparse array by what it holds, not its length', () => {
+    const original: unknown[] = [];
+    original.length = 2 ** 32 - 1;
+    original[3] = 'three';
+    original[2 ** 32 - 2] = [1, 2];
+    const started = performance.now();
+    const copy = copyArray(original);
+    assert.ok(performance.now() - started < 1000);
+    assert.strictEqual(copy.length, 2 ** 32 - 1);
+    assert.deepStrictEqual(Object.keys(copy), ['3', String(2 ** 32 - 2)]);
+    assert.strictEqual(copy[3], 'three');
+    assert.deepStrictEqual(copy[2 ** 32 - 2], [1, 2]);
+    assert.notStrictEqual(copy[2 ** 32 - 2], original[2 ** 32 - 2]);
+  });
+
+  it('should copy inherited and non-enumerable indices of a long array', () => {
+    const prototype = Object.create(Array.prototype) as unknown[];
+    prototype[5] = 'inherited';
+    const original: unknown[] = [];
+    Object.setPrototypeOf(original, prototype);
+    original.length = 100_000;
+    Object.defineProperty(original, 70_000, { value: 'hidden' });
+    original[99_999] = 'last';
+    const copy = copyArray(original);
+    assert.strictEqual(copy.length, 100_000);
+    assert.deepStrictEqual(Object.keys(copy), ['5', '70000', '99999']);
+    assert.strictEqual(copy[5], 'inherited');
+    assert.strictEqual(copy[70_000], 'hidden');
+    assert.strictEqual(copy[99_999], 'last');
+  });
+
+  it('should copy indices a getter adds while a long array is copied', () => {
+    const original: unknown[] = [];
+    original.length = 100_000;
+    Object.defineProperty(original, 0, {
+      enumerable: true,
+      get() {
+        original[1] = 'added';
+        original[90_000] = 'added later';
+        return 'first';
+      },
+    });
+    const copy = copyArray(original);
+    assert.deepStrictEqual(Object.keys(copy), ['0', '1', '90000']);
+    assert.strictEqual(copy[0], 'first');
+    assert.strictEqual(copy[1], 'added');
+    assert.strictEqual(copy[90_000], 'added later');
+  });
+
+  it('should copy an index a getter removes and another puts back', () => {
+    const original: unknown[] = [];
+    original.length = 100_000;
+    original[10] = 'original';
+    Object.defineProperty(original, 0, {
+      enumerable: true,
+      get() {
+        delete original[10];
+        Object.defineProperty(original, 1, {
+          enumerable: true,
+          get() {
+            original[10] = 'restored';
+            return 'second';
+          },
+        });
+        return 'first';
+      },
+    });
+    const copy = copyArray(original);
+    assert.deepStrictEqual(Object.keys(copy), ['0', '1', '10']);
+    assert.strictEqual(copy[10], 'restored');
+  });
+
+  it('should stop on a long array whose listed index is not there', () => {
+    const target: unknown[] = [];
+    target.length = 0x10001;
+    const proxy = new Proxy(target, {
+      ownKeys: () => ['10', 'length'],
+      getOwnPropertyDescriptor: (array, key) =>
+        key === '10'
+          ? { value: 1, writable: true, enumerable: true, configurable: true }
+          : Reflect.getOwnPropertyDescriptor(array, key),
+      has: () => false,
+    });
+
+    const copy = copyArray(proxy);
+
+    assert.strictEqual(copy.length, 0x10001);
+    assert.ok(!(10 in copy));
+  });
 });
