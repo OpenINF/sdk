@@ -12,7 +12,14 @@ npm install @openinf/gh-file-importer
 ## Usage
 
 Every option is optional except `destDir`, which is where fetched files are
-written.
+written. A path with `..` or a symbolic link that leads out is refused. On Linux
+with `/proc` mounted, the file actually opened is checked as well before
+anything is truncated or written, so a directory swapped for a link mid-import
+is caught too. Such a swap can still leave a new, empty file where the link led,
+because the file is created when it is opened, but no existing file outside
+`destDir` is emptied or written. Elsewhere that last check is not possible, so
+use a `destDir` that nobody less trusted than you can change while an import
+runs.
 
 ```ts
 import { GhFileImporter } from '@openinf/gh-file-importer';
