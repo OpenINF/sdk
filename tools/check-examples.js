@@ -49,14 +49,39 @@ const PACKAGES = path.join(ROOT, 'packages');
 const CLAIM =
   /^(?<indent>\s*)(?<expression>.+?);\s*\/\/\s*↪\s*(?<claimed>.+?)\s*$/;
 
-/** Prose after a value, as in `false — a Date, but not a usable one`. */
-const ASIDE = /\s+[—-]\s+.*$/;
-
 /**
- * Reads a claimed value as the literal it looks like, or returns undefined
- * when the comment is prose rather than a value. Deliberately not `eval`: the
- * point is to recognize a literal, and anything else is a remark.
+ * Removes prose after a value, as in `false — a Date, but not a usable one`:
+ * everything from the first run of whitespace followed by a dash and more
+ * whitespace. Scanned rather than matched with `/\s+[—-]\s+.*$/`, which
+ * retries its `\s+` from every space of a long run and so takes time
+ * quadratic in the run's length.
  */
+function withoutAside(text) {
+  const isSpace = (character) => /\s/.test(character);
+  let index = 0;
+
+  while (index < text.length) {
+    if (!isSpace(text[index])) {
+      index += 1;
+      continue;
+    }
+
+    const start = index;
+    while (index < text.length && isSpace(text[index])) index += 1;
+
+    const dash = text[index];
+    if (
+      (dash === '-' || dash === '—') &&
+      index + 1 < text.length &&
+      isSpace(text[index + 1])
+    ) {
+      return text.slice(0, start);
+    }
+  }
+
+  return text;
+}
+
 /**
  * Splits an array literal's elements at its own commas, so that a nested
  * array or a string holding one is not cut through the middle.
@@ -106,7 +131,10 @@ function literalOf(source) {
     const inner = source.slice(1, -1).trim();
     if (inner === '') return { value: [] };
 
-    const parts = elementsOf(inner).map((part) => readLiteral(part));
+    // An aside follows the whole claim, never one element of it, so elements
+    // are read as they stand. Trying each one both ways as well would double
+    // the work at every level of nesting.
+    const parts = elementsOf(inner).map((part) => literalOf(part.trim()));
     if (parts.some((part) => part === undefined)) return undefined;
 
     return { value: parts.map((part) => part.value) };
@@ -115,10 +143,20 @@ function literalOf(source) {
   return undefined;
 }
 
+/**
+ * Reads a claimed value as the literal it looks like, or returns undefined
+ * when the comment is prose rather than a value. Deliberately not `eval`: the
+ * point is to recognize a literal, and anything else is a remark.
+ */
 function readLiteral(text) {
   // Whole first: a string can hold the dash an aside starts with, and
   // `'a - b'` read the other way around parses as nothing and goes unchecked.
-  return literalOf(text.trim()) ?? literalOf(text.replace(ASIDE, '').trim());
+  const whole = text.trim();
+  const literal = literalOf(whole);
+  if (literal !== undefined) return literal;
+
+  const remainder = withoutAside(text).trim();
+  return remainder === whole ? undefined : literalOf(remainder);
 }
 
 /** Formats a value the way a README writes one. */

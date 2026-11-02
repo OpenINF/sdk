@@ -326,6 +326,36 @@ describe('documented tag fallback boundary', () => {
     );
   });
 
+  it('reads block comments holding asterisks', () => {
+    const asyncGenerator = new Function(
+      'return async /** a * b **/ function /***/ /* * */ * generate() {}'
+    )() as AsyncGeneratorFunction;
+    const asyncFunction = new Function(
+      'return async /** a * b **/ function /***/ /* * */ named() {}'
+    )() as () => Promise<void>;
+    assert.strictEqual(isAsyncGeneratorFunction(asyncGenerator), true);
+    assert.strictEqual(isAsyncFunction(asyncGenerator), false);
+    assert.strictEqual(isAsyncFunction(asyncFunction), true);
+    assert.strictEqual(isAsyncGeneratorFunction(asyncFunction), false);
+  });
+
+  it('classifies a function with many adjacent comments quickly', () => {
+    // Each comment could once also be read as running on into the next, so
+    // the ways to split these doubled with every comment added.
+    const comments = '/**/'.repeat(5000);
+    const asyncFunction = new Function(
+      `return async function ${comments} named() {}`
+    )() as () => Promise<void>;
+    const asyncGenerator = new Function(
+      `return async function ${comments} * generate() {}`
+    )() as AsyncGeneratorFunction;
+    const started = performance.now();
+    assert.strictEqual(isAsyncFunction(asyncFunction), true);
+    assert.strictEqual(isAsyncGeneratorFunction(asyncFunction), false);
+    assert.strictEqual(isAsyncGeneratorFunction(asyncGenerator), true);
+    assert.ok(performance.now() - started < 1000);
+  });
+
   it('does not advance iterators or generators or read promise species', async () => {
     const mapIterator = new Map([[1, 2]]).entries();
     const setIterator = new Set([3]).values();

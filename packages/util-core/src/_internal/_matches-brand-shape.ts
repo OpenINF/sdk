@@ -15,7 +15,12 @@ const functionToString = Function.prototype.toString;
 const regExpExec = RegExp.prototype.exec;
 // oxlint-disable-next-line typescript/unbound-method -- invoked with captured Reflect.apply.
 const stringStartsWith = String.prototype.startsWith;
-const blockComment = String.raw`\/\*[\s\S]*?\*\/`;
+// A block comment ends at its first `*/` and can match no other way. The
+// lazy `[\s\S]*?` it replaces could also run on through that `*/` into the
+// next comment, so a run of adjacent comments could be split every possible
+// way, and an async function with a few dozen of them before its name took
+// seconds to classify.
+const blockComment = String.raw`\/\*[^*]*\*+(?:[^/*][^*]*\*+)*\/`;
 const lineComment = String.raw`\/\/[^\r\n\u2028\u2029]*(?:\r\n?|\n|\u2028|\u2029)`;
 const comment = String.raw`(?:${blockComment}|${lineComment})`;
 const gap = String.raw`(?:\s|${comment})+`;
