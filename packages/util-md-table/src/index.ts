@@ -76,15 +76,15 @@ export function mdTbl2json(
 
       const cellsMap = new Map<string, string>();
 
-      allAttributes.forEach((value, i) => {
-        // A row with fewer cells than the header should leave that attribute
-        // unset rather than write `undefined` into a Record<string, string>.
-        const cell = cells[i];
-        // oxlint-disable-next-line typescript/no-unnecessary-condition -- oxlint-tsgolint doesn't currently honor noUncheckedIndexedAccess; cell can genuinely be undefined here.
-        if (cell !== undefined) {
-          cellsMap.set(value, cell);
-        }
-      });
+      // A row with fewer cells than the header leaves the remaining attributes
+      // unset rather than writing `undefined` into a Record<string, string>,
+      // and costs only the cells it has: a wide header over many short rows
+      // would otherwise walk the whole header once for every row.
+      const width = Math.min(allAttributes.length, cells.length);
+      for (let i = 0; i < width; i++) {
+        // oxlint-disable-next-line typescript/no-unnecessary-type-assertion -- oxlint-tsgolint doesn't currently honor noUncheckedIndexedAccess; tsc does require this.
+        cellsMap.set(allAttributes[i]!, cells[i]!);
+      }
 
       jsonTbl.push(Object.fromEntries(cellsMap));
     }

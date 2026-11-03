@@ -21,6 +21,50 @@ interface MixinArgs<
   copies?: WeakMap<object, unknown>;
   merged?: WeakMap<object, WeakSet<object>>;
   activeCopies?: Map<object, unknown>;
+  settled?: WeakMap<object, WeakMap<object, number>>;
+  progress?: { changes: number; accessorReads: number };
+}
+
+/**
+ * Whether reading `object[key]` runs a getter, wherever along the prototype
+ * chain the property is found. A getter can answer differently each time it
+ * is read, so a merge that read one cannot be taken as settled.
+ * @param object The object about to be read.
+ * @param key The key about to be read.
+ * @returns `true` if the property is an accessor.
+ */
+function isAccessor(object: object, key: string): boolean {
+  for (
+    let holder: object | null = object;
+    holder !== null;
+    holder = Object.getPrototypeOf(holder) as object | null
+  ) {
+    const descriptor = Object.getOwnPropertyDescriptor(holder, key);
+    if (descriptor !== undefined) return !('value' in descriptor);
+  }
+  return false;
+}
+
+/**
+ * Whether assigning `value` to `target[key]` would leave `target` as it is:
+ * the key is already an own data property holding that very value. Read from
+ * the descriptor so that a getter on the target is not run to find out.
+ * @param target The object about to be assigned to.
+ * @param key The key about to be assigned.
+ * @param value The value about to be assigned.
+ * @returns `true` if the assignment would change nothing.
+ */
+function holdsAlready(
+  target: Record<string, unknown>,
+  key: string,
+  value: unknown
+): boolean {
+  const descriptor = Object.getOwnPropertyDescriptor(target, key);
+  return (
+    descriptor !== undefined &&
+    'value' in descriptor &&
+    Object.is(descriptor.value, value)
+  );
 }
 
 /**
@@ -45,6 +89,19 @@ export function _mixin<
   // an object of its own at the same path.
   const merged = kwArgs.merged ?? new WeakMap<object, WeakSet<object>>();
   const activeCopies = kwArgs.activeCopies ?? new Map<object, unknown>();
+  // How many assignments so far have changed a target and getters have been
+  // run, and, for each source merged into an existing target, what that
+  // count was when the merge finished. A merge rerun with nothing changed and
+  // no getter run since it finished would make the same assignments to the
+  // same values, so it is skipped. A merge that ran a getter anywhere along
+  // the way, on the source or the target, is never taken as settled, since
+  // the getter could answer differently the next time. Without this,
+  // a source and a target that both reach one object along several paths are
+  // merged again along every one of them, and a graph with a few dozen such
+  // levels takes longer than anyone would wait.
+  const settled =
+    kwArgs.settled ?? new WeakMap<object, WeakMap<object, number>>();
+  const progress = kwArgs.progress ?? { changes: 0, accessorReads: 0 };
 
   for (const source of kwArgs.sources) {
     if (source === null || source === undefined) {
@@ -65,6 +122,7 @@ export function _mixin<
     const wasActive = activeCopies.has(source);
     const previousActive = activeCopies.get(source);
     activeCopies.set(source, target);
+    const accessorReadsBefore = progress.accessorReads;
 
     for (const key in source) {
       // Skipped silently: reading `target[key]` below would otherwise resolve
@@ -74,6 +132,7 @@ export function _mixin<
         continue;
       }
       if (isInherited || hasOwn(source, key)) {
+        if (isAccessor(source, key)) progress.accessorReads += 1;
         let value: unknown = source[key];
 
         if (isDeep) {
@@ -88,8 +147,18 @@ export function _mixin<
             // what its own properties cannot carry, so it is assigned by
             // reference, as `_copyDeep` does inside an array.
             const sourceObject = value as Record<string, unknown>;
-            const targetValue = hasOwn(target, key) ? target[key] : undefined;
-            if (isObjectCoercible(targetValue)) {
+            let targetValue: unknown;
+            if (hasOwn(target, key)) {
+              if (isAccessor(target, key)) progress.accessorReads += 1;
+              targetValue = target[key];
+            }
+            if (
+              isObjectCoercible(targetValue) &&
+              settled.get(sourceObject)?.get(targetValue as object) ===
+                progress.changes + progress.accessorReads
+            ) {
+              value = targetValue;
+            } else if (isObjectCoercible(targetValue)) {
               const existingTarget = targetValue as Record<string, unknown>;
               // What the target already holds here is merged into, whatever
               // this source came back as somewhere else: handing back that
@@ -115,6 +184,8 @@ export function _mixin<
                 copies: branchCopies,
                 merged,
                 activeCopies,
+                settled,
+                progress,
               });
             } else if (copies.has(sourceObject)) {
               // Nothing here to keep, so the source's own shape is kept
@@ -132,12 +203,25 @@ export function _mixin<
                 copies,
                 merged,
                 activeCopies,
+                settled,
+                progress,
               });
             }
           }
         }
+        if (!holdsAlready(target, key, value)) progress.changes += 1;
         target[key] = value;
       }
+    }
+    let settledInto = settled.get(source);
+    if (settledInto === undefined) {
+      settledInto = new WeakMap();
+      settled.set(source, settledInto);
+    }
+    if (progress.accessorReads === accessorReadsBefore) {
+      settledInto.set(target, progress.changes + progress.accessorReads);
+    } else {
+      settledInto.delete(target);
     }
     // Only active source/target pairs break cycles. A later source argument
     // must run again so that its values regain their normal precedence.
